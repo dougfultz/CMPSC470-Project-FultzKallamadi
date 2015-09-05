@@ -1,0 +1,20 @@
+insert green 1848
+insert blue 1845
+lookup green
+lookup blue
+lookup orange
+insert green 1836
+open
+insert green 1836
+lookup green
+dump
+lookup blue
+global blue
+close
+lookup green
+lookup blue
+close
+lookup green
+quit
+
+

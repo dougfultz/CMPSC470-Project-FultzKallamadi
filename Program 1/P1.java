@@ -27,7 +27,51 @@ class P1 {
             System.exit(1);
         }
         
-        String input = c.readLine(shell);
+        String input;
+        
+        //https://docs.oracle.com/javase/tutorial/java/nutsandbolts/while.html
+        do{
+            input = c.readLine(shell);
+            //System.out.println(input);
+            
+            //https://docs.oracle.com/javase/7/docs/technotes/guides/language/strings-switch.html
+            switch(input){
+                case "open":
+                    //do stuff
+                    System.out.println("New scope opened.");
+                    break;
+                case "close":
+                    //do stuff
+                    System.out.println("Top scope closed.");
+                    break;
+                case "quit":
+                    System.out.println("Testing done");
+                    break;
+                case "dump":
+                    //do stuff
+                    break;
+                case "insert":
+                    //do stuff
+                    
+                    //Contents of symbol table:
+                    //{blue=(blue:1836)}
+                    //{blue=(blue:1845), green=(green:1848)}
+                    break;
+                case "lookup":
+                    //do stuff
+                    //found:
+                    //(blue:1836) found in top scope
+                    //not found:
+                    //green not found in top scope
+                    break;
+                case "global":
+                    //same as lookup
+                    break;
+                default:
+                    break;
+            }
+            
+        }while(!input.equals("quit"));
         
     } // main
 } // class P1

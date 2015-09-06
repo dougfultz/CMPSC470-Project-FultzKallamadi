@@ -1,6 +1,9 @@
 import java.io.*;
+import java.lang.String;
 
 class P1 {
+    private static String shell = "P1# ";
+    
     public static void main(String args[]){
         //The test driver used to test your SymbolTable implementation.
         System.out.println(
@@ -16,5 +19,15 @@ class P1 {
             "");
     
         // Complete this
+        
+        //https://docs.oracle.com/javase/tutorial/essential/io/cl.html
+        Console c = System.console();
+        if (c == null) {
+            System.err.println("No console.");
+            System.exit(1);
+        }
+        
+        String input = c.readLine(shell);
+        
     } // main
 } // class P1

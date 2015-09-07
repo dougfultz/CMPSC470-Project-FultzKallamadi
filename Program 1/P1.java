@@ -101,7 +101,7 @@ class P1 {
                     sTable.insert(symbol);
                     break;
                 case "lookup":
-                    //Gather input                    
+                    //Gather input
                     switch(words.length){
                         case 1:
                             strName = c.readLine(enterName);
@@ -115,10 +115,14 @@ class P1 {
                     }
                     
                     //Store symbol
-                    symbol = sTable.localLookup(strName);
+                    symbol = (TestSym)sTable.localLookup(strName);
                     
                     //Output symbol
-                    System.out.println(symbol.toString());
+                    try{
+                        System.out.println(symbol.toString());
+                    }catch(NullPointerException e){
+                        System.out.println(strName+" not found in top scope.");
+                    }
                     break;
                 case "global":
                     //Gather input
@@ -135,10 +139,14 @@ class P1 {
                     }
                     
                     //Store symbol
-                    symbol = sTable.globalLookup(strName);
+                    symbol = (TestSym)sTable.globalLookup(strName);
                     
                     //Output symbol
-                    System.out.println(symbol.toString());
+                    try{
+                        System.out.println(symbol.toString());
+                    }catch(NullPointerException e){
+                        System.out.println(strName+" not found in global scope.");
+                    }
                     break;
                 default:
                     System.out.println("Command not found.");

@@ -102,11 +102,27 @@ class SymbolTable {
     public String toString(){
         //Return a string representation of this SymbolTable
         /* complete this */
-        return ""; // change this
+        
+        //Iterate over all elements in list
+        ListIterator listIterator  = sTable.listIterator();
+        HashMap current;
+        String s="";
+        while(listIterator.hasNext()){
+            current = (HashMap)listIterator.next();
+            
+            //Convert each HashMap to a string
+            s+=current.toString();
+            if(listIterator.hasNext()){
+                s+="\n";
+            }
+        }
+        
+        return(s);
     }
 
     void dump(PrintStream ps){
         //This method is for debugging. The contents of this SymbolTable are written to Printstream p (System.out is a Printstream).
-        /* complete this */
+        ps.println("Contents of symbol table:");
+        ps.println(this.toString());
     }
 } // class SymbolTable

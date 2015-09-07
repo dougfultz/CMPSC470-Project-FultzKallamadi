@@ -119,7 +119,7 @@ class P1 {
                     
                     //Output symbol
                     try{
-                        System.out.println(symbol.toString());
+                        System.out.println(symbol.toString()+" found in symbol table.");
                     }catch(NullPointerException e){
                         System.out.println(strName+" not found in top scope.");
                     }
@@ -143,7 +143,7 @@ class P1 {
                     
                     //Output symbol
                     try{
-                        System.out.println(symbol.toString());
+                        System.out.println(symbol.toString()+" found in symbol table.");
                     }catch(NullPointerException e){
                         System.out.println(strName+" not found in global scope.");
                     }

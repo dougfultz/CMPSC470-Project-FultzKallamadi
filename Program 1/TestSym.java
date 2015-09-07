@@ -1,6 +1,6 @@
-#Doug Fultz
-#Sujay Kallamadi
-#CMPSC470 - Compiler Construction
+//Doug Fultz
+//Sujay Kallamadi
+//CMPSC470 - Compiler Construction
 
 class TestSym extends Symb {
     private int value;

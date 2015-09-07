@@ -1,6 +1,6 @@
-#Doug Fultz
-#Sujay Kallamadi
-#CMPSC470 - Compiler Construction
+//Doug Fultz
+//Sujay Kallamadi
+//CMPSC470 - Compiler Construction
 
 import java.io.*;
 import java.util.HashMap;

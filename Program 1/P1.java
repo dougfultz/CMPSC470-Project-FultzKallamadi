@@ -6,6 +6,7 @@ class P1 {
     private static String shell = "P1# ";
     private static String enterName = "Enter symbol: ";
     private static String enterValue = "Enter associated integer: ";
+    private static String strEmptySTException = "ERROR: SymbolTable is empty.";
     
     public static void main(String args[]){
         //The test driver used to test your SymbolTable implementation.
@@ -59,7 +60,7 @@ class P1 {
                         System.out.println("Top scope closed.");
                     //https://docs.oracle.com/javase/tutorial/essential/exceptions/catch.html
                     }catch(EmptySTException e){
-                        System.out.println("ERROR: SymbolTable is empty.");
+                        System.out.println(strEmptySTException);
                     }
                     break;
                 case "quit":
@@ -98,7 +99,13 @@ class P1 {
                     symbol = new TestSym(strName,intValue);
                     
                     //Insert symbol into table
-                    sTable.insert(symbol);
+                    try{
+                        sTable.insert(symbol);
+                    }catch(EmptySTException e){
+                        System.out.println(strEmptySTException);
+                    }catch(DuplicateException e){
+                        System.out.println(strName+" already entered into top scope.");
+                    }
                     break;
                 case "lookup":
                     //Gather input

@@ -5,4 +5,4 @@ Doug Fultz
 Sujay Kallamadi
 
 ## Compile and execute code
-`# prog="P1"; javac ./$prog.java; java $prog`
+`# prog="P1"; javac ./$prog.java && java $prog`

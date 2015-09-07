@@ -9,7 +9,7 @@ class Symb {
         return name;
     }
     public String toString(){
-        Return a string representation of this Symb object.
+        //Return a string representation of this Symb object.
         return name;
     }
 } // class Symb

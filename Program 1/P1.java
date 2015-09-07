@@ -1,3 +1,7 @@
+#Doug Fultz
+#Sujay Kallamadi
+#CMPSC470 - Compiler Construction
+
 import java.io.*;
 import java.lang.String;
 import java.lang.Integer;

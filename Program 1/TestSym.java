@@ -1,3 +1,7 @@
+#Doug Fultz
+#Sujay Kallamadi
+#CMPSC470 - Compiler Construction
+
 class TestSym extends Symb {
     private int value;
     TestSym(String n,int i){

@@ -11,6 +11,8 @@ Sujay Kallamadi
 `# git config --global user.email "USERNAME@users.noreply.github.com"`
 3. Configure push type to simple
 `# git config --global push.default simple`
+4. Configure credentials to be cached for 1 hour
+`# git config --global credential.helper 'cache --timeout=3600'`
 4. Clone the repository
 `# git clone https://github.com/dougfultz/CMPSC470-Project-FultzKallamadi.git`
 

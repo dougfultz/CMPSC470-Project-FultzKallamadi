@@ -1,0 +1,18 @@
+New scope opened.
+(green:1848) found in symbol table.
+(blue:1845) found in symbol table.
+orange not found in top scope.
+green already entered into top scope.
+New scope opened.
+(green:1836) found in symbol table.
+Contents of symbol table:
+{green=1836}
+{green=1848, blue=1845}
+blue not found in top scope.
+(blue:1845) found in symbol table.
+Top scope closed.
+(green:1848) found in symbol table.
+(blue:1845) found in symbol table.
+Top scope closed.
+green not found in top scope.
+Testing done

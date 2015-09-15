@@ -1,0 +1,11 @@
+New scope opened.
+Enter symbol:
+Enter associated integer:
+New scope opened.
+Enter symbol:
+green not found in top scope.
+Top scope closed.
+green not found in top scope.
+green not found in global scope.
+Top scope closed.
+Testing done

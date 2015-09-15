@@ -1,0 +1,13 @@
+New scope opened.
+blue not found in top scope.
+(red:1920) found in symbol table.
+New scope opened.
+red not found in top scope.
+(red:1920) found in symbol table.
+Contents of symbol table:
+{}
+{red=1920, pink=1929, yellow=1337}
+Top scope closed.
+Top scope closed.
+ERROR: SymbolTable is empty.
+Testing done

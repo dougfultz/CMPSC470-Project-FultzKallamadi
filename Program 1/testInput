@@ -1,3 +1,4 @@
+open
 insert green 1848
 insert blue 1845
 lookup green
@@ -18,3 +19,55 @@ lookup green
 quit
 
 
+C:\Users\RK\Desktop\CMPSC 470\CMPSC470-Project-FultzKallamadi\Program 1>java P1
+Project 1 test driver. Enter any of the following commands:
+  (Command prefixes are allowed)
+        Open (a new scope)
+        Close (innermost current scope)
+        Quit (test driver)
+        Dump (contents of symbol table)
+        Insert (symbol,integer pair into symbol table)
+        Lookup (lookup symbol in top scope)
+        Global (global lookup of symbol in symbol table)
+
+P1# open
+New scope opened.
+P1# insert green 1848
+P1# insert blue 1845
+P1# lookup green
+(green:1848) found in symbol table.
+P1# lookup blue
+(blue:1845) found in symbol table.
+P1# lookup orange
+orange not found in top scope.
+P1# insert green 1836
+green already entered into top scope.
+P1# open
+New scope opened.
+P1# insert green 1836
+P1# lookup green
+(green:1836) found in symbol table.
+P1# dump
+Contents of symbol table:
+{green=1836}
+{green=1848, blue=1845}
+P1# lookup blue
+blue not found in top scope.
+P1# global blue
+(blue:1845) found in symbol table.
+P1# close
+Top scope closed.
+P1# lookup green
+(green:1848) found in symbol table.
+P1# lookup blue
+(blue:1845) found in symbol table.
+P1# close
+Top scope closed.
+P1# lookup green
+green not found in top scope.
+P1# quit
+Testing done
+
+
+
+In the testInput file, we start of opening the scope and entering the symbol values for green and blue. We then proceed to lookup up both green and blue. Now, we attempt to lookup orange and fail to find it in the top scope. We continue with changing the value for green from 1848 to 1836. The system will then display that green is already in the top scope. Now, we try again, except this time, we open a new scope. This updates it for that scope. When we dump the values, it rearranges it in scope order(inside to out). If we lookup blue, it won't be found, as it is not in the top scope. Using global, it will recognize it and display the value. We then close and look up green once more, where it won't be found again due to the wrong scope(we closed twice). Finally, the program quits.

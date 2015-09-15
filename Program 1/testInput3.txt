@@ -1,0 +1,53 @@
+open
+insert
+blue
+99
+open
+lookup
+green
+insert green 1900
+close
+lookup green
+global green
+close
+quit
+
+
+C:\Users\RK\Desktop\CMPSC 470\CMPSC470-Project-FultzKallamadi\Program 1>java P1
+Project 1 test driver. Enter any of the following commands:
+  (Command prefixes are allowed)
+        Open (a new scope)
+        Close (innermost current scope)
+        Quit (test driver)
+        Dump (contents of symbol table)
+        Insert (symbol,integer pair into symbol table)
+        Lookup (lookup symbol in top scope)
+        Global (global lookup of symbol in symbol table)
+
+P1# open
+New scope opened.
+P1# insert
+Enter symbol: blue
+Enter associated integer: 99
+P1# open
+New scope opened.
+P1# lookup
+Enter symbol: green
+green not found in top scope.
+P1# insert green 1900
+P1# close
+Top scope closed.
+P1# lookup green
+green not found in top scope.
+P1# global green
+green not found in global scope.
+P1# close
+Top scope closed.
+P1# quit
+Testing done
+
+
+
+
+
+In the testInput3 file, you notice in the first few lines that the commands, symbols, and associated integer are on different lines. The program expects a response if the values are not given initially. From here, open creates a new scope, which performs a similar action as before, except with lookup. Green is therefore not found and will display it 'not found'. Now we insert green 1900 and leave the current scope. Based on the output, you notice that both lookup and global give you not found. Since the previous scope was neither in the top or global scope, it cannot be found. Finally, the program quits. 

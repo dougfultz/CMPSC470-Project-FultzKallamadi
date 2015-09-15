@@ -1,0 +1,60 @@
+open
+insert yellow 1337
+insert red 1920
+insert pink 1929
+lookup blue
+lookup red
+open
+lookup red
+global red
+dump
+close
+close
+close
+quit
+
+
+C:\Users\RK\Desktop\CMPSC 470\CMPSC470-Project-FultzKallamadi\Program 1>java P1
+Project 1 test driver. Enter any of the following commands:
+  (Command prefixes are allowed)
+        Open (a new scope)
+        Close (innermost current scope)
+        Quit (test driver)
+        Dump (contents of symbol table)
+        Insert (symbol,integer pair into symbol table)
+        Lookup (lookup symbol in top scope)
+        Global (global lookup of symbol in symbol table)
+
+P1# open
+New scope opened.
+P1# insert yellow 1337
+P1# insert red 1920
+P1# insert pink 1929
+P1# lookup blue
+blue not found in top scope.
+P1# lookup red
+(red:1920) found in symbol table.
+P1# open
+New scope opened.
+P1# lookup red
+red not found in top scope.
+P1# global red
+(red:1920) found in symbol table.
+P1# dump
+Contents of symbol table:
+{}
+{red=1920, pink=1929, yellow=1337}
+P1# close
+Top scope closed.
+P1# close
+Top scope closed.
+P1# close
+ERROR: SymbolTable is empty.
+P1# quit
+Testing done
+
+
+
+
+
+In the testInput2 file, we start of with opening the initial scope. From here, we placed values for yellow, red, and pink. We then performed a lookup on blue, where blue was not found. Next, we looked up red. Red was found within the same scope. To test scopes, we open a new scope and perform the lookup and global symbol for red. The results show that lookup does not find anything but global does.Next, we dump the values. We proceed to close the scope 3 times, even though there are only 2 in this case. When the third 'close' is entered, the system response with the SymbolTable as empty. Finally, the program quits.

@@ -44,3 +44,6 @@ Temporary Items
 
 # Java class files
 *.class
+
+# JFlex output file
+Yylex.java

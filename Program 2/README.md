@@ -5,8 +5,10 @@ Doug Fultz
 Sujay Kallamadi
 
 ## Running JFlex from command line
-1. Get the help text
+1. Get the help text.
 `# java -jar JFlex.jar --help`
+2. Run JFlex against input file.
+`# java -jar JFlex.jar csx.jflex`
 
 ## Configure GitHub on Sun Machine
 1. Set you GitHub username

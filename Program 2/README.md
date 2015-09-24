@@ -6,6 +6,7 @@ Sujay Kallamadi
 
 ## Running JFlex from command line
 1. Get the help text.
+http://jflex.de/manual.html#running-jflex
 `# java -jar JFlex.jar --help`
 2. Run JFlex against input file.
 `# java -jar JFlex.jar csx.jflex`

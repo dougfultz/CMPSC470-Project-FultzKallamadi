@@ -221,9 +221,27 @@ Position Pos = new Position();
 //-Float-Literals-------------------------------------------
 //A float literal is a sequence of digits that represent a decimal value, optionally preceded by a ~. A ~ denotes a negative decimal. Examples of legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not considered as legal float values.
 //-String Literals------------------------------------------
-//
-//----------------------------------------------------------
-//----------------------------------------------------------
+//A string literal is any sequence of printable characters, delimited by double quotes. A double quote within the text of a string must be escaped (to avoid being misinterpreted as the end of the string). Tabs and newlines within a string are escaped as usual (e.g., \n is a newline and \t is a tab). Backslashes within a string must also be escaped (as \\). Strings may not cross line boundaries.
+//StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
+//-Character-Literals---------------------------------------
+//A character literal is any printable ASCII character, enclosed within single quotes. A single quote within a character literal must be escaped (to avoid being misinterpreted as the end of the literal). A tab or newline must be escaped (e.g., '\n' is a newline and '\t' is a tab). A backslash must also be escaped (as '\\').
+//CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
+//-Other Tokens---------------------------------------------
+//These are miscellaneous one- or two-character symbols representing operators and delimiters.
+//-++ and -- Operators--------------------------------------
+//The increment (++) and decrement (--) operators should be used either before or after an identifier. There should be no space between the identifier and the operator. It might be helpful, while modifying the scanner (jflex specification), to use look-ahead and lexical states.
+//-End-of-File-(EOF)-Token----------------------------------
+//The EOF token is automatically returned by yylex() when it reaches the end of file while scanning the first character of a token.
+//-Single-Line-Comment--------------------------------------
+//As in C++ and Java, this style of comment begins with a pair of slashes and ends at the end of the current line. Its body can include any character other than an end-of-line.
+//LineComment = // Not(Eol)* Eol
+//-Multi-Line-Comment---------------------------------------
+//This comment begins with the pair ## and ends with the pair ##. Its body can include any character sequence including # but not two consecutive #’s.
+//-White-Space----------------------------------------------
+//White space separates tokens; otherwise it is ignored.
+//WhiteSpace = ( Blank | Tab | Eol) +
+//-Error Character Token------------------------------------
+//Any character that cannot be scanned as part of a valid token, comment or white space is invalid and should generate an error message.
 //----------------------------------------------------------
 
 //Addition

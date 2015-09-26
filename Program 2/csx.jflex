@@ -90,11 +90,22 @@ class Symbol {
 
 %%
 //Declarations
-
-RESERVEDWORDS=\"bool|break|char|const|continue|else|false|float|if|int|read|return|true|void|print|while\"
+//Primitive Character Classes
 LETTER=[a-zA-Z]
 DIGIT=[0-9]
+//Reserved words
+RESERVEDWORDS=bool|break|char|const|continue|else|false|float|if|int|read|return|true|void|print|while
+//Identifiers
+//Integer Literals
+INTEGERLITERAL=DIGIT+|~DIGIT+
+//Float Literals
+FLOATLITERAL=\.DIGIT+|DIGIT+\.DIGIT|~\.DIGIT|~DIGIT\.DIGIT
+//String Literals
 STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"     // to be fixed
+//Character Literals
+//Other Tokens
+OTHERTOKENS=(|)|[|]|=|;|+|-|*|/|==|!=|&&|\|\||<|>|<=|>=|,|!|{|}|:|++|--
+
 
 %type Symbol
 %eofval{
@@ -220,12 +231,49 @@ Position Pos = new Position();
 //An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
 {DIGIT}+ {
     // This def doesn't check for overflow -- be sure to update it
+    //TODO check for overflow
     Pos.setpos(); 
     Pos.col += yytext().length();
     return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
 }
+
+~{DIGIT}+ {
+    //TODO check for overflow
+    Pos.setpos();
+    Pos.col+=yytext().length();
+    return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt("-"+yytext().substring(1)),Pos));
+}
 //-Float-Literals-------------------------------------------
 //A float literal is a sequence of digits that represent a decimal value, optionally preceded by a ~. A ~ denotes a negative decimal. Examples of legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not considered as legal float values.
+
+\.{DIGIT}+ {
+    //TODO check for overflow
+    Pos.setpos();
+    Pos.col+=yytext().length();
+    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+}
+
+{DIGIT}+\.{DIGIT}+ {
+    //TODO check for overflow
+    Pos.setpos();
+    Pos.col+=yytext().length();
+    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+}
+
+~\.{DIGIT}+ {
+    //TODO check for overflow
+    Pos.setpos();
+    Pos.col+=yytext().length();
+    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
+}
+
+~{DIGIT}+\.{DIGIT}+ {
+    //TODO check for overflow
+    Pos.setpos();
+    Pos.col+=yytext().length();
+    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
+}
+
 //-String Literals------------------------------------------
 //A string literal is any sequence of printable characters, delimited by double quotes. A double quote within the text of a string must be escaped (to avoid being misinterpreted as the end of the string). Tabs and newlines within a string are escaped as usual (e.g., \n is a newline and \t is a tab). Backslashes within a string must also be escaped (as \\). Strings may not cross line boundaries.
 //StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "

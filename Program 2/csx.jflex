@@ -218,6 +218,12 @@ Position Pos = new Position();
 //An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
 //-Integer-Literals-----------------------------------------
 //An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
+{DIGIT}+ {
+    // This def doesn't check for overflow -- be sure to update it
+    Pos.setpos(); 
+    Pos.col += yytext().length();
+    return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
+}
 //-Float-Literals-------------------------------------------
 //A float literal is a sequence of digits that represent a decimal value, optionally preceded by a ~. A ~ denotes a negative decimal. Examples of legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not considered as legal float values.
 //-String Literals------------------------------------------
@@ -228,6 +234,144 @@ Position Pos = new Position();
 //CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
 //-Other Tokens---------------------------------------------
 //These are miscellaneous one- or two-character symbols representing operators and delimiters.
+"(" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.LPAREN,new CSXToken(Pos));
+}
+
+")" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.RPAREN,new CSXToken(Pos));
+}
+
+"[" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.LBRACKET,new CSXToken(Pos));
+}
+
+"]" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.RBRACKET,new CSXToken(Pos));
+}
+
+"=" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.ASG,new CSXToken(Pos));
+}
+
+";" {
+    Pos.setpos();
+    Pos.col +=1;
+    return new Symbol(sym.SEMI,new CSXToken(Pos));
+}
+
+"+" {
+    Pos.setpos();
+    Pos.col += 1;
+    return new Symbol(sym.PLUS,new CSXToken(Pos));
+}
+
+"-" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.MINUS,new CSXToken(Pos));
+}
+
+"*" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.TIMES,new CSXToken(Pos));
+}
+
+"/" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.SLASH,new CSXToken(Pos));
+}
+
+"==" {
+    Pos.setpos();
+    Pos.col+=2;
+    return new Symbol(sym.EQ,new CSXToken(Pos));
+}
+
+"!=" {
+    Pos.setpos();
+    Pos.col +=2;
+    return new Symbol(sym.NOTEQ,new CSXToken(Pos));
+}
+
+"&&" {
+    Pos.setpos();
+    Pos.col+=2;
+    return new Symbol(sym.CAND,new CSXToken(Pos));
+}
+
+"||" {
+    Pos.setpos();
+    Pos.col+=2;
+    return new Symbol(sym.COR,new CSXToken(Pos));
+}
+
+"<" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.LT,new CSXToken(Pos));
+}
+
+">" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.GT,new CSXToken(Pos));
+}
+
+"<=" {
+    Pos.setpos();
+    Pos.col+=2;
+    return new Symbol(sym.LEQ,new CSXToken(Pos));
+}
+
+">=" {
+    Pos.setpos();
+    Pos.col+=2;
+    return new Symbol(sym.GEQ,new CSXToken(Pos));
+}
+
+"," {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.COMMA,new CSXToken(Pos));
+}
+
+"!" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.NOT,new CSXToken(Pos));
+}
+
+"{" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.LBRACE,new CSXToken(Pos));
+}
+
+"}" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.RBRACE,new CSXToken(Pos));
+}
+
+":" {
+    Pos.setpos();
+    Pos.col+=1;
+    return new Symbol(sym.COLON,new CSXToken(Pos));
+}
+
 //-++ and -- Operators--------------------------------------
 //The increment (++) and decrement (--) operators should be used either before or after an identifier. There should be no space between the identifier and the operator. It might be helpful, while modifying the scanner (jflex specification), to use look-ahead and lexical states.
 //-End-of-File-(EOF)-Token----------------------------------
@@ -240,50 +384,15 @@ Position Pos = new Position();
 //-White-Space----------------------------------------------
 //White space separates tokens; otherwise it is ignored.
 //WhiteSpace = ( Blank | Tab | Eol) +
-//-Error Character Token------------------------------------
-//Any character that cannot be scanned as part of a valid token, comment or white space is invalid and should generate an error message.
-//----------------------------------------------------------
-
-//Addition
-"+" {
-    Pos.setpos();
-    Pos.col += 1;
-    return new Symbol(sym.PLUS,new CSXToken(Pos));
-}
-
-//Not Equal to
-"!=" {
-    Pos.setpos();
-    Pos.col +=2;
-    return new Symbol(sym.NOTEQ,new CSXToken(Pos));
-}
-
-//Semicolon
-";" {
-    Pos.setpos();
-    Pos.col +=1;
-    return new Symbol(sym.SEMI,new CSXToken(Pos));
-}
-
-//Integer
-{DIGIT}+ {
-    // This def doesn't check for overflow -- be sure to update it
-    Pos.setpos(); 
-    Pos.col += yytext().length();
-    return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
-}
-
 //EOL to be fixed so that it accepts different formats
-//New line (UNIX)
-\n {
-    Pos.line += 1;
-    Pos.col = 1;
-}
-
-//White space
-//Single space
 " " {
     Pos.col += 1;
 }
 
-//Tab
+\n { //EOL Unix
+    Pos.line += 1;
+    Pos.col = 1;
+}
+//-Error Character Token------------------------------------
+//Any character that cannot be scanned as part of a valid token, comment or white space is invalid and should generate an error message.
+//----------------------------------------------------------

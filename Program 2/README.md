@@ -11,6 +11,20 @@ http://jflex.de/manual.html#running-jflex
 2. Run JFlex against input file.
 `# java -jar JFlex.jar csx.jflex`
 
+## Compile and execute code
+1. Change to directory containing P1.java
+`# cd PATH/TO/SOURCE`
+2. Compile program
+`# javac ./P2.java`
+3. Execute program
+`# java P2`
+
+### Shortcut
+1. Change to directory containing P1.java
+`# cd PATH/TO/SOURCE`
+2. Compile and execute in one big command
+`# prog="P2"; javac ./$prog.java && java $prog`
+
 ## Configure GitHub on Sun Machine
 1. Set you GitHub username
 `# git config --global user.name "USERNAME"`

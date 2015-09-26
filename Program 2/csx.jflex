@@ -1,3 +1,7 @@
+//Doug Fultz
+//Sujay Kallamadi
+//CMPSC470 - Compiler Construction
+
 /*  Expand this into your solution for project 2 */
 
 class CSXToken 

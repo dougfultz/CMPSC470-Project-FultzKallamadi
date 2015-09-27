@@ -5,35 +5,28 @@
 //Subroutine definitions
 /*  Expand this into your solution for project 2 */
 
-class CSXToken 
-{
+class CSXToken {
     int linenum;
     int colnum;
     
-    CSXToken() 
-    {
-
+    CSXToken() {
+        //Default constructor
     }
     
-    CSXToken(int line,int col) 
-    {
+    CSXToken(int line,int col) {
         linenum = line;
         colnum = col;
     }
     
-    CSXToken(Position p) 
-    {
+    CSXToken(Position p) {
         linenum = p.linenum;
         colnum = p.colnum;
-        
     }
-
 }
 
 class CSXIntLitToken extends CSXToken {
     int intValue;
-    CSXIntLitToken(int val, Position p) 
-    {
+    CSXIntLitToken(int val, Position p) {
         super(p);
         intValue=val; 
     }
@@ -186,7 +179,7 @@ Position Pos = new Position();
 "int" {
     Pos.setpos();
     Pos.col+=3;
-    //return new Symbol(sym. //TODO
+    return new Symbol(sym.rw_INT,new CSXToken(Pos));
 }
 
 "read" {
@@ -216,7 +209,7 @@ Position Pos = new Position();
 "print" {
     Pos.setpos();
     Pos.col+=5;
-    //return new Symbol(sym. //TODO
+    return new Symbol(sym.rw_PRINT,new CSXToken(Pos));
 }
 
 "while" {
@@ -230,18 +223,26 @@ Position Pos = new Position();
 //-Integer-Literals-----------------------------------------
 //An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
 {DIGIT}+ {
-    // This def doesn't check for overflow -- be sure to update it
-    //TODO check for overflow
+    //TODO test overflow code
     Pos.setpos(); 
     Pos.col += yytext().length();
-    return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
+    //Parse Integer
+    try{
+        return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
+    }catch(NumberFormatException e){
+        return new Symbol(sym.error,new CSXToken(Pos));
+    }
 }
 
 ~{DIGIT}+ {
-    //TODO check for overflow
+    //TODO test overflow code
     Pos.setpos();
     Pos.col+=yytext().length();
-    return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt("-"+yytext().substring(1)),Pos));
+    try{
+        return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt("-"+yytext().substring(1)),Pos));
+    }catch(NumberFormatException e){
+        return new Symbol(sym.error,new CSXToken(Pos));
+    }
 }
 //-Float-Literals-------------------------------------------
 //A float literal is a sequence of digits that represent a decimal value, optionally preceded by a ~. A ~ denotes a negative decimal. Examples of legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not considered as legal float values.
@@ -250,28 +251,44 @@ Position Pos = new Position();
     //TODO check for overflow
     Pos.setpos();
     Pos.col+=yytext().length();
-    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+    try{
+        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+    }catch(NumberFormatException e){
+        return new Symbol(sym.error,new CSXToken(Pos));
+    }
 }
 
 {DIGIT}+\.{DIGIT}+ {
     //TODO check for overflow
     Pos.setpos();
     Pos.col+=yytext().length();
-    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+    try{
+        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+    }catch(NumberFormatException e){
+        return new Symbol(sym.error,new CSXToken(Pos));
+    }
 }
 
 ~\.{DIGIT}+ {
     //TODO check for overflow
     Pos.setpos();
     Pos.col+=yytext().length();
-    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
+    try{
+        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
+    }catch(NumberFormatException e){
+        return new Symbol(sym.error,new CSXToken(Pos));
+    }
 }
 
 ~{DIGIT}+\.{DIGIT}+ {
     //TODO check for overflow
     Pos.setpos();
     Pos.col+=yytext().length();
-    return new Symbol(sym.FLOAT-TODO,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
+    try{
+        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
+    }catch(NumberFormatException e){
+        return new Symbol(sym.error,new CSXToken(Pos));
+    }
 }
 
 //-String Literals------------------------------------------

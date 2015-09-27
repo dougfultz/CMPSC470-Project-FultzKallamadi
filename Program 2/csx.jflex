@@ -86,17 +86,19 @@ class Symbol {
 //Primitive Character Classes
 LETTER=[a-zA-Z]
 DIGIT=[0-9]
-//Reserved words
+//-Reserved-words-------------------------------------------
 RESERVEDWORDS=bool|break|char|const|continue|else|false|float|if|int|read|return|true|void|print|while
-//Identifiers
-//Integer Literals
+//-Identifiers----------------------------------------------
+//-Integer-Literals-----------------------------------------
 INTEGERLITERAL=DIGIT+|~DIGIT+
-//Float Literals
+//-Float-Literals-------------------------------------------
 FLOATLITERAL=\.DIGIT+|DIGIT+\.DIGIT|~\.DIGIT|~DIGIT\.DIGIT
-//String Literals
+//-String-Literals------------------------------------------
+//StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
 STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"     // to be fixed
-//Character Literals
-//Other Tokens
+//-Character-Literals---------------------------------------
+//CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
+//-Other-Tokens---------------------------------------------
 OTHERTOKENS=(|)|[|]|=|;|+|-|*|/|==|!=|&&|\|\||<|>|<=|>=|,|!|{|}|:|++|--
 
 

@@ -33,7 +33,11 @@ class CSXIntLitToken extends CSXToken {
 }
 
 class CSXFloatLitToken extends CSXToken {
-    // Expand - should contain floatValue
+    float floatValue;
+    CSXFloatLitToken(float val, Position p){
+        super(p);
+        floatValue=val;
+    }
 }
 
 class CSXIdentifierToken extends CSXToken {
@@ -89,6 +93,7 @@ DIGIT=[0-9]
 //-Reserved-words-------------------------------------------
 RESERVEDWORDS=bool|break|char|const|continue|else|false|float|if|int|read|return|true|void|print|while
 //-Identifiers----------------------------------------------
+IDENTIFIER=LETTER+[a-zA-Z0-9_]*
 //-Integer-Literals-----------------------------------------
 INTEGERLITERAL=DIGIT+|~DIGIT+
 //-Float-Literals-------------------------------------------
@@ -169,7 +174,7 @@ Position Pos = new Position();
 "float" {
     Pos.setpos();
     Pos.col+=5;
-    //return new Symbol(sym. //TODO
+    return new Symbol(sym.rw_FLOAT,new CSXToken(Pos));
 }
 
 "if" {
@@ -222,6 +227,11 @@ Position Pos = new Position();
 
 //-Identifiers----------------------------------------------
 //An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
+LETTER+[a-zA-Z0-9_]* { //TODO exclude reserved words
+    Pos.setpos();
+    Pos.col+=yytext().length();
+    return new Symbol(sym.IDENTIFIER,new CSXIdentifierToken(yytext(),Pos));
+}
 //-Integer-Literals-----------------------------------------
 //An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
 {DIGIT}+ {
@@ -250,7 +260,7 @@ Position Pos = new Position();
 //A float literal is a sequence of digits that represent a decimal value, optionally preceded by a ~. A ~ denotes a negative decimal. Examples of legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not considered as legal float values.
 
 \.{DIGIT}+ {
-    //TODO check for overflow
+    //TODO test overflow code
     Pos.setpos();
     Pos.col+=yytext().length();
     try{
@@ -261,7 +271,7 @@ Position Pos = new Position();
 }
 
 {DIGIT}+\.{DIGIT}+ {
-    //TODO check for overflow
+    //TODO test overflow code
     Pos.setpos();
     Pos.col+=yytext().length();
     try{
@@ -272,7 +282,7 @@ Position Pos = new Position();
 }
 
 ~\.{DIGIT}+ {
-    //TODO check for overflow
+    //TODO test overflow code
     Pos.setpos();
     Pos.col+=yytext().length();
     try{
@@ -283,7 +293,7 @@ Position Pos = new Position();
 }
 
 ~{DIGIT}+\.{DIGIT}+ {
-    //TODO check for overflow
+    //TODO test overflow code
     Pos.setpos();
     Pos.col+=yytext().length();
     try{

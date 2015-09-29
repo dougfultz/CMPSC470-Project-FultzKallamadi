@@ -1,4 +1,4 @@
-//Doug Fultz
+﻿//Doug Fultz
 //Sujay Kallamadi
 //CMPSC470 - Compiler Construction
 
@@ -451,6 +451,18 @@ LETTER+[a-zA-Z0-9_]* { //TODO exclude reserved words
 
 //-++ and -- Operators--------------------------------------
 //The increment (++) and decrement (--) operators should be used either before or after an identifier. There should be no space between the identifier and the operator. It might be helpful, while modifying the scanner (jflex specification), to use look-ahead and lexical states.
+
+"++" {
+    Pos.setpos(); Pos.col +=2;
+    return new Symbol(sym.INCREMENT, new CSXToken(Pos));
+}
+
+
+"--" {
+    Pos.setpos(); Pos.col +=2;
+    return new Symbol(sym.DECREMENT, new CSXToken(Pos));
+}
+
 //-End-of-File-(EOF)-Token----------------------------------
 //The EOF token is automatically returned by yylex() when it reaches the end of file while scanning the first character of a token.
 //-Single-Line-Comment--------------------------------------

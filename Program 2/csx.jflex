@@ -123,103 +123,100 @@ Position Pos = new Position();
 
 //-Reserved-words-------------------------------------------
 //The reserved words of the CSX language.
-"bool" {
+[Bb][Oo][Oo][Ll] {
     Pos.setpos();
     Pos.col+=4;
     return new Symbol(sym.rw_BOOL,new CSXToken(Pos));
 }
 
-"break" {
+[Bb][Rr][Ee][Aa][Kk] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_BREAK,new CSXToken(Pos));
 }
 
-"char" {
+[Cc][Hh][Aa][Rr] {
     Pos.setpos();
     Pos.col+=4;
     return new Symbol(sym.rw_CHAR,new CSXToken(Pos));
 }
-
-"class" {
+[Cc][Ll][Aa][Ss][Ss] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_CLASS,new CSXToken(Pos));
 }
 
-"const" {
+[Cc][Oo][Nn][Ss][Tt] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_CONST,new CSXToken(Pos));
 }
-
-"continue" {
+[Cc][Oo][Nn][Tt][Ii][Nn][Uu][Ee] {
     Pos.setpos();
     Pos.col+=8;
     return new Symbol(sym.rw_CONTINUE,new CSXToken(Pos));
 }
 
-"else" {
+[Ee][Ll][Ss][Ee] {
     Pos.setpos();
     Pos.col+=4;
     return new Symbol(sym.rw_ELSE,new CSXToken(Pos));
 }
 
-"false" {
+[Ff][Aa][Ll][Ss][Ee] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_FALSE,new CSXToken(Pos));
 }
 
-"float" {
+[Ff][Ll][Oo][Aa][Tt] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_FLOAT,new CSXToken(Pos));
 }
 
-"if" {
+[Ii][Ff] {
     Pos.setpos();
     Pos.col+=2;
     return new Symbol(sym.rw_IF,new CSXToken(Pos));
 }
 
-"int" {
+[Ii][Nn][Tt] {
     Pos.setpos();
     Pos.col+=3;
     return new Symbol(sym.rw_INT,new CSXToken(Pos));
 }
-
-"read" {
+[Rr][Ee][Aa][Dd] {
     Pos.setpos();
     Pos.col+=4;
     return new Symbol(sym.rw_READ,new CSXToken(Pos));
 }
 
-"return" {
+[Rr][Ee][Tt][Uu][Rr][Nn] {
     Pos.setpos();
     Pos.col+=6;
     return new Symbol(sym.rw_RETURN,new CSXToken(Pos));
 }
 
-"true" {
+[Tt][Rr][Uu][Ee] {
     Pos.setpos();
     Pos.col+=4;
     return new Symbol(sym.rw_TRUE,new CSXToken(Pos));
 }
 
-"void" {
+[Vv][Oo][Ii][Dd] {
     Pos.setpos();
     Pos.col+=4;
     return new Symbol(sym.rw_VOID,new CSXToken(Pos));
 }
 
-"print" {
+[Pp][Rr][Ii][Nn][Tt] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_PRINT,new CSXToken(Pos));
 }
 
-"while" {
+[Ww][Hh][Ii][Ll][Ee] {
     Pos.setpos();
     Pos.col+=5;
     return new Symbol(sym.rw_WHILE,new CSXToken(Pos));

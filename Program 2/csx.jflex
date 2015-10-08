@@ -462,8 +462,20 @@ LETTER+[a-zA-Z0-9_]* { //TODO exclude reserved words
 
 //-End-of-File-(EOF)-Token----------------------------------
 //The EOF token is automatically returned by yylex() when it reaches the end of file while scanning the first character of a token.
+%type Symbol
+
+%eofval{
+return new Symbol{sym.EOF, new CSXToken(0,0));
+%eofval}
+
 //-Single-Line-Comment--------------------------------------
-//As in C++ and Java, this style of comment begins with a pair of slashes and ends at the end of the current line. Its body can include any character other than an end-of-line.
+//As in C++ and Java, this style of comment begins with a pair of slashes and ends at the end
+
+"//" (`) \n {
+    Pos.setpos();
+    Pos.line +=1;
+    Pos.col = 1;
+} of the current line. Its body can include any character other than an end-of-line.
 //LineComment = // Not(Eol)* Eol
 //-Multi-Line-Comment---------------------------------------
 //This comment begins with the pair ## and ends with the pair ##. Its body can include any character sequence including # but not two consecutive #’s.
@@ -481,4 +493,9 @@ LETTER+[a-zA-Z0-9_]* { //TODO exclude reserved words
 }
 //-Error Character Token------------------------------------
 //Any character that cannot be scanned as part of a valid token, comment or white space is invalid and should generate an error message.
+
+(`) {
+    Pos.setpos();
+    Pos.col +=1;
+    return new Symbol(sym.error, new CSXStringLitToken(yylex(), Pos.linenum, Pos.colnum));
 //----------------------------------------------------------

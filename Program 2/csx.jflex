@@ -1,501 +1,142 @@
-﻿//Doug Fultz
-//Sujay Kallamadi
-//CMPSC470 - Compiler Construction
-
-//Subroutine definitions
 /*  Expand this into your solution for project 2 */
 
-class CSXToken {
-    int linenum;
-    int colnum;
-    
-    CSXToken() {
-        //Default constructor
-    }
-    
-    CSXToken(int line,int col) {
-        linenum = line;
-        colnum = col;
-    }
-    
-    CSXToken(Position p) {
-        linenum = p.linenum;
-        colnum = p.colnum;
-    }
+class CSXToken 
+{
+	int linenum;
+	int colnum;
+	
+	CSXToken() 
+	{
+
+	}
+	
+	CSXToken(int line,int col) 
+	{
+		linenum = line;
+		colnum = col;
+	}
+	
+	CSXToken(Position p) 
+	{
+		linenum = p.linenum;
+		colnum = p.colnum;
+		
+	}
+
 }
 
 class CSXIntLitToken extends CSXToken {
-    int intValue;
-    CSXIntLitToken(int val, Position p) {
-        super(p);
-        intValue=val; 
-    }
+	int intValue;
+	CSXIntLitToken(int val, Position p) 
+	{
+	   super(p);
+	   intValue=val; 
+	}
 }
 
 class CSXFloatLitToken extends CSXToken {
-    float floatValue;
-    CSXFloatLitToken(float val, Position p){
-        super(p);
-        floatValue=val;
-    }
+	// Expand - should contain floatValue
 }
 
 class CSXIdentifierToken extends CSXToken {
-    // Expand - should contain identifierText
+	// Expand - should contain identifierText
+	
 }
 
 class CSXCharLitToken extends CSXToken {
-    // Expand - should contain charValue
+	// Expand - should contain charValue
 }
 
 class CSXStringLitToken extends CSXToken {
-    // Expand - should contain stringText
+	// Expand - should contain stringText
 }
 
 // This class is used to track line and column numbers
 // Feel free to change to extend it
 class Position {
-    int linenum;            // maintain this as line number current token was scanned on
-    int colnum;             // maintain this as column number current token began at
-    int line;               // maintain this as line number after scanning current token
-    int col;                // maintain this as column number after scanning current token
-    
-    Position() {
-        linenum = 1;
-        colnum = 1;
-        line = 1;  
-        col = 1;
-    }
-    
-    void setpos() {
-        // set starting position for current token
-        linenum = line;
-        colnum = col;
-    }
+	int  linenum; 			/* maintain this as line number current
+                                 		   token was scanned on */
+	int  colnum; 			/* maintain this as column number current
+                                 		   token began at */
+	int  line; 				/* maintain this as line number after
+										   scanning current token  */
+	int  col; 				/* maintain this as column number after
+										   scanning current token  */
+	Position()
+	{
+  		linenum = 1; 	
+  		colnum = 1; 	
+  		line = 1;  
+  		col = 1;
+	}
+	void setpos() 
+	{ // set starting position for current token
+		linenum = line;
+		colnum = col;
+	}
 } ;
+
 
 //This class is used by the scanner to return token information that is useful for the parser
 //This class will be replaced in our parser project by the java_cup.runtime.Symbol class
 class Symbol { 
-    public int sym;
-    public CSXToken value;
-    public Symbol(int tokenType,CSXToken theToken) {
-        sym = tokenType;
-        value = theToken;
-    }
+	public int sym;
+	public CSXToken value;
+	public Symbol(int tokenType, CSXToken theToken) {
+		sym = tokenType;
+		value = theToken;
+	}
 }
 
 %%
-//Declarations
-//Primitive Character Classes
-LETTER=[a-zA-Z]
-DIGIT=[0-9]
-//-Reserved-words-------------------------------------------
-RESERVEDWORDS=bool|break|char|const|continue|else|false|float|if|int|read|return|true|void|print|while
-//-Identifiers----------------------------------------------
-IDENTIFIER=LETTER+[a-zA-Z0-9_]*
-//-Integer-Literals-----------------------------------------
-INTEGERLITERAL=DIGIT+|~DIGIT+
-//-Float-Literals-------------------------------------------
-FLOATLITERAL=\.DIGIT+|DIGIT+\.DIGIT|~\.DIGIT|~DIGIT\.DIGIT
-//-String-Literals------------------------------------------
-//StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
-STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"     // to be fixed
-//-Character-Literals---------------------------------------
-//CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
-//-Other-Tokens---------------------------------------------
-OTHERTOKENS=(|)|[|]|=|;|+|-|*|/|==|!=|&&|\|\||<|>|<=|>=|,|!|{|}|:|++|--
 
+DIGIT=[0-9]
+STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"		// to be fixed
 
 %type Symbol
 %eofval{
-  return new Symbol(sym.EOF,new CSXToken(0,0));
+  return new Symbol(sym.EOF, new CSXToken(0,0));
 %eofval}
 %{
 Position Pos = new Position();
 %}
 
 %%
-//Regular Expressions
 /***********************************************************************
  Tokens for the CSX language are defined here using regular expressions
 ************************************************************************/
-
-//-Reserved-words-------------------------------------------
-//The reserved words of the CSX language.
-[Bb][Oo][Oo][Ll] {
-    Pos.setpos();
-    Pos.col+=4;
-    return new Symbol(sym.rw_BOOL,new CSXToken(Pos));
+"+"	{
+	Pos.setpos();
+	Pos.col += 1;
+	return new Symbol(sym.PLUS,
+		new CSXToken(Pos));
 }
-
-[Bb][Rr][Ee][Aa][Kk] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_BREAK,new CSXToken(Pos));
+"!="	{
+	Pos.setpos();
+	Pos.col +=2;
+	return new Symbol(sym.NOTEQ,
+		new CSXToken(Pos));
 }
-
-[Cc][Hh][Aa][Rr] {
-    Pos.setpos();
-    Pos.col+=4;
-    return new Symbol(sym.rw_CHAR,new CSXToken(Pos));
+";"	{
+	Pos.setpos();
+	Pos.col +=1;
+	return new Symbol(sym.SEMI,
+		new CSXToken(Pos));
 }
-[Cc][Ll][Aa][Ss][Ss] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_CLASS,new CSXToken(Pos));
+{DIGIT}+	{
+	// This def doesn't check for overflow -- be sure to update it
+	Pos.setpos(); 
+	Pos.col += yytext().length();
+	return new Symbol(sym.INTLIT,
+		new CSXIntLitToken(Integer.parseInt(yytext()),
+			Pos));
 }
-
-[Cc][Oo][Nn][Ss][Tt] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_CONST,new CSXToken(Pos));
-}
-[Cc][Oo][Nn][Tt][Ii][Nn][Uu][Ee] {
-    Pos.setpos();
-    Pos.col+=8;
-    return new Symbol(sym.rw_CONTINUE,new CSXToken(Pos));
-}
-
-[Ee][Ll][Ss][Ee] {
-    Pos.setpos();
-    Pos.col+=4;
-    return new Symbol(sym.rw_ELSE,new CSXToken(Pos));
-}
-
-[Ff][Aa][Ll][Ss][Ee] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_FALSE,new CSXToken(Pos));
-}
-
-[Ff][Ll][Oo][Aa][Tt] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_FLOAT,new CSXToken(Pos));
-}
-
-[Ii][Ff] {
-    Pos.setpos();
-    Pos.col+=2;
-    return new Symbol(sym.rw_IF,new CSXToken(Pos));
-}
-
-[Ii][Nn][Tt] {
-    Pos.setpos();
-    Pos.col+=3;
-    return new Symbol(sym.rw_INT,new CSXToken(Pos));
-}
-[Rr][Ee][Aa][Dd] {
-    Pos.setpos();
-    Pos.col+=4;
-    return new Symbol(sym.rw_READ,new CSXToken(Pos));
-}
-
-[Rr][Ee][Tt][Uu][Rr][Nn] {
-    Pos.setpos();
-    Pos.col+=6;
-    return new Symbol(sym.rw_RETURN,new CSXToken(Pos));
-}
-
-[Tt][Rr][Uu][Ee] {
-    Pos.setpos();
-    Pos.col+=4;
-    return new Symbol(sym.rw_TRUE,new CSXToken(Pos));
-}
-
-[Vv][Oo][Ii][Dd] {
-    Pos.setpos();
-    Pos.col+=4;
-    return new Symbol(sym.rw_VOID,new CSXToken(Pos));
-}
-
-[Pp][Rr][Ii][Nn][Tt] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_PRINT,new CSXToken(Pos));
-}
-
-[Ww][Hh][Ii][Ll][Ee] {
-    Pos.setpos();
-    Pos.col+=5;
-    return new Symbol(sym.rw_WHILE,new CSXToken(Pos));
-}
-
-//-Identifiers----------------------------------------------
-//An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
-LETTER+[a-zA-Z0-9_]* { //TODO exclude reserved words
-    Pos.setpos();
-    Pos.col+=yytext().length();
-    return new Symbol(sym.IDENTIFIER,new CSXIdentifierToken(yytext(),Pos));
-}
-//-Integer-Literals-----------------------------------------
-//An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
-{DIGIT}+ {
-    //TODO test overflow code
-    Pos.setpos(); 
-    Pos.col += yytext().length();
-    //Parse Integer
-    try{
-        return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
-    }catch(NumberFormatException e){
-        return new Symbol(sym.error,new CSXToken(Pos));
-    }
-}
-
-~{DIGIT}+ {
-    //TODO test overflow code
-    Pos.setpos();
-    Pos.col+=yytext().length();
-    try{
-        return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt("-"+yytext().substring(1)),Pos));
-    }catch(NumberFormatException e){
-        return new Symbol(sym.error,new CSXToken(Pos));
-    }
-}
-//-Float-Literals-------------------------------------------
-//A float literal is a sequence of digits that represent a decimal value, optionally preceded by a ~. A ~ denotes a negative decimal. Examples of legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not considered as legal float values.
-
-\.{DIGIT}+ {
-    //TODO test overflow code
-    Pos.setpos();
-    Pos.col+=yytext().length();
-    try{
-        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
-    }catch(NumberFormatException e){
-        return new Symbol(sym.error,new CSXToken(Pos));
-    }
-}
-
-{DIGIT}+\.{DIGIT}+ {
-    //TODO test overflow code
-    Pos.setpos();
-    Pos.col+=yytext().length();
-    try{
-        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
-    }catch(NumberFormatException e){
-        return new Symbol(sym.error,new CSXToken(Pos));
-    }
-}
-
-~\.{DIGIT}+ {
-    //TODO test overflow code
-    Pos.setpos();
-    Pos.col+=yytext().length();
-    try{
-        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
-    }catch(NumberFormatException e){
-        return new Symbol(sym.error,new CSXToken(Pos));
-    }
-}
-
-~{DIGIT}+\.{DIGIT}+ {
-    //TODO test overflow code
-    Pos.setpos();
-    Pos.col+=yytext().length();
-    try{
-        return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
-    }catch(NumberFormatException e){
-        return new Symbol(sym.error,new CSXToken(Pos));
-    }
-}
-
-//-String Literals------------------------------------------
-//A string literal is any sequence of printable characters, delimited by double quotes. A double quote within the text of a string must be escaped (to avoid being misinterpreted as the end of the string). Tabs and newlines within a string are escaped as usual (e.g., \n is a newline and \t is a tab). Backslashes within a string must also be escaped (as \\). Strings may not cross line boundaries.
-//StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
-//-Character-Literals---------------------------------------
-//A character literal is any printable ASCII character, enclosed within single quotes. A single quote within a character literal must be escaped (to avoid being misinterpreted as the end of the literal). A tab or newline must be escaped (e.g., '\n' is a newline and '\t' is a tab). A backslash must also be escaped (as '\\').
-//CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
-//-Other Tokens---------------------------------------------
-//These are miscellaneous one- or two-character symbols representing operators and delimiters.
-"(" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.LPAREN,new CSXToken(Pos));
-}
-
-")" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.RPAREN,new CSXToken(Pos));
-}
-
-"[" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.LBRACKET,new CSXToken(Pos));
-}
-
-"]" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.RBRACKET,new CSXToken(Pos));
-}
-
-"=" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.ASG,new CSXToken(Pos));
-}
-
-";" {
-    Pos.setpos();
-    Pos.col +=1;
-    return new Symbol(sym.SEMI,new CSXToken(Pos));
-}
-
-"+" {
-    Pos.setpos();
-    Pos.col += 1;
-    return new Symbol(sym.PLUS,new CSXToken(Pos));
-}
-
-"-" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.MINUS,new CSXToken(Pos));
-}
-
-"*" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.TIMES,new CSXToken(Pos));
-}
-
-"/" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.SLASH,new CSXToken(Pos));
-}
-
-"==" {
-    Pos.setpos();
-    Pos.col+=2;
-    return new Symbol(sym.EQ,new CSXToken(Pos));
-}
-
-"!=" {
-    Pos.setpos();
-    Pos.col +=2;
-    return new Symbol(sym.NOTEQ,new CSXToken(Pos));
-}
-
-"&&" {
-    Pos.setpos();
-    Pos.col+=2;
-    return new Symbol(sym.CAND,new CSXToken(Pos));
-}
-
-"||" {
-    Pos.setpos();
-    Pos.col+=2;
-    return new Symbol(sym.COR,new CSXToken(Pos));
-}
-
-"<" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.LT,new CSXToken(Pos));
-}
-
-">" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.GT,new CSXToken(Pos));
-}
-
-"<=" {
-    Pos.setpos();
-    Pos.col+=2;
-    return new Symbol(sym.LEQ,new CSXToken(Pos));
-}
-
-">=" {
-    Pos.setpos();
-    Pos.col+=2;
-    return new Symbol(sym.GEQ,new CSXToken(Pos));
-}
-
-"," {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.COMMA,new CSXToken(Pos));
-}
-
-"!" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.NOT,new CSXToken(Pos));
-}
-
-"{" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.LBRACE,new CSXToken(Pos));
-}
-
-"}" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.RBRACE,new CSXToken(Pos));
-}
-
-":" {
-    Pos.setpos();
-    Pos.col+=1;
-    return new Symbol(sym.COLON,new CSXToken(Pos));
-}
-
-//-++ and -- Operators--------------------------------------
-//The increment (++) and decrement (--) operators should be used either before or after an identifier. There should be no space between the identifier and the operator. It might be helpful, while modifying the scanner (jflex specification), to use look-ahead and lexical states.
-
-"++" {
-    Pos.setpos(); Pos.col +=2;
-    return new Symbol(sym.INCREMENT, new CSXToken(Pos));
-}
-
-
-"--" {
-    Pos.setpos(); Pos.col +=2;
-    return new Symbol(sym.DECREMENT, new CSXToken(Pos));
-}
-
-//-End-of-File-(EOF)-Token----------------------------------
-//The EOF token is automatically returned by yylex() when it reaches the end of file while scanning the first character of a token.
-%type Symbol
-
-%eofval{
-return new Symbol{sym.EOF, new CSXToken(0,0));
-%eofval}
-
-//-Single-Line-Comment--------------------------------------
-//As in C++ and Java, this style of comment begins with a pair of slashes and ends at the end
-
-"//" (`) \n {
-    Pos.setpos();
-    Pos.line +=1;
-    Pos.col = 1;
-} of the current line. Its body can include any character other than an end-of-line.
-//LineComment = // Not(Eol)* Eol
-//-Multi-Line-Comment---------------------------------------
-//This comment begins with the pair ## and ends with the pair ##. Its body can include any character sequence including # but not two consecutive #’s.
-//-White-Space----------------------------------------------
-//White space separates tokens; otherwise it is ignored.
-//WhiteSpace = ( Blank | Tab | Eol) +
 //EOL to be fixed so that it accepts different formats
-" " {
-    Pos.col += 1;
-}
 
-\n { //EOL Unix
-    Pos.line += 1;
-    Pos.col = 1;
+\n	{
+	Pos.line += 1;
+	Pos.col = 1;
 }
-//-Error Character Token------------------------------------
-//Any character that cannot be scanned as part of a valid token, comment or white space is invalid and should generate an error message.
-
-(`) {
-    Pos.setpos();
-    Pos.col +=1;
-    return new Symbol(sym.error, new CSXStringLitToken(yylex(), Pos.linenum, Pos.colnum));
-//----------------------------------------------------------
+" "	{
+	Pos.col += 1;
+}

@@ -1,58 +1,120 @@
 /*  Expand this into your solution for project 2 */
 
-class CSXToken 
-{
+/** Generic token for CSX language
+ *  @author Doug Fultz
+ *  @author Sujay Kallamadi
+ */
+class CSXToken {
     int linenum;
     int colnum;
     
-    CSXToken() 
-    {
-
+    /** Generic constructor
+     *  Taking zero (0) parameters.
+     */
+    CSXToken() {
     }
     
-    CSXToken(int line,int col) 
-    {
+    /** Constructor for position as separate values
+     *  @param line Location of token within text.
+     *  @param col  Location of token within text.
+     */
+    CSXToken(int line,int col) {
         linenum = line;
         colnum = col;
     }
     
-    CSXToken(Position p) 
-    {
+    /** Constructor for position as Position class
+     *  @param p Position of token within text as Position object.
+     */
+    CSXToken(Position p) {
         linenum = p.linenum;
         colnum = p.colnum;
-        
     }
-
 }
 
+/** Token for Integer Literals for CSX language
+ */
 class CSXIntLitToken extends CSXToken {
     int intValue;
-    CSXIntLitToken(int val, Position p) 
-    {
+    
+    /** Constructor for storing value and position
+     *  @param val Value of integer of the token.
+     *  @param p   Position of the token within text as a Position object.
+     */
+    CSXIntLitToken(int val, Position p) {
        super(p);
        intValue=val; 
     }
 }
 
+/** Token for Float Literals for CSX language
+ */
 class CSXFloatLitToken extends CSXToken {
     // Expand - should contain floatValue
+    float floatValue;
+    
+    /** Constructor for storing value and position
+     *  @param val Value of float of the token.
+     *  @param p   Position of the token within text as a Position object.
+     */
+    CSXFloatLitToken(float val, Position p){
+        super(p);
+        floatValue=val;
+    }
 }
 
+/** Token for Identifiers for CSX language
+ */
 class CSXIdentifierToken extends CSXToken {
     // Expand - should contain identifierText
+    String identifierText;
     
+    /** Constructor for storing value and position
+     *  @param val Value of the identifier string of the token.
+     *  @param p   Position of the token within text as a Position object.
+     */
+    CSXIdentifierToken(String val, Position p){
+        super(p);
+        identifierText=val;
+    }
 }
 
+/** Token for Character Literals for CSX language
+ */
 class CSXCharLitToken extends CSXToken {
     // Expand - should contain charValue
+    char charValue;
+    
+    /** Constructor for storing value and position
+     *  @param val Value of the character of the token.
+     *  @param p   Position of the token within text as a Position object.
+     */
+    CSXCharLitToken(char val, Position p){
+        super(p);
+        charValue=val;
+    }
 }
 
+/** Token for String Literals for CSX language
+ */
 class CSXStringLitToken extends CSXToken {
     // Expand - should contain stringText
+    String stringText;
+    
+    /** Constructor for storing value and position
+     *  @param val Value of the string of the token.
+     *  @param p   Position of the token within text as a Position object.
+     */
+    CSXStringLitToken(String val, Position p){
+        super(p);
+        stringText=val;
+    }
 }
 
 // This class is used to track line and column numbers
 // Feel free to change to extend it
+/** Class to store the position of tokens with the text
+ */
 class Position {
     int  linenum;             /* maintain this as line number current
                                             token was scanned on */
@@ -62,26 +124,38 @@ class Position {
                                            scanning current token  */
     int  col;                 /* maintain this as column number after
                                            scanning current token  */
-    Position()
-    {
-          linenum = 1;     
-          colnum = 1;     
-          line = 1;  
-          col = 1;
+    
+    /** Generic constructor
+     *  Taking zero (0) parameters.
+     */
+    Position(){
+        linenum = 1;     
+        colnum = 1;     
+        line = 1;  
+        col = 1;
     }
-    void setpos() 
-    { // set starting position for current token
+    
+    /** Stores the current position of a token.
+     */
+    void setpos() {
+        // set starting position for current token
         linenum = line;
         colnum = col;
     }
 } ;
 
-
-//This class is used by the scanner to return token information that is useful for the parser
-//This class will be replaced in our parser project by the java_cup.runtime.Symbol class
+/** Generic class to store the symbols of the tokens
+ *  This class is used by the scanner to return token information that is useful for the parser
+ *  This class will be replaced in our parser project by the java_cup.runtime.Symbol class
+ */
 class Symbol { 
     public int sym;
     public CSXToken value;
+    
+    /** Constructor taking the symbol type and the token itself
+     *  @param tokenType integer of the designated token.
+     *  @param theToken  the token being stored.
+     */
     public Symbol(int tokenType, CSXToken theToken) {
         sym = tokenType;
         value = theToken;

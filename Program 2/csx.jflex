@@ -112,6 +112,7 @@ TRUE=[Tt][Rr][Uu][Ee]
 VOID=[Vv][Oo][Ii][Dd]
 PRINT=[Pp][Rr][Ii][Nn][Tt]
 WHILE=[Ww][Hh][Ii][Ll][Ee]
+RESERVEDWORD=BOOL|BREAK|CHAR|CLASS|CONST|CONTINUE|ELSE|FALSE|FLOAT|IF|INT|READ|RETURN|TRUE|VOID|PRINT|WHILE
 
 //STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"        // to be fixed
 

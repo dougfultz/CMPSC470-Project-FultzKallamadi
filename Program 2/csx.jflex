@@ -92,7 +92,7 @@ class Symbol {
 
 DIGIT=[0-9]
 
-/** Reserved words
+/** Reserved words macros
  *  The reserved words of the CSX language
  */
 BOOL=[Bb][Oo][Oo][Ll]
@@ -128,6 +128,98 @@ Position Pos = new Position();
 /***********************************************************************
  Tokens for the CSX language are defined here using regular expressions
 ************************************************************************/
+
+/** Reserved words rules
+ *  The reserved words of the CSX language
+ */
+<YYINITIAL> {
+    {BOOL} {
+        Pos.setpos();
+        Pos.col+=4;
+        return new Symbol(sym.rw_BOOL,new CSXToken(Pos));
+    }
+    {BREAK} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_BREAK,new CSXToken(Pos));
+    }
+    {CHAR} {
+        Pos.setpos();
+        Pos.col+=4;
+        return new Symbol(sym.rw_CHAR,new CSXToken(Pos));
+    }
+    {CLASS} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_CLASS,new CSXToken(Pos));
+    }
+    {CONST} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_CONST,new CSXToken(Pos));
+    }
+    {CONTINUE} {
+        Pos.setpos();
+        Pos.col+=8;
+        return new Symbol(sym.rw_CONTINUE,new CSXToken(Pos));
+    }
+    {ELSE} {
+        Pos.setpos();
+        Pos.col+=4;
+        return new Symbol(sym.rw_ELSE,new CSXToken(Pos));
+    }
+    {FALSE} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_FALSE,new CSXToken(Pos));
+    }
+    {FLOAT} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_FLOAT,new CSXToken(Pos));
+    }
+    {IF} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.rw_IF,new CSXToken(Pos));
+    }
+    {INT} {
+        Pos.setpos();
+        Pos.col+=3;
+        return new Symbol(sym.rw_INT,new CSXToken(Pos));
+    }
+    {READ} {
+        Pos.setpos();
+        Pos.col+=4;
+        return new Symbol(sym.rw_READ,new CSXToken(Pos));
+    }
+    {RETURN} {
+        Pos.setpos();
+        Pos.col+=6;
+        return new Symbol(sym.rw_RETURN,new CSXToken(Pos));
+    }
+    {TRUE} {
+        Pos.setpos();
+        Pos.col+=4;
+        return new Symbol(sym.rw_TRUE,new CSXToken(Pos));
+    }
+    {VOID} {
+        Pos.setpos();
+        Pos.col+=4;
+        return new Symbol(sym.rw_VOID,new CSXToken(Pos));
+    }
+    {PRINT} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_PRINT,new CSXToken(Pos));
+    }
+    {WHILE} {
+        Pos.setpos();
+        Pos.col+=5;
+        return new Symbol(sym.rw_WHILE,new CSXToken(Pos));
+    }
+}
+
 "+"    {
     Pos.setpos();
     Pos.col += 1;

@@ -41,7 +41,6 @@ class P2 {
         Symbol token = lex.yylex();
 
         while ( token.sym != sym.EOF) {
-
             System.out.print( token.value.linenum + ":" + token.value.colnum + " ");
             switch (token.sym) {
                 case sym.INTLIT:

@@ -8,7 +8,7 @@ Sujay Kallamadi
 1. Change to directory containing P2.java
 `# cd PATH/TO/SOURCE`
 2. Compile and execute in one big command
-`# java -jar tools/JFlex.jar csx.jflex; javac P2.java; java P2`
+`# java -jar tools/JFlex.jar csx.jflex; javac P2.java; java P2 PATH/TO/CODE.csx`
 
 ## Running JFlex from command line
 1. Get the help text.

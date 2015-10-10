@@ -521,7 +521,7 @@ Position Pos = new Position();
     {CHARACTERLITEAL} {
         Pos.setpos();
         Pos.col+=yytext().length();
-        return new Symbol(sym.CHARLIT,new CSXCharLitToken(yytext().substring(1,yytext().length()-1),Pos));
+        return new Symbol(sym.CHARLIT,new CSXCharLitToken(yytext().toCharArray()[1],Pos));
     }
 }
 
@@ -688,9 +688,9 @@ Position Pos = new Position();
 <YYINITIAL> {
     {MULTILINECOMMENT} {
         Pos.setpos();
-        String[] comment=yytext().split("\r|\n|\r\n");
-        Pos.line+=comment.length();
-        Pos.col=comment[comment.length()-1].length();
+        String comment[]=yytext().split("\r|\n|\r\n");
+        Pos.line+=comment.length;
+        Pos.col=comment[comment.length-1].length();
     }
 }
 
@@ -701,12 +701,12 @@ Position Pos = new Position();
 <YYINITIAL> {
     {WHITESPACE} {
         Pos.setpos();
-        String[] whitespace=yytext.split("\r|\n|\r\n");
-        if(whitespace.length()==1){
-            Pos.col+=yytext.length();
+        String whitespace[]=yytext().split("\r|\n|\r\n");
+        if(whitespace.length==1){
+            Pos.col+=yytext().length();
         }else{
-            Pos.line+=comment.length();
-            Pos.col=comment[comment.length()-1].length();
+            Pos.line+=whitespace.length;
+            Pos.col=whitespace[whitespace.length-1].length();
         }
     }
 }

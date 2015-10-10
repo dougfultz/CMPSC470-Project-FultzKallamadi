@@ -4,6 +4,12 @@ Doug Fultz
 
 Sujay Kallamadi
 
+## Shortcut to run program
+1. Change to directory containing P2.java
+`# cd PATH/TO/SOURCE`
+2. Compile and execute in one big command
+`# java -jar tools/JFlex.jar csx.jflex; javac P2.java; java P2`
+
 ## Running JFlex from command line
 1. Get the help text.
 http://jflex.de/manual.html#running-jflex
@@ -18,12 +24,6 @@ http://jflex.de/manual.html#running-jflex
 `# javac ./Yylex.java`
 3. Execute program
 `# java Yylex PATH/TO/CODE.csx`
-
-### Shortcut
-1. Change to directory containing csx.jflex
-`# cd PATH/TO/SOURCE`
-2. Compile and execute in one big command
-`# java -jar tools/JFlex.jar csx.jflex; javac Yylex.java`
 
 ## Configure GitHub on Sun Machine
 1. Set you GitHub username

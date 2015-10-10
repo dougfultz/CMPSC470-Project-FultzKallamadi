@@ -114,6 +114,13 @@ PRINT=[Pp][Rr][Ii][Nn][Tt]
 WHILE=[Ww][Hh][Ii][Ll][Ee]
 RESERVEDWORD=BOOL|BREAK|CHAR|CLASS|CONST|CONTINUE|ELSE|FALSE|FLOAT|IF|INT|READ|RETURN|TRUE|VOID|PRINT|WHILE
 
+/** Identifier macros
+ *  An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
+ */
+LETTER=[a-zA-Z]
+ALHANUMERIC=[a-zA-Z0-9]*
+IDENTIFIER={LETTER}+({ALHANUMERIC}|_)*
+
 //STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"        // to be fixed
 
 %type Symbol
@@ -217,6 +224,17 @@ Position Pos = new Position();
         Pos.setpos();
         Pos.col+=5;
         return new Symbol(sym.rw_WHILE,new CSXToken(Pos));
+    }
+}
+
+/** Identifier macros
+ *  An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
+ */
+<YYINITIAL> {
+    {IDENTIFIER} {
+        Pos.setpos();
+        Pos.col+=yytext().length();
+        return new Symbol(sym.IDENTIFIER,new CSXIdentifierToken(yytext(),Pos));
     }
 }
 

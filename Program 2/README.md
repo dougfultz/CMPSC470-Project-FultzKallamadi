@@ -20,10 +20,10 @@ http://jflex.de/manual.html#running-jflex
 `# java Yylex PATH/TO/CODE.csx`
 
 ### Shortcut
-1. Change to directory containing P1.java
+1. Change to directory containing csx.jflex
 `# cd PATH/TO/SOURCE`
 2. Compile and execute in one big command
-`# prog="P2"; javac ./$prog.java && java $prog`
+`# java -jar tools/JFlex.jar csx.jflex; javac Yylex.java`
 
 ## Configure GitHub on Sun Machine
 1. Set you GitHub username

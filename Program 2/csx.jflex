@@ -212,6 +212,17 @@ DECREMENT="--"
   return new Symbol(sym.EOF, new CSXToken(0,0));
 %eofval}
 
+/** Single Line Comment macro
+ *  As in C++ and Java, this style of comment begins with a pair of slashes
+ *  and ends at the end of the current line. Its body can include any
+ *  character other than an end-of-line.
+ *  LineComment = // Not(Eol)* Eol
+ */
+//http://jflex.de/manual.html#Example
+LINETERMINATOR=\r|\n|\r\n
+INPUTCHARACTER=[^\r\n]
+SINGLELINECOMMENT="//"{INPUTCHARACTER}*{LINETERMINATOR}?
+
 %{
 Position Pos = new Position();
 %}
@@ -540,7 +551,7 @@ Position Pos = new Position();
     }
 }
 
-/** Increment and Decrement macros
+/** Increment and Decrement rules
  *  The increment (++) and decrement (--) operators should be used either
  *  before or after an identifier. There should be no space between the
  *  identifier and the operator. It might be helpful, while modifying the
@@ -556,6 +567,20 @@ Position Pos = new Position();
         Pos.setpos();
         Pos.col+=2;
         return new Symbol(sym.DEC,new CSXToken(Pos));
+    }
+}
+
+/** Single Line Comment rules
+ *  As in C++ and Java, this style of comment begins with a pair of slashes
+ *  and ends at the end of the current line. Its body can include any
+ *  character other than an end-of-line.
+ *  LineComment = // Not(Eol)* Eol
+ */
+<YYINITIAL> {
+    {SINGLELINECOMMENT} {
+        Pos.setpos();
+        Pos.col=1;
+        Pos.line+=1;
     }
 }
 

@@ -203,10 +203,15 @@ COLON=":"
 INCREMENT="++"
 DECREMENT="--"
 
+/** End-of-file (EOF) Token
+ *  The EOF token is automatically returned by yylex() when it reaches the end
+ *  of file while scanning the first character of a token.
+ */
 %type Symbol
 %eofval{
   return new Symbol(sym.EOF, new CSXToken(0,0));
 %eofval}
+
 %{
 Position Pos = new Position();
 %}

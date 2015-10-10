@@ -121,6 +121,13 @@ LETTER=[a-zA-Z]
 ALHANUMERIC=[a-zA-Z0-9]*
 IDENTIFIER={LETTER}+({ALHANUMERIC}|_)*
 
+/** Integer Literals macros
+ *  An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
+ */
+INTEGERPOSITIVE={DIGIT}+
+INTEGERNEGATIVE=~{DIGIT}
+INTEGERLITERAL={INTEGERPOSITIVE}|{INTEGERNEGATIVE}
+
 //STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"        // to be fixed
 
 %type Symbol
@@ -238,6 +245,33 @@ Position Pos = new Position();
     }
 }
 
+/** Integer Literals macros
+ *  An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
+ */
+<YYINITIAL> {
+    {INTEGERPOSITIVE} {
+        //TODO test overflow code
+        Pos.setpos();
+        Pos.col += yytext().length();
+        //Parse Integer
+        try{
+            return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt(yytext()),Pos));
+        }catch(NumberFormatException e){
+            return new Symbol(sym.error,new CSXToken(Pos));
+        }
+    }
+    {INTEGERNEGATIVE} {
+        //TODO test overflow code
+        Pos.setpos();
+        Pos.col+=yytext().length();
+        try{
+            return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt("-"+yytext().substring(1)),Pos));
+        }catch(NumberFormatException e){
+            return new Symbol(sym.error,new CSXToken(Pos));
+        }
+    }
+}
+
 "+"    {
     Pos.setpos();
     Pos.col += 1;
@@ -255,14 +289,6 @@ Position Pos = new Position();
     Pos.col +=1;
     return new Symbol(sym.SEMI,
         new CSXToken(Pos));
-}
-{DIGIT}+    {
-    // This def doesn't check for overflow -- be sure to update it
-    Pos.setpos(); 
-    Pos.col += yytext().length();
-    return new Symbol(sym.INTLIT,
-        new CSXIntLitToken(Integer.parseInt(yytext()),
-            Pos));
 }
 //EOL to be fixed so that it accepts different formats
 

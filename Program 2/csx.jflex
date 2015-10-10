@@ -232,6 +232,13 @@ MULTILINECOMMENT="##"[^"##"]*"##"
 //http://jflex.de/manual.html#Example
 ALLCOMMENTS={SINGLELINECOMMENT}|{MULTILINECOMMENT}
 
+/** White Space macro
+ *  White space separates tokens; otherwise it is ignored.
+ *  WhiteSpace = ( Blank | Tab | Eol) +
+ */
+//http://jflex.de/manual.html#Example
+WHITESPACE=({LINETERMINATOR}|[ \t])+
+
 %{
 Position Pos = new Position();
 %}
@@ -593,7 +600,7 @@ Position Pos = new Position();
     }
 }
 
-/** Multi-Line Comment macro
+/** Multi-Line Comment rules
  *  This comment begins with the pair ## and ends with
  *  the pair ##. Its body can include any character sequence including # but
  *  not two consecutive #’s.
@@ -607,12 +614,19 @@ Position Pos = new Position();
     }
 }
 
-//EOL to be fixed so that it accepts different formats
-
-\n    {
-    Pos.line += 1;
-    Pos.col = 1;
-}
-" "    {
-    Pos.col += 1;
+/** White Space rules
+ *  White space separates tokens; otherwise it is ignored.
+ *  WhiteSpace = ( Blank | Tab | Eol) +
+ */
+<YYINITIAL> {
+    {WHITESPACE} {
+        Pos.setpos();
+        String[] whitespace=yytext.split("\r|\n|\r\n");
+        if(whitespace.length()==1){
+            Pos.col+=yytext.length();
+        }else{
+            Pos.line+=comment.length();
+            Pos.col=comment[comment.length()-1].length();
+        }
+    }
 }

@@ -140,7 +140,31 @@ FLOATPOSITIVE=\.{DIGIT}+|{DIGIT}+\.|{DIGIT}+\.{DIGIT}+
 FLOATNEGATIVE=~\.{DIGIT}+|~{DIGIT}+\.|~{DIGIT}+\.{DIGIT}+
 FLOATLITERAL={FLOATPOSITIVE}|{FLOATNEGATIVE}
 
+/** String Literals macros
+ *  A string literal is any sequence of printable characters, delimited by
+ *  double quotes. A double quote within the text of a string must be escaped
+ *  (to avoid being misinterpreted as the end of the string). Tabs and
+ *  newlines within a string are escaped as usual (e.g., \n is a newline and
+ *  \t is a tab). Backslashes within a string must also be escaped (as \\).
+ *  Strings may not cross line boundaries.
+ *  StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
+ */
+//PRINTABLECHARACTERS=[a-zA-Z0-9`~!@#$%\^&*\(\)\-_+={\[}\]\|\\:;"'<,>.?/]
+//UNPRINTABLECHARACTERS=[^a-zA-Z0-9`~!@#$%\^&*()\-_+={\[}\]\|\\:;"'<,>.?/]
+//STRINGLITERAL=\"([^\"\\{UNPRINTABLECHARACTERS}]|\\\"|\\n|\\t|\\\\)*\"
+//https://stackoverflow.com/questions/19502563/jflex-regular-expression
+STRINGLITERAL=\"[^\"]*\"
 //STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"        // to be fixed
+
+/** Character Literals macros
+ *  A character literal is any printable ASCII character, enclosed within
+ *  single quotes. A single quote within a character literal must be escaped
+ *  (to avoid being misinterpreted as the end of the literal). A tab or
+ *  newline must be escaped (e.g., '\n' is a newline and '\t' is a tab). A
+ *  backslash must also be escaped (as '\\').
+ *  CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
+ */
+CHARACTERLITEAL=\'[^\']\'
 
 %type Symbol
 %eofval{
@@ -246,7 +270,7 @@ Position Pos = new Position();
     }
 }
 
-/** Identifier macros
+/** Identifier rules
  *  An identifier is a sequence of letters, underscores and digits starting
  *  with a letter, excluding reserved words.
  */
@@ -258,7 +282,7 @@ Position Pos = new Position();
     }
 }
 
-/** Integer Literals macros
+/** Integer Literals rules
  *  An integer literal is a sequence of digits, optionally preceded by a ~.
  *  A ~ denotes a negative value.
  */
@@ -286,7 +310,7 @@ Position Pos = new Position();
     }
 }
 
-/** Float Literals macros
+/** Float Literals rules
  *  A float literal is a sequence of digits that represent a decimal value,
  *  optionally preceded by a ~. A ~ denotes a negative decimal. Examples of
  *  legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not
@@ -312,6 +336,39 @@ Position Pos = new Position();
         }catch(NumberFormatException e){
             return new Symbol(sym.error,new CSXToken(Pos));
         }
+    }
+}
+
+/** String Literals rules
+ *  A string literal is any sequence of printable characters, delimited by
+ *  double quotes. A double quote within the text of a string must be escaped
+ *  (to avoid being misinterpreted as the end of the string). Tabs and
+ *  newlines within a string are escaped as usual (e.g., \n is a newline and
+ *  \t is a tab). Backslashes within a string must also be escaped (as \\).
+ *  Strings may not cross line boundaries.
+ *  StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
+ */
+<YYINITIAL> {
+    {STRINGLITERAL} {
+        Pos.setpos();
+        Pos.col+=yytext().length();
+        return new Symbol(sym.STRLIT,new CSXStringLitToken(yytext().substring(1,yytext().length()-1),Pos));
+    }
+}
+
+/** Character Literals rules
+ *  A character literal is any printable ASCII character, enclosed within
+ *  single quotes. A single quote within a character literal must be escaped
+ *  (to avoid being misinterpreted as the end of the literal). A tab or
+ *  newline must be escaped (e.g., '\n' is a newline and '\t' is a tab). A
+ *  backslash must also be escaped (as '\\').
+ *  CharLit = ' ( Not(' | \ | UnprintableChars) | \' | \n | \t | \\ ) '
+ */
+<YYINITIAL> {
+    {CHARACTERLITEAL} {
+        Pos.setpos();
+        Pos.col+=yytext().length();
+        return new Symbol(sym.CHARLIT,new CSXCharLitToken(yytext().substring(1,yytext().length()-1),Pos));
     }
 }
 

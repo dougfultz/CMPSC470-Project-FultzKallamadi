@@ -239,6 +239,12 @@ ALLCOMMENTS={SINGLELINECOMMENT}|{MULTILINECOMMENT}
 //http://jflex.de/manual.html#Example
 WHITESPACE=({LINETERMINATOR}|[ \t])+
 
+/** Error Token macro
+ *  Any character that cannot be scanned as part of a valid token, comment or
+ *  white space is invalid and should generate an error message.
+ */
+ERRORTOKEN=.
+
 %{
 Position Pos = new Position();
 %}
@@ -628,5 +634,17 @@ Position Pos = new Position();
             Pos.line+=comment.length();
             Pos.col=comment[comment.length()-1].length();
         }
+    }
+}
+
+/** Error Token rules
+ *  Any character that cannot be scanned as part of a valid token, comment or
+ *  white space is invalid and should generate an error message.
+ */
+<YYINITIAL> {
+    {ERRORTOKEN} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.error,new CSXToken(Pos));
     }
 }

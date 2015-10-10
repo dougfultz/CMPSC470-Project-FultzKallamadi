@@ -194,6 +194,15 @@ LEFTBRACE="{"
 RIGHTBRACE="}"
 COLON=":"
 
+/** Increment and Decrement macros
+ *  The increment (++) and decrement (--) operators should be used either
+ *  before or after an identifier. There should be no space between the
+ *  identifier and the operator. It might be helpful, while modifying the
+ *  scanner (jflex specification), to use look-ahead and lexical states.
+ */
+INCREMENT="++"
+DECREMENT="--"
+
 %type Symbol
 %eofval{
   return new Symbol(sym.EOF, new CSXToken(0,0));
@@ -201,6 +210,9 @@ COLON=":"
 %{
 Position Pos = new Position();
 %}
+
+/** Lexical States */
+%state YYIDENTIFIER
 
 %%
 /***********************************************************************
@@ -304,6 +316,7 @@ Position Pos = new Position();
  */
 <YYINITIAL> {
     {IDENTIFIER} {
+        yybegin(YYIDENTIFIER);
         Pos.setpos();
         Pos.col+=yytext().length();
         return new Symbol(sym.IDENTIFIER,new CSXIdentifierToken(yytext(),Pos));
@@ -519,6 +532,25 @@ Position Pos = new Position();
         Pos.setpos();
         Pos.col+=1;
         return new Symbol(sym.COLON,new CSXToken(Pos));
+    }
+}
+
+/** Increment and Decrement macros
+ *  The increment (++) and decrement (--) operators should be used either
+ *  before or after an identifier. There should be no space between the
+ *  identifier and the operator. It might be helpful, while modifying the
+ *  scanner (jflex specification), to use look-ahead and lexical states.
+ */
+<YYINITIAL, YYIDENTIFIER> {
+    {INCREMENT} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.INC,new CSXToken(Pos));
+    }
+    {DECREMENT} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.DEC,new CSXToken(Pos));
     }
 }
 

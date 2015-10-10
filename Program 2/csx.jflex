@@ -115,18 +115,30 @@ WHILE=[Ww][Hh][Ii][Ll][Ee]
 RESERVEDWORD=BOOL|BREAK|CHAR|CLASS|CONST|CONTINUE|ELSE|FALSE|FLOAT|IF|INT|READ|RETURN|TRUE|VOID|PRINT|WHILE
 
 /** Identifier macros
- *  An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
+ *  An identifier is a sequence of letters, underscores and digits starting
+ *  with a letter, excluding reserved words.
  */
 LETTER=[a-zA-Z]
 ALHANUMERIC=[a-zA-Z0-9]*
 IDENTIFIER={LETTER}+({ALHANUMERIC}|_)*
 
 /** Integer Literals macros
- *  An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
+ *  An integer literal is a sequence of digits, optionally preceded by a ~.
+ *  A ~ denotes a negative value.
  */
 INTEGERPOSITIVE={DIGIT}+
 INTEGERNEGATIVE=~{DIGIT}
 INTEGERLITERAL={INTEGERPOSITIVE}|{INTEGERNEGATIVE}
+
+/** Float Literals macros
+ *  A float literal is a sequence of digits that represent a decimal value,
+ *  optionally preceded by a ~. A ~ denotes a negative decimal. Examples of
+ *  legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not
+ *  considered as legal float
+ */
+FLOATPOSITIVE=\.{DIGIT}+|{DIGIT}+\.|{DIGIT}+\.{DIGIT}+
+FLOATNEGATIVE=~\.{DIGIT}+|~{DIGIT}+\.|~{DIGIT}+\.{DIGIT}+
+FLOATLITERAL={FLOATPOSITIVE}|{FLOATNEGATIVE}
 
 //STRLIT = \"([^\" \\ ]|\\n|\\t|\\\"|\\\\)*\"        // to be fixed
 
@@ -235,7 +247,8 @@ Position Pos = new Position();
 }
 
 /** Identifier macros
- *  An identifier is a sequence of letters, underscores and digits starting with a letter, excluding reserved words.
+ *  An identifier is a sequence of letters, underscores and digits starting
+ *  with a letter, excluding reserved words.
  */
 <YYINITIAL> {
     {IDENTIFIER} {
@@ -246,7 +259,8 @@ Position Pos = new Position();
 }
 
 /** Integer Literals macros
- *  An integer literal is a sequence of digits, optionally preceded by a ~. A ~ denotes a negative value.
+ *  An integer literal is a sequence of digits, optionally preceded by a ~.
+ *  A ~ denotes a negative value.
  */
 <YYINITIAL> {
     {INTEGERPOSITIVE} {
@@ -266,6 +280,35 @@ Position Pos = new Position();
         Pos.col+=yytext().length();
         try{
             return new Symbol(sym.INTLIT,new CSXIntLitToken(Integer.parseInt("-"+yytext().substring(1)),Pos));
+        }catch(NumberFormatException e){
+            return new Symbol(sym.error,new CSXToken(Pos));
+        }
+    }
+}
+
+/** Float Literals macros
+ *  A float literal is a sequence of digits that represent a decimal value,
+ *  optionally preceded by a ~. A ~ denotes a negative decimal. Examples of
+ *  legal float literal are: .6 and 5., 12.345, ~.7 while 5 or ~43 are not
+ *  considered as legal float
+ */
+<YYINITIAL> {
+    {FLOATPOSITIVE} {
+        //TODO test overflow code
+        Pos.setpos();
+        Pos.col+=yytext().length();
+        try{
+            return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat(yytext()),Pos));
+        }catch(NumberFormatException e){
+            return new Symbol(sym.error,new CSXToken(Pos));
+        }
+    }
+    {FLOATNEGATIVE} {
+        //TODO test overflow code
+        Pos.setpos();
+        Pos.col+=yytext().length();
+        try{
+            return new Symbol(sym.FLOATLIT,new CSXFloatLitToken(Float.parseFloat("-"+yytext().substring(1)),Pos));
         }catch(NumberFormatException e){
             return new Symbol(sym.error,new CSXToken(Pos));
         }

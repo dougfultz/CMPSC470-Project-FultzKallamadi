@@ -166,6 +166,34 @@ STRINGLITERAL=\"[^\"]*\"
  */
 CHARACTERLITEAL=\'[^\']\'
 
+/** Other Tokens macros
+ *  These are miscellaneous one- or two-character symbols representing
+ *  operators and delimiters.
+ */
+LEFTPAREN="("
+RIGHTPAREN=")"
+LEFTBRACKET="["
+RIGHTBRACKET="]"
+ASSIGNMENT="="
+SEMICOLON=";"
+ADDITION="+"
+SUBTRACTION="-"
+MULTIPLICATION="*"
+DIVISION="/"
+ISEQUALTO="=="
+NOTEQUALTO="!="
+ANDOPERATOR="&&"
+OROPERATOR="||"
+LESSTHAN="<"
+GREATERTHAN=">"
+LESSTHANEQUAL="<="
+GREATERTHANEQUAL=">="
+COMMA=","
+NOTOPERATOR="!"
+LEFTBRACE="{"
+RIGHTBRACE="}"
+COLON=":"
+
 %type Symbol
 %eofval{
   return new Symbol(sym.EOF, new CSXToken(0,0));
@@ -372,24 +400,128 @@ Position Pos = new Position();
     }
 }
 
-"+"    {
-    Pos.setpos();
-    Pos.col += 1;
-    return new Symbol(sym.PLUS,
-        new CSXToken(Pos));
+/** Other Tokens rules
+ *  These are miscellaneous one- or two-character symbols representing
+ *  operators and delimiters.
+ */
+<YYINITIAL> {
+    {LEFTPAREN} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.LPAREN,new CSXToken(Pos));
+    }
+    {RIGHTPAREN} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.RPAREN,new CSXToken(Pos));
+    }
+    {LEFTBRACKET} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.LBRACKET,new CSXToken(Pos));
+    }
+    {RIGHTBRACKET} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.RBRACKET,new CSXToken(Pos));
+    }
+    {ASSIGNMENT} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.ASG,new CSXToken(Pos));
+    }
+    {SEMICOLON} {
+        Pos.setpos();
+        Pos.col +=1;
+        return new Symbol(sym.SEMI,new CSXToken(Pos));
+    }
+    {ADDITION} {
+        Pos.setpos();
+        Pos.col += 1;
+        return new Symbol(sym.PLUS,new CSXToken(Pos));
+    }
+    {SUBTRACTION} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.MINUS,new CSXToken(Pos));
+    }
+    {MULTIPLICATION} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.TIMES,new CSXToken(Pos));
+    }
+    {DIVISION} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.SLASH,new CSXToken(Pos));
+    }
+    {ISEQUALTO} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.EQ,new CSXToken(Pos));
+    }
+    {NOTEQUALTO} {
+        Pos.setpos();
+        Pos.col +=2;
+        return new Symbol(sym.NOTEQ,new CSXToken(Pos));
+    }
+    {ANDOPERATOR} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.CAND,new CSXToken(Pos));
+    }
+    {OROPERATOR} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.COR,new CSXToken(Pos));
+    }
+    {LESSTHAN} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.LT,new CSXToken(Pos));
+    }
+    {GREATERTHAN} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.GT,new CSXToken(Pos));
+    }
+    {LESSTHANEQUAL} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.LEQ,new CSXToken(Pos));
+    }
+    {GREATERTHANEQUAL} {
+        Pos.setpos();
+        Pos.col+=2;
+        return new Symbol(sym.GEQ,new CSXToken(Pos));
+    }
+    {COMMA} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.COMMA,new CSXToken(Pos));
+    }
+    {NOTOPERATOR} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.NOT,new CSXToken(Pos));
+    }
+    {LEFTBRACE} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.LBRACE,new CSXToken(Pos));
+    }
+    {RIGHTBRACE} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.RBRACE,new CSXToken(Pos));
+    }
+    {COLON} {
+        Pos.setpos();
+        Pos.col+=1;
+        return new Symbol(sym.COLON,new CSXToken(Pos));
+    }
 }
-"!="    {
-    Pos.setpos();
-    Pos.col +=2;
-    return new Symbol(sym.NOTEQ,
-        new CSXToken(Pos));
-}
-";"    {
-    Pos.setpos();
-    Pos.col +=1;
-    return new Symbol(sym.SEMI,
-        new CSXToken(Pos));
-}
+
 //EOL to be fixed so that it accepts different formats
 
 \n    {

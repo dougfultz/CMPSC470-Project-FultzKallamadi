@@ -11,13 +11,13 @@ http://jflex.de/manual.html#running-jflex
 2. Run JFlex against input file.
 `# java -jar JFlex.jar csx.jflex`
 
-## Compile and execute code
-1. Change to directory containing P1.java
+## Compile and execute code (Yylex)
+1. Change to directory containing Yylex.java
 `# cd PATH/TO/SOURCE`
 2. Compile program
-`# javac ./P2.java`
+`# javac ./Yylex.java`
 3. Execute program
-`# java P2`
+`# java Yylex PATH/TO/CODE.csx`
 
 ### Shortcut
 1. Change to directory containing P1.java

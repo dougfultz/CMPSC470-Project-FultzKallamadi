@@ -311,7 +311,11 @@ ALLCOMMENTS={SINGLELINECOMMENT}|{MULTILINECOMMENT}
  *  WhiteSpace = ( Blank | Tab | Eol) +
  */
 //http://jflex.de/manual.html#Example
-WHITESPACE=({LINETERMINATOR}|[ \t])+
+//WHITESPACE=({LINETERMINATOR}|[ \t])+
+SPACE=" "
+TAB="\t"
+UNIXNEWLINE="\n"
+WINDOWSNEWLINE="\r\n"
 
 /** Error Token macro
  *  Any character that cannot be scanned as part of a valid token, comment or
@@ -698,18 +702,45 @@ Position Pos = new Position();
  *  White space separates tokens; otherwise it is ignored.
  *  WhiteSpace = ( Blank | Tab | Eol) +
  */
-<YYINITIAL> {
-    {WHITESPACE} {
+//<YYINITIAL> {
+    {SPACE} {
+        Pos.setpos();
+        Pos.col+=1;
+        yybegin(YYINITIAL);
+    }
+    {TAB} {
+        Pos.setpos();
+        Pos.col+=1;
+        yybegin(YYINITIAL);
+    }
+    {UNIXNEWLINE} {
+        Pos.setpos();
+        Pos.col=1;
+        Pos.line+=1;
+        yybegin(YYINITIAL);
+    }
+    {WINDOWSNEWLINE} {
+        Pos.setpos();
+        Pos.col=1;
+        Pos.line+=1;
+        yybegin(YYINITIAL);
+    }
+    /*{WHITESPACE} {
         Pos.setpos();
         String whitespace[]=yytext().split("\r|\n|\r\n");
-        if(whitespace.length==1){
+        System.out.println("yytext() '"+yytext()+"'");
+        System.out.println("whitespace "+whitespace.length);
+        if(whitespace.length==0){
+            Pos.line+=1;
+            Pos.col=1;
+        }else if(whitespace.length==1){
             Pos.col+=yytext().length();
         }else{
             Pos.line+=whitespace.length;
             Pos.col=whitespace[whitespace.length-1].length();
         }
-    }
-}
+    }*/
+//}
 
 /** Error Token rules
  *  Any character that cannot be scanned as part of a valid token, comment or

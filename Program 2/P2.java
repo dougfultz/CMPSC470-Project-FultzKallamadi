@@ -68,10 +68,10 @@ class P2 {
                     System.out.println("\tEOF");
                     break;
                 case sym.EQ:
-                    System.out.print("\t==");
+                    System.out.println("\t==");
                     break;
                 case sym.error:
-                    System.out.print("\terror!");
+                    System.out.println("\terror");
                     break;
                 case sym.FLOATLIT:
                     System.out.println("\tfloat literal(" + ((CSXFloatLitToken) token.value).floatValue + ")");

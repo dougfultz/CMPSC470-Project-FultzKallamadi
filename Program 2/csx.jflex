@@ -223,8 +223,8 @@ FLOATLITERAL={FLOATPOSITIVE}|{FLOATNEGATIVE}
  *  Strings may not cross line boundaries.
  *  StringLit = " ( Not(" | \ | UnprintableChars) | \" | \n | \t | \\ )* "
  */
-//PRINTABLECHARACTERS=[a-zA-Z0-9`~!@#$%\^&*\(\)\-_+={\[}\]\|\\:;"'<,>.?/]
-//UNPRINTABLECHARACTERS=[^a-zA-Z0-9`~!@#$%\^&*()\-_+={\[}\]\|\\:;"'<,>.?/]
+//PRINTABLECHARACTERS=[a-zA-Z0-9`~!@#$%\^&*\(\)\-_+={\[}\]\|\\:;\"\'<,>.?/]
+//UNPRINTABLECHARACTERS=[^a-zA-Z0-9`~!@#$%\^&*()\-_+={\[}\]\|\\:;\"\'<,>.?/]
 //STRINGLITERAL=\"([^\"\\{UNPRINTABLECHARACTERS}]|\\\"|\\n|\\t|\\\\)*\"
 //https://stackoverflow.com/questions/19502563/jflex-regular-expression
 STRINGLITERAL=\"[^\"]*\"

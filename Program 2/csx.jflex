@@ -223,6 +223,15 @@ LINETERMINATOR=\r|\n|\r\n
 INPUTCHARACTER=[^\r\n]
 SINGLELINECOMMENT="//"{INPUTCHARACTER}*{LINETERMINATOR}?
 
+/** Multi-Line Comment macro
+ *  This comment begins with the pair ## and ends with
+ *  the pair ##. Its body can include any character sequence including # but
+ *  not two consecutive #’s.
+ */
+MULTILINECOMMENT="##"[^"##"]*"##"
+//http://jflex.de/manual.html#Example
+ALLCOMMENTS={SINGLELINECOMMENT}|{MULTILINECOMMENT}
+
 %{
 Position Pos = new Position();
 %}
@@ -581,6 +590,20 @@ Position Pos = new Position();
         Pos.setpos();
         Pos.col=1;
         Pos.line+=1;
+    }
+}
+
+/** Multi-Line Comment macro
+ *  This comment begins with the pair ## and ends with
+ *  the pair ##. Its body can include any character sequence including # but
+ *  not two consecutive #’s.
+ */
+<YYINITIAL> {
+    {MULTILINECOMMENT} {
+        Pos.setpos();
+        String[] comment=yytext().split("\r|\n|\r\n");
+        Pos.line+=comment.length();
+        Pos.col=comment[comment.length()-1].length();
     }
 }
 

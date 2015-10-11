@@ -311,7 +311,8 @@ ALLCOMMENTS={SINGLELINECOMMENT}|{MULTILINECOMMENT}
  *  WhiteSpace = ( Blank | Tab | Eol) +
  */
 //http://jflex.de/manual.html#Example
-WHITESPACE=({LINETERMINATOR}|[ \t])+
+//Octal codes - http://www.asciitable.com/
+WHITESPACE=({LINETERMINATOR}|[\040\t])+
 
 /** Error Token macro
  *  Any character that cannot be scanned as part of a valid token, comment or

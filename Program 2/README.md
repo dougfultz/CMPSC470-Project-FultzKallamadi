@@ -48,4 +48,6 @@ http://jflex.de/manual.html#running-jflex
 `# git commit -a -m "COMMIT MESSAGE"`
 - Push all local commits to GitHub
 `# git push`
+- Branching
+https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches
 

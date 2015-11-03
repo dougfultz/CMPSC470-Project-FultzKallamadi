@@ -1,0 +1,70 @@
+/***
+ *
+ * This Is A Java CUP Specification For CSX-lite, a Small Subset
+ * of The CSX Language,  Prepared by Charles Fischer.
+ *
+ ***/
+
+/* Preliminaries to set up and use the scanner.  */
+
+import java_cup.runtime.*;
+parser code {:
+ public void syntax_error(Symbol cur_token)
+     {
+ 	  report_error("CSX syntax error at line "+
+			String.valueOf(((CSXToken)cur_token.value).linenum),
+			null);
+     }
+:};
+init with {:              :};
+scan with {: return Scanner.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal CSXIdentifierToken     IDENTIFIER;
+terminal CSXToken     		SEMI, LPAREN, RPAREN, ASG, LBRACE, RBRACE;
+terminal CSXToken     		PLUS, MINUS, rw_IF;
+
+/* Non terminals */
+non terminal csxLiteNode     	prog;
+non terminal stmtsNode     		stmts;
+non terminal stmtNode	     	stmt;
+non terminal exprNode			exp;
+non terminal nameNode	     	ident;
+
+start with prog;
+
+prog		::= LBRACE:l stmts:s RBRACE
+			 {: RESULT=
+				new csxLiteNode(s, l.linenum,l.colnum); :}	
+		;
+stmts		::= stmt:s1  stmts:s2
+			 {: RESULT=
+			    new stmtsNode(s1,s2,s1.linenum,s1.colnum);
+			 :}	
+		| 
+			 {: RESULT= stmtsNode.NULL; :}
+		;
+stmt		::= ident:id ASG exp:e SEMI
+			 {: RESULT=
+			new asgNode(id,e,id.linenum,id.colnum);
+			 :}	
+
+		| rw_IF:i LPAREN exp:e RPAREN  stmt:s
+			 {:
+			 RESULT=new ifThenNode(e,s,stmtNode.NULL,
+						i.linenum,i.colnum); :}	
+		;
+exp		::= exp:leftval PLUS:op ident:rightval
+			 {: RESULT=new binaryOpNode(leftval,sym.PLUS,rightval,op.linenum,op.colnum); :}	
+		| exp:leftval MINUS:op ident:rightval
+			 {: RESULT=new binaryOpNode(leftval,sym.MINUS,rightval,op.linenum,op.colnum); :}	
+		| ident:i		
+			 {: RESULT = i; :}
+		;
+ident		::= IDENTIFIER:i
+			 {: RESULT = new nameNode(
+					  new identNode(i.identifierText,
+						 i.linenum,i.colnum),
+					  exprNode.NULL,
+					  i.linenum,i.colnum); :}	
+		;

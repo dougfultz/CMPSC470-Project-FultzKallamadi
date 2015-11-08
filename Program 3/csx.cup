@@ -59,7 +59,7 @@ non terminal memberDeclsNode    Memberdecls;
 non terminal fieldDeclsNode     Fielddecls;
 non terminal methodDecelsNode   Methoddecls;
 non terminal optionalSimiNode   OptionalSemi;
-non terminal methodDecelsNode   Methoddecl;
+non terminal methodDecelNode    Methoddecl;
 non terminal argDeclsNode       Argdecls;
 non terminal argDeclNode        Argdecl;
 non terminal fieldDeclNode      Fielddecl;
@@ -95,24 +95,29 @@ Program         ::= rw_CLASS:class IDENTIFIER:id LBRACE Memberdecls:members RBRA
                 ;
 //Memberdecls  →  Fielddecl Memberdecls
 //             |  Methoddecls
-Memberdecls     ::= Fielddecl Memberdecls
-                |   Methoddecls
+Memberdecls     ::= Fielddecl:field Memberdecls:members
+                    {: RESULT= new memberDeclsNode(field,members,field.linenum,field.colnum); :}
+                |   Methoddecls:methods
+                    {: RESULT= new memberDeclsNode(methods,methods.linenum,methods.colnum); :}
                 ;
 //Fielddecls →  Fielddecl Fielddecls
 //           |  λ
-Fielddecls      ::= Fielddecl Fielddecls
+Fielddecls      ::= Fielddecl:field Fielddecls:fields
+                    {: RESULT= new fieldDeclsNode(field,fields,field.linenum,field.colnum); :}
                 |
                     {: RESULT= fieldDeclsNode.NULL; :}
                 ;
 //Methoddecls  →  Methoddecl Methoddecls
 //             |  λ
-Methoddecls     ::= Methoddecl Methoddecls
+Methoddecls     ::= Methoddecl:method Methoddecls:methods
+                    {: RESULT= new methodDecelsNode(method,methods,method.linenum,method.colnum); :}
                 |
                     {: RESULT= memberDeclsNode.NULL; :}
                 ;
 //OptionalSemi  →  ;
 //              |  λ
-OptionalSemi    ::= SEMI
+OptionalSemi    ::= SEMI:semi
+                    {: RESULT= new optionalSimiNode(semi.linenum, semi.colnum); :]
                 |
                     {: RESULT= optionalSimiNode.NULL; :}
                 ;
@@ -120,34 +125,48 @@ OptionalSemi    ::= SEMI
 //           |  void id ( Argdecls ) { Fielddecls Stmts } OptionalSemi
 //           |  Type id ( ) { Fielddecls Stmts } OptionalSemi
 //           |  Type id ( Argdecls ){ Fielddecls Stmts } OptionalSemi
-Methoddecl      ::= rw_VOID IDENTIFIER LPAREN RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
-                |   rw_VOID IDENTIFIER LPAREN Argdecls RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
-                |   Type IDENTIFIER LPAREN RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
-                |   Type IDENTIFIER LPAREN Argdecls RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
+Methoddecl      ::= rw_VOID:type IDENTIFIER:id LPAREN RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
+                    {: RESULT= new methodDecelNode(id,fields,stmts,type.linenum,type.colnum); :}
+                |   rw_VOID:type IDENTIFIER:id LPAREN Argdecls:args RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
+                    {: RESULT= new methodDecelNode(id,args,fields,stmts,type.linenum,type.colnum); :}
+                |   Type:type IDENTIFIER:id LPAREN RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
+                    {: RESULT= new methodDecelNode(type,id,fields,stmts,type.linenum,type.colnum); :}
+                |   Type:type IDENTIFIER:id LPAREN Argdecls:args RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
+                    {: RESULT= new methodDecelNode(type,id,args,fields,stmts,type.linenum,type.colnum); :}
                 ;
 //Argdecls  →  Argdecl , Argdecls
 //          |  Argdecl
-Argdecls        ::= Argdecl COMMA Argdecls
-                |   Argdecl
+Argdecls        ::= Argdecl:argdec COMMA Argdecls:argdecs
+                    {: RESULT= new argDeclsNode(argdec,argdecs,argdec.linenum,argdec.colnum); :}
+                |   Argdecl:argdec
+                    {: RESULT= new argDeclsNode(argdec,argdec.linenum,argdec.colnum); :}
                 ;
 //Argdecl  →  Type id
 //         |  Type id [ ]
-Argdecls        ::= Type IDENTIFIER
-                |   Type IDENTIFIER LBRACKET RBRACKET
+Argdecl         ::= Type:type IDENTIFIER:id
+                    {: RESULT= new argDeclNode(type,id,type.linenum,type.colnum); :}
+                |   Type:type IDENTIFIER:id LBRACKET RBRACKET
+                    {: RESULT= new argDeclNode(type,id,type.linenum,type.colnum); :}
                 ;
 //Fielddecl  →  Type id ;
 //           |  Type id = Expr ;
 //           |  Type id [ intlit ] ;
 //           |  const id = Expr ;
-Fielddecl       ::= Type IDENTIFIER SEMI
-                |   Type IDENTIFIER ASG Expr SEMI
-                |   Type IDENTIFIER LBRACKET INTLIT RBRACKET SEMI
-                |   rw_CONST IDENTIFIER ASG Expr SEMI
+Fielddecl       ::= Type:type IDENTIFIER:id SEMI
+                    {: RESULT= new fieldDeclNode(type,id,type.linenum,type.colnum); :}
+                |   Type:type IDENTIFIER:id ASG Expr:expr SEMI
+                    {: RESULT= new fieldDeclNode(type,id,expr,type.linenum,type.colnum); :}
+                |   Type:type IDENTIFIER:id LBRACKET INTLIT:loc RBRACKET SEMI
+                    {: RESULT= new fieldDeclNode(type,id,loc,type.linenum,type.colnum); :}
+                |   rw_CONST:type IDENTIFIER:id ASG Expr:expr SEMI
+                    {: RESULT= new fieldDeclNode(type,id,expr,type.linenum,type.colnum); :}
                 ;
 //Stmts  →  Stmt Stmts
 //       |  Stmt
-Stmts           ::= Stmt Stmts
-                |   Stmt
+Stmts           ::= Stmt:stmt Stmts:stmts
+                    {: RESULT= new stmtsNode(stmt,stmts,stmt.linenum,stmt.colnum); :}
+                |   Stmt:stmt
+                    {: RESULT= new stmtsNode(stmt,stmt.linenum,stmt.colnum); :}
                 ;
 //Stmt  →  if ( Expr ) Stmt
 //      |  if ( Expr ) Stmt else Stmt
@@ -163,49 +182,75 @@ Stmts           ::= Stmt Stmts
 //      |  break id ;
 //      |  continue id ;
 //      |  { Fielddecls Stmts } OptionalSemi
-Stmt            ::= rw_IF LPAREN Expr RPAREN Stmt rw_ENDIF
-                |   rw_IF LPAREN Expr RPAREN Stmt rw_ELSE Stmt rw_ENDIF
-                |   rw_WHILE LPAREN Expr RPAREN Stmt
-                |   IDENTIFIER COLON rw_WHILE LPAREN Expr RPAREN Stmt
-                |   Name ASG Expr SEMI
-                |   rw_READ LPAREN Readlist RPAREN SEMI
-                |   rw_PRINT LPAREN Printlist RPAREN SEMI
-                |   IDENTIFIER LPAREN RPAREN SEMI
-                |   IDENTIFIER LPAREN Args RPAREN SEMI
-                |   rw_RETURN SEMI
-                |   rw_RETURN Expr SEMI
-                |   rw_BREAK IDENTIFIER SEMI
-                |   rw_CONTINUE IDENTIFIER SEMI
-                |   LBRACE Fielddecls Stmts RBRACE OptionalSemi
+Stmt            ::= rw_IF:if LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
+                    {: RESULT= new stmtNode(expr,stmt,if.linenum,if.colnum); :}
+                |   rw_IF:if LPAREN Expr:expr RPAREN Stmt:stmttrue rw_ELSE Stmt:stmtfalse rw_ENDIF
+                    {: RESULT= new stmtNode(expr,stmttrue,stmtfalse,if.linenum,if.colnum); :}
+                |   rw_WHILE:while LPAREN Expr:expr RPAREN Stmt:stmt
+                    {: RESULT= new stmtNode(expr,stmt,while.linenum,while.colnum); :}
+                |   IDENTIFIER:id COLON rw_WHILE LPAREN Expr:expr RPAREN Stmt:stmt
+                    {: RESULT= new stmtNode(id,expr,stmt,id.linenum,id.colnum); :}
+                |   Name:name ASG Expr:expr SEMI
+                    {: RESULT= new stmtNode(name,expr,name.linenum,name.colnum); :}
+                |   rw_READ:read LPAREN Readlist:list RPAREN SEMI
+                    {: RESULT= new stmtNode(read,list,read.linenum,read.colnum); :}
+                |   rw_PRINT:print LPAREN Printlist:list RPAREN SEMI
+                    {: RESULT= new stmtNode(print,list,print.linenum,print.colnum); :}
+                |   IDENTIFIER:id LPAREN RPAREN SEMI
+                    {: RESULT= new stmtNode(id,id.linenum,id.colnum); :}
+                |   IDENTIFIER:id LPAREN Args:args RPAREN SEMI
+                    {: RESULT= new stmtNode(id,args,id.linenum,id.colnum); :}
+                |   rw_RETURN:return SEMI
+                    {: RESULT= new stmtNode(return,return.linenum,return.colnum); :}
+                |   rw_RETURN:return Expr:expr SEMI
+                    {: RESULT= new stmtNode(return,expr,return.linenum,return.colnum); :}
+                |   rw_BREAK:break IDENTIFIER:id SEMI
+                    {: RESULT= new stmtNode(break,id,break.linenum,break.colnum); :}
+                |   rw_CONTINUE:continue IDENTIFIER:id SEMI
+                    {: RESULT= new stmtNode(continue,id,continue.linenum,continue.colnum); :}
+                |   LBRACE:brace Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
+                    {: RESULT= new stmtNode(fields,stmts,brace.linenum,brace.colnum); :}
                 ;
 //Type  →  int
 //      |  char
 //      |  bool
-Type            ::= rw_INT
-                |   rw_CHAR
-                |   rw_BOOL
+Type            ::= rw_INT:type
+                    {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
+                |   rw_CHAR:type
+                    {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
+                |   rw_BOOL:type
+                    {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
                 ;
 //Args  →  Expr , Args
 //      |  Expr
-Args            ::= Expr COMMA Args
-                |   Expr
+Args            ::= Expr:expr COMMA Args,args
+                    {: RESULT= new argsNode(expr,args,expr.linenum,expr.colnum); :}
+                |   Expr:expr
+                    {: RESULT= new argsNode(expr,expr.linenum,expr.colnum); :}
                 ;
 //Readlist  →  Name , Readlist
 //          |  Name
-Readlist        ::= Name COMMA Readlist
-                |   Name
+Readlist        ::= Name:name COMMA Readlist:list
+                    {: RESULT= new readListNode(name,list,name.linenum,name.colnum); :}
+                |   Name:name
+                    {: RESULT= new readListNode(name,name.linenum,name.colnum); :}
                 ;
 //Printlist  →  Expr , Printlist
 //           |  Expr
-Printlist       ::= Expr COMMA Printlist
-                |   Expr
+Printlist       ::= Expr:expr COMMA Printlist:list
+                    {: RESULT= new printListNode(expr,list,expr.linenum,expr.colnum); :}
+                |   Expr:expr
+                    {: RESULT= new printListNode(expr,expr.linenum,expr.colnum); :}
                 ;
 //Expr  →  Expr || Term
 //      |  Expr && Term
 //      |  Term
-Expr            ::= Expr COR Term
-                |   Expr CAND Term
-                |   Term
+Expr            ::= Expr:expr COR:op Term:term
+                    {: RESULT= new exprNode(expr,op,term,expr.linenum,expr.colnum); :}
+                |   Expr:expr CAND:op Term:term
+                    {: RESULT= new exprNode(expr,op,term,expr.linenum,expr.colnum); :}
+                |   Term:term
+                    {: RESULT= new exprNode(term,term.linenum,term.colnum); :}
                 ;
 //Term  →  Factor < Factor
 //      |  Factor > Factor
@@ -214,34 +259,50 @@ Expr            ::= Expr COR Term
 //      |  Factor == Factor
 //      |  Factor != Factor
 //      |  Factor
-Term            ::= Factor LT Factor
-                |   Factor GT Factor
-                |   Factor LEQ Factor
-                |   Factor GEQ Factor
-                |   Factor EQ Factor
-                |   Factor NOTEQ Factor
-                |   Factor
+Term            ::= Factor:left LT:op Factor:right
+                    {: RESULT= new termNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left GT:op Factor:right
+                    {: RESULT= new termNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left LEQ:op Factor:right
+                    {: RESULT= new termNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left GEQ:op Factor:right
+                    {: RESULT= new termNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left EQ:op Factor:right
+                    {: RESULT= new termNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left NOTEQ:op Factor:right
+                    {: RESULT= new termNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left
+                    {: RESULT= new termNode(left,left.linenum,left.colnum); :}
                 ;
 //Factor  →  Factor + Pri
 //        |  Factor - Pri
 //        |  Pri
-Factor          ::= Factor PLUS Pri
-                |   Factor MINUS Pri
-                |   Pri
+Factor          ::= Factor:left PLUS:op Pri:right
+                    {: RESULT= new factorNode(left,op,right,left.linenum,left.colnum); :}
+                |   Factor:left MINUS:op Pri:right
+                    {: RESULT= new factorNode(left,op,right,left.linenum,left.colnum); :}
+                |   Pri:left
+                    {: RESULT= new factorNode(left,left.linenum,left.colnum); :}
                 ;
 //Pri →  Pri * Unary
 //    |  Pri / Unary
 //    |  Unary
-Pri             ::= Pri TIMES Unary
-                |   Pri SLASH Unary
-                |   Unary
+Pri             ::= Pri:left TIMES:op Unary:right
+                    {: RESULT= new priNode(left,op,right,left.linenum,left.colnum); :}
+                |   Pri:left SLASH:op Unary:right
+                    {: RESULT= new priNode(left,op,right,left.linenum,left.colnum); :}
+                |   Unary:left
+                    {: RESULT= new priNode(left,left.linenum,left.colnum); :}
                 ;
 //Unary  →  ! Unary
 //       |  ( Type ) Unary
 //       |  Unit
-Unary           ::= NOT Unary
-                |   LPAREN Type RPAREN Unary
-                |   Unit
+Unary           ::= NOT:op Unary:unary
+                    {: RESULT= new unaryNode(op,unary,op.linenum,op.colnum); :}
+                |   LPAREN:paren Type:type RPAREN Unary:unary
+                    {: RESULT= new unaryNode(type,unary,paren.linenum,paren.colnum); :}
+                |   Unit:unit
+                    {: RESULT= new unaryNode(unit,unit.linenum,unit.colnum); :}
                 ;
 //Unit  →  Name
 //      |  id ( )
@@ -253,19 +314,31 @@ Unary           ::= NOT Unary
 //      |  true
 //      |  false
 //      |  ( Expr )
-Unit            ::= Name
-                |   IDENTIFIER LPAREN RPAREN
-                |   IDENTIFIER LPAREN Args RPAREN
-                |   INTLIT
-                |   CHARLIT
-                |   FLOATLIT
-                |   STRLIT
-                |   rw_TRUE
-                |   rw_FALSE
-                |   LPAREN Expr RPAREN
+Unit            ::= Name:name
+                    {: RESULT= new unitNode(name,name.linenum,name.colnum); :}
+                |   IDENTIFIER:id LPAREN RPAREN
+                    {: RESULT= new unitNode(id,id.linenum,id.colnum); :}
+                |   IDENTIFIER:id LPAREN Args:args RPAREN
+                    {: RESULT= new unitNode(id,args,id.linenum,id.colnum); :}
+                |   INTLIT:int
+                    {: RESULT= new unitNode(int,int.linenum,int.colnum); :}
+                |   CHARLIT:char
+                    {: RESULT= new unitNode(char,char.linenum,char.colnum); :}
+                |   FLOATLIT:float
+                    {: RESULT= new unitNode(float,float.linenum,float.colnum); :}
+                |   STRLIT:str
+                    {: RESULT= new unitNode(str,str.linenum,str.colnum); :}
+                |   rw_TRUE:true
+                    {: RESULT= new unitNode(true,true.linenum,true.colnum); :}
+                |   rw_FALSE:false
+                    {: RESULT= new unitNode(false,false.linenum,false.colnum); :}
+                |   LPAREN:paren Expr:expr RPAREN
+                    {: RESULT= new unitNode(expr,paren.linenum,paren.colnum); :}
                 ;
 //name  →  id
 //      |  id [ Expr ]
-Name            ::= IDENTIFIER
-                |   IDENTIFIER LBRACKET Expr RBRACKET
+Name            ::= IDENTIFIER:id
+                    {: RESULT= new nameNode(id,id.linenum,id.colnum); :}
+                |   IDENTIFIER:id LBRACKET Expr:expr RBRACKET
+                    {: RESULT= new nameNode(id,expr,id.linenum,id.colnum); :}
                 ;

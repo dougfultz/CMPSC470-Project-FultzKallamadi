@@ -94,16 +94,19 @@ Memberdecls     ::= Fielddecl Memberdecls
 //           |  λ
 Fielddecls      ::= Fielddecl Fielddecls
                 |
+                    {: RESULT= fieldDeclsNode.NULL; :}
                 ;
 //Methoddecls  →  Methoddecl Methoddecls
 //             |  λ
 Methoddecls     ::= Methoddecl Methoddecls
                 |
+                    {: RESULT= memberDeclsNode.NULL; :}
                 ;
 //OptionalSemi  →  ;
 //              |  λ
 OptionalSemi    ::= SEMI
                 |
+                    {: RESULT= optionalSimiNode.NULL; :}
                 ;
 //Methoddecl →  void id ( ) { Fielddecls Stmts } OptionalSemi
 //           |  void id ( Argdecls ) { Fielddecls Stmts } OptionalSemi

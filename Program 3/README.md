@@ -14,3 +14,6 @@ Sujay Kallamadi
 
 `# java -jar tools/java-cup-10l.jar lite.cup`
 
+### Process JFlex file
+
+`# java -jar tools/JFlex.jar lite.jflex`

@@ -16,9 +16,40 @@ init with {:              :};
 scan with {: return Scanner.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
+//Assignment
+terminal CSXToken               ASG;
+//Comparision
+terminal CSXToken               EQ, NOTEQ, GEQ, GT, LEQ, LT;
+//Boolean
+terminal CSXToken               CAND, COR, NOT;
+//Math
+terminal CSXToken               MINUS, PLUS, SLASH, TIMES;
+//Inrement/Decrement
+terminal CSXToken               DEC, INC;
+//Braces
+terminal CSXToken               LBRACE, RBRACE;
+//Brackets
+terminal CSXToken               LBRACKET, RBRACKET;
+//Parenthesis
+terminal CSXToken               LPAREN, RPAREN;
+//Reserved Words
+terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ELSE, rw_FALSE, rw_FLOAT, rw_IF, rw_INT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE;
+//Miscellaneous Symbols
+terminal CSXToken               COLON, COMMA, SEMI;
+//Error
+terminal CSXToken               error;
+//End of file
+terminal CSXToken               EOF;
+//Character Literal
+terminal CSXCharLitToken        CHARLIT;
+//Identifier
 terminal CSXIdentifierToken     IDENTIFIER;
-terminal CSXToken               SEMI, LPAREN, RPAREN, ASG, LBRACE, RBRACE;
-terminal CSXToken               PLUS, MINUS, rw_IF;
+//Integer Literal
+terminal CSXIntLitToken         INTLIT;
+//Float Literal
+terminal CSXFloatLitToken       FLOATLIT;
+//String Literal
+terminal CSXStringLitToken      STRLIT;
 
 /* Non terminals */
 non terminal csxNode            Program;

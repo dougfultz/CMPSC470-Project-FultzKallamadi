@@ -1,7 +1,14 @@
 import java.io.*;
 import java_cup.runtime.*;
 
+/** Program 3
+ *  @author Doug Fultz
+ *  @author Sujay Kallamadi
+ */
 class P3 {
+    /** MAIN function
+     *  Starts program
+     */
     public static void main(String args[]) throws java.io.IOException {
         if (args.length != 1) {
             System.out.println(

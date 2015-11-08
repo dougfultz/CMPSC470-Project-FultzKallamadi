@@ -54,7 +54,7 @@ terminal CSXFloatLitToken       FLOATLIT;
 terminal CSXStringLitToken      STRLIT;
 
 /* Non terminals */
-non terminal csxNode            Program;
+non terminal csxProgramNode     Program;
 non terminal memberDeclsNode    Memberdecls;
 non terminal fieldDeclsNode     Fielddecls;
 non terminal methodDecelsNode   Methoddecls;
@@ -82,13 +82,16 @@ precedence left         CAND, COR, NOT;
 precedence nonassoc     EQ, NOTEQ, GEQ, GT, LEQ, LT;
 precedence left         PLUS, MINUS;
 precedence left         TIMES, SLASH;
-precedence right        Unary;
+precedence right        NOT;
+//Needed to make Unary highest precedence???
+//precedence right        NOT, RPAREN;
 
 /* The grammar */
 start with Program;
 
 //Program  →  class id { Memberdecls }
-Program         ::= rw_CLASS IDENTIFIER LBRACE Memberdecls RBRACE
+Program         ::= rw_CLASS:class IDENTIFIER:id LBRACE Memberdecls:members RBRACE
+                    {: RESULT= new csxProgramNode(id,members,class.linenum,class.colnum); :}
                 ;
 //Memberdecls  →  Fielddecl Memberdecls
 //             |  Methoddecls

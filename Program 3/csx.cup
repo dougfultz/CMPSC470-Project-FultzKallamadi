@@ -25,7 +25,7 @@ terminal CSXToken               CAND, COR, NOT;
 //Math
 terminal CSXToken               MINUS, PLUS, SLASH, TIMES;
 //Inrement/Decrement
-terminal CSXToken               DEC, INC;
+//terminal CSXToken               DEC, INC;
 //Braces
 terminal CSXToken               LBRACE, RBRACE;
 //Brackets
@@ -33,7 +33,9 @@ terminal CSXToken               LBRACKET, RBRACKET;
 //Parenthesis
 terminal CSXToken               LPAREN, RPAREN;
 //Reserved Words
-terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ELSE, rw_FALSE, rw_FLOAT, rw_IF, rw_INT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE;
+terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ELSE, rw_FALSE, rw_IF, rw_INT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE;
+//Unused Reserved Words
+//terminal CSXToken               rw_FLOAT;
 //Miscellaneous Symbols
 terminal CSXToken               COLON, COMMA, SEMI;
 //Error
@@ -73,44 +75,186 @@ non terminal factorNode         Factor;
 non terminal priNode            Pri;
 non terminal unaryNode          Unary;
 non terminal unitNode           Unit;
-non terminal nameNode           name;
+non terminal nameNode           Name;
 
 /* Precedences */
 
 /* The grammar */
-start with prog;
+start with Program;
 
-prog        ::= LBRACE:l stmts:s RBRACE
-                {: RESULT=new csxLiteNode(s, l.linenum,l.colnum); :}
-            ;
-
-stmts       ::= stmt:s1  stmts:s2
-                {: RESULT=new stmtsNode(s1,s2,s1.linenum,s1.colnum); :}
-            |
-                {: RESULT= stmtsNode.NULL; :}
-            ;
-
-stmt		::= ident:id ASG exp:e SEMI
-			 {: RESULT=
-			new asgNode(id,e,id.linenum,id.colnum);
-			 :}	
-
-		| rw_IF:i LPAREN exp:e RPAREN  stmt:s
-			 {:
-			 RESULT=new ifThenNode(e,s,stmtNode.NULL,
-						i.linenum,i.colnum); :}	
-		;
-exp		::= exp:leftval PLUS:op ident:rightval
-			 {: RESULT=new binaryOpNode(leftval,sym.PLUS,rightval,op.linenum,op.colnum); :}	
-		| exp:leftval MINUS:op ident:rightval
-			 {: RESULT=new binaryOpNode(leftval,sym.MINUS,rightval,op.linenum,op.colnum); :}	
-		| ident:i		
-			 {: RESULT = i; :}
-		;
-ident		::= IDENTIFIER:i
-			 {: RESULT = new nameNode(
-					  new identNode(i.identifierText,
-						 i.linenum,i.colnum),
-					  exprNode.NULL,
-					  i.linenum,i.colnum); :}	
-		;
+//Program  →  class id { Memberdecls }
+Program         ::= rw_CLASS IDENTIFIER LBRACE Memberdecls RBRACE
+                ;
+//Memberdecls  →  Fielddecl Memberdecls
+//             |  Methoddecls
+Memberdecls     ::= Fielddecl Memberdecls
+                |   Methoddecls
+                ;
+//Fielddecls →  Fielddecl Fielddecls
+//           |  λ
+Fielddecls      ::= Fielddecl Fielddecls
+                |
+                ;
+//Methoddecls  →  Methoddecl Methoddecls
+//             |  λ
+Methoddecls     ::= Methoddecl Methoddecls
+                |
+                ;
+//OptionalSemi  →  ;
+//              |  λ
+OptionalSemi    ::= SEMI
+                |
+                ;
+//Methoddecl →  void id ( ) { Fielddecls Stmts } OptionalSemi
+//           |  void id ( Argdecls ) { Fielddecls Stmts } OptionalSemi
+//           |  Type id ( ) { Fielddecls Stmts } OptionalSemi
+//           |  Type id ( Argdecls ){ Fielddecls Stmts } OptionalSemi
+Methoddecl      ::= rw_VOID IDENTIFIER LPAREN RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
+                |   rw_VOID IDENTIFIER LPAREN Argdecls RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
+                |   Type IDENTIFIER LPAREN RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
+                |   Type IDENTIFIER LPAREN Argdecls RPAREN LBRACE Fielddecls Stmts RBRACE OptionalSemi
+                ;
+//Argdecls  →  Argdecl , Argdecls
+//          |  Argdecl
+Argdecls        ::= Argdecl COMMA Argdecls
+                |   Argdecl
+                ;
+//Argdecl  →  Type id
+//         |  Type id [ ]
+Argdecls        ::= Type IDENTIFIER
+                |   Type IDENTIFIER LBRACKET RBRACKET
+                ;
+//Fielddecl  →  Type id ;
+//           |  Type id = Expr ;
+//           |  Type id [ intlit ] ;
+//           |  const id = Expr ;
+Fielddecl       ::= Type IDENTIFIER SEMI
+                |   Type IDENTIFIER ASG Expr SEMI
+                |   Type IDENTIFIER LBRACKET INTLIT RBRACKET SEMI
+                |   rw_CONST IDENTIFIER ASG Expr SEMI
+                ;
+//Stmts  →  Stmt Stmts
+//       |  Stmt
+Stmts           ::= Stmt Stmts
+                |   Stmt
+                ;
+//Stmt  →  if ( Expr ) Stmt
+//      |  if ( Expr ) Stmt else Stmt
+//      |  while ( Expr ) Stmt
+//      |  id : while ( Expr ) Stmt
+//      |  Name = Expr ;
+//      |  read ( Readlist ) ;
+//      |  print ( Printlist ) ;
+//      |  id ( ) ;
+//      |  id ( Args ) ;
+//      |  return ;
+//      |  return Expr ;
+//      |  break id ;
+//      |  continue id ;
+//      |  { Fielddecls Stmts } OptionalSemi
+Stmt            ::= rw_IF LPAREN Expr RPAREN Stmt
+                |   rw_IF LPAREN Expr RPAREN Stmt rw_ELSE Stmt
+                |   rw_WHILE LPAREN Expr RPAREN Stmt
+                |   IDENTIFIER COLON rw_WHILE LPAREN Expr RPAREN Stmt
+                |   Name ASG Expr SEMI
+                |   rw_READ LPAREN Readlist RPAREN SEMI
+                |   rw_PRINT LPAREN Printlist RPAREN SEMI
+                |   IDENTIFIER LPAREN RPAREN SEMI
+                |   IDENTIFIER LPAREN Args RPAREN SEMI
+                |   rw_RETURN SEMI
+                |   rw_RETURN Expr SEMI
+                |   rw_BREAK IDENTIFIER SEMI
+                |   rw_CONTINUE IDENTIFIER SEMI
+                |   LBRACE Fielddecls Stmts RBRACE OptionalSemi
+                ;
+//Type  →  int
+//      |  char
+//      |  bool
+Type            ::= rw_INT
+                |   rw_CHAR
+                |   rw_BOOL
+                ;
+//Args  →  Expr , Args
+//      |  Expr
+Args            ::= Expr COMMA Args
+                |   Expr
+                ;
+//Readlist  →  Name , Readlist
+//          |  Name
+Readlist        ::= Name COMMA Readlist
+                |   Name
+                ;
+//Printlist  →  Expr , Printlist
+//           |  Expr
+Printlist       ::= Expr COMMA Printlist
+                |   Expr
+                ;
+//Expr  →  Expr || Term
+//      |  Expr && Term
+//      |  Term
+Expr            ::= Expr COR Term
+                |   Expr CAND Term
+                |   Term
+                ;
+//Term  →  Factor < Factor
+//      |  Factor > Factor
+//      |  Factor <= Factor
+//      |  Factor >= Factor
+//      |  Factor == Factor
+//      |  Factor != Factor
+//      |  Factor
+Term            ::= Factor LT Factor
+                |   Factor GT Factor
+                |   Factor LEQ Factor
+                |   Factor GEQ Factor
+                |   Factor EQ Factor
+                |   Factor NOTEQ Factor
+                |   Factor
+                ;
+//Factor  →  Factor + Pri
+//        |  Factor - Pri
+//        |  Pri
+Factor          ::= Factor PLUS Pri
+                |   Factor MINUS Pri
+                |   Pri
+                ;
+//Pri →  Pri * Unary
+//    |  Pri / Unary
+//    |  Unary
+Pri             ::= Pri TIMES Unary
+                |   Pri SLASH Unary
+                |   Unary
+                ;
+//Unary  →  ! Unary
+//       |  ( Type ) Unary
+//       |  Unit
+Unary           ::= NOT Unary
+                |   LPAREN Type RPAREN Unary
+                |   Unit
+                ;
+//Unit  →  Name
+//      |  id ( )
+//      |  id ( Args )
+//      |  intlit
+//      |  charlit
+//      |  floatlit
+//      |  strlit
+//      |  true
+//      |  false
+//      |  ( Expr )
+Unit            ::= Name
+                |   IDENTIFIER LPAREN RPAREN
+                |   IDENTIFIER LPAREN Args RPAREN
+                |   INTLIT
+                |   CHARLIT
+                |   FLOATLIT
+                |   STRLIT
+                |   rw_TRUE
+                |   rw_FALSE
+                |   LPAREN Expr RPAREN
+                ;
+//name  →  id
+//      |  id [ Expr ]
+Name            ::= IDENTIFIER
+                |   IDENTIFIER LBRACKET Expr RBRACKET
+                ;

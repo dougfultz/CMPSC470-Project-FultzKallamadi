@@ -77,7 +77,12 @@ non terminal unaryNode          Unary;
 non terminal unitNode           Unit;
 non terminal nameNode           Name;
 
-/* Precedences */
+/* Precedences/Associativity */
+precedence left         CAND, COR, NOT;
+precedence nonassoc     EQ, NOTEQ, GEQ, GT, LEQ, LT;
+precedence left         PLUS, MINUS;
+precedence left         TIMES, SLASH;
+precedence right        Unary;
 
 /* The grammar */
 start with Program;

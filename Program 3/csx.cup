@@ -37,9 +37,9 @@ terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, 
 //Miscellaneous Symbols
 terminal CSXToken               COLON, COMMA, SEMI;
 //Error
-terminal CSXToken               error;
+//terminal CSXToken               error;
 //End of file
-terminal CSXToken               EOF;
+//terminal CSXToken               EOF;
 //Character Literal
 terminal CSXCharLitToken        CHARLIT;
 //Identifier

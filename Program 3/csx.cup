@@ -21,12 +21,32 @@ terminal CSXToken               SEMI, LPAREN, RPAREN, ASG, LBRACE, RBRACE;
 terminal CSXToken               PLUS, MINUS, rw_IF;
 
 /* Non terminals */
-non terminal csxLiteNode        prog;
-non terminal stmtsNode          stmts;
-non terminal stmtNode           stmt;
-non terminal exprNode           exp;
-non terminal nameNode           ident;
+non terminal csxNode            Program;
+non terminal memberDeclsNode    Memberdecls;
+non terminal fieldDeclsNode     Fielddecls;
+non terminal methodDecelsNode   Methoddecls;
+non terminal optionalSimiNode   OptionalSemi;
+non terminal methodDecelsNode   Methoddecl;
+non terminal argDeclsNode       Argdecls;
+non terminal argDeclNode        Argdecl;
+non terminal fieldDeclNode      Fielddecl;
+non terminal stmtsNode          Stmts;
+non terminal stmtNode           Stmt;
+non terminal typeNode           Type;
+non terminal argsNode           Args;
+non terminal readListNode       Readlist;
+non terminal printListNode      Printlist;
+non terminal exprNode           Expr;
+non terminal termNode           Term;
+non terminal factorNode         Factor;
+non terminal priNode            Pri;
+non terminal unaryNode          Unary;
+non terminal unitNode           Unit;
+non terminal nameNode           name;
 
+/* Precedences */
+
+/* The grammar */
 start with prog;
 
 prog        ::= LBRACE:l stmts:s RBRACE

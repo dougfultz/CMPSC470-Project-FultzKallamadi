@@ -90,8 +90,8 @@ precedence right        NOT;
 start with Program;
 
 //Program  →  class id { Memberdecls }
-Program         ::= rw_CLASS:class IDENTIFIER:id LBRACE Memberdecls:members RBRACE
-                    {: RESULT= new csxProgramNode(id,members,class.linenum,class.colnum); :}
+Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
+                    {: RESULT= new csxProgramNode(id,members,cl.linenum,cl.colnum); :}
                 ;
 //Memberdecls  →  Fielddecl Memberdecls
 //             |  Methoddecls
@@ -182,12 +182,12 @@ Stmts           ::= Stmt:stmt Stmts:stmts
 //      |  break id ;
 //      |  continue id ;
 //      |  { Fielddecls Stmts } OptionalSemi
-Stmt            ::= rw_IF:if LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
-                    {: RESULT= new stmtNode(expr,stmt,if.linenum,if.colnum); :}
-                |   rw_IF:if LPAREN Expr:expr RPAREN Stmt:stmttrue rw_ELSE Stmt:stmtfalse rw_ENDIF
-                    {: RESULT= new stmtNode(expr,stmttrue,stmtfalse,if.linenum,if.colnum); :}
-                |   rw_WHILE:while LPAREN Expr:expr RPAREN Stmt:stmt
-                    {: RESULT= new stmtNode(expr,stmt,while.linenum,while.colnum); :}
+Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
+                    {: RESULT= new stmtNode(expr,stmt,i.linenum,i.colnum); :}
+                |   rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmttrue rw_ELSE Stmt:stmtfalse rw_ENDIF
+                    {: RESULT= new stmtNode(expr,stmttrue,stmtfalse,i.linenum,i.colnum); :}
+                |   rw_WHILE:whil LPAREN Expr:expr RPAREN Stmt:stmt
+                    {: RESULT= new stmtNode(expr,stmt,whil.linenum,whil.colnum); :}
                 |   IDENTIFIER:id COLON rw_WHILE LPAREN Expr:expr RPAREN Stmt:stmt
                     {: RESULT= new stmtNode(id,expr,stmt,id.linenum,id.colnum); :}
                 |   Name:name ASG Expr:expr SEMI
@@ -200,14 +200,14 @@ Stmt            ::= rw_IF:if LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
                     {: RESULT= new stmtNode(id,id.linenum,id.colnum); :}
                 |   IDENTIFIER:id LPAREN Args:args RPAREN SEMI
                     {: RESULT= new stmtNode(id,args,id.linenum,id.colnum); :}
-                |   rw_RETURN:return SEMI
-                    {: RESULT= new stmtNode(return,return.linenum,return.colnum); :}
-                |   rw_RETURN:return Expr:expr SEMI
-                    {: RESULT= new stmtNode(return,expr,return.linenum,return.colnum); :}
-                |   rw_BREAK:break IDENTIFIER:id SEMI
-                    {: RESULT= new stmtNode(break,id,break.linenum,break.colnum); :}
-                |   rw_CONTINUE:continue IDENTIFIER:id SEMI
-                    {: RESULT= new stmtNode(continue,id,continue.linenum,continue.colnum); :}
+                |   rw_RETURN:ret SEMI
+                    {: RESULT= new stmtNode(ret,ret.linenum,ret.colnum); :}
+                |   rw_RETURN:ret Expr:expr SEMI
+                    {: RESULT= new stmtNode(ret,expr,ret.linenum,ret.colnum); :}
+                |   rw_BREAK:br IDENTIFIER:id SEMI
+                    {: RESULT= new stmtNode(br,id,br.linenum,br.colnum); :}
+                |   rw_CONTINUE:cont IDENTIFIER:id SEMI
+                    {: RESULT= new stmtNode(cont,id,cont.linenum,cont.colnum); :}
                 |   LBRACE:brace Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
                     {: RESULT= new stmtNode(fields,stmts,brace.linenum,brace.colnum); :}
                 ;
@@ -320,18 +320,18 @@ Unit            ::= Name:name
                     {: RESULT= new unitNode(id,id.linenum,id.colnum); :}
                 |   IDENTIFIER:id LPAREN Args:args RPAREN
                     {: RESULT= new unitNode(id,args,id.linenum,id.colnum); :}
-                |   INTLIT:int
-                    {: RESULT= new unitNode(int,int.linenum,int.colnum); :}
-                |   CHARLIT:char
-                    {: RESULT= new unitNode(char,char.linenum,char.colnum); :}
-                |   FLOATLIT:float
-                    {: RESULT= new unitNode(float,float.linenum,float.colnum); :}
+                |   INTLIT:i
+                    {: RESULT= new unitNode(i,i.linenum,i.colnum); :}
+                |   CHARLIT:c
+                    {: RESULT= new unitNode(c,c.linenum,c.colnum); :}
+                |   FLOATLIT:f
+                    {: RESULT= new unitNode(f,f.linenum,f.colnum); :}
                 |   STRLIT:str
                     {: RESULT= new unitNode(str,str.linenum,str.colnum); :}
-                |   rw_TRUE:true
-                    {: RESULT= new unitNode(true,true.linenum,true.colnum); :}
-                |   rw_FALSE:false
-                    {: RESULT= new unitNode(false,false.linenum,false.colnum); :}
+                |   rw_TRUE:t
+                    {: RESULT= new unitNode(t,t.linenum,t.colnum); :}
+                |   rw_FALSE:f
+                    {: RESULT= new unitNode(f,f.linenum,f.colnum); :}
                 |   LPAREN:paren Expr:expr RPAREN
                     {: RESULT= new unitNode(expr,paren.linenum,paren.colnum); :}
                 ;

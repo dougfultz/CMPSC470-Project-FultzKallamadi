@@ -54,12 +54,12 @@ terminal CSXFloatLitToken       FLOATLIT;
 terminal CSXStringLitToken      STRLIT;
 
 /* Non terminals */
-non terminal csxProgramNode     Program;
+non terminal csxLiteNode        Program;
 non terminal memberDeclsNode    Memberdecls;
 non terminal fieldDeclsNode     Fielddecls;
-non terminal methodDecelsNode   Methoddecls;
-non terminal optionalSimiNode   OptionalSemi;
-non terminal methodDecelNode    Methoddecl;
+non terminal methodDeclsNode    Methoddecls;
+non terminal optionalSemiNode   OptionalSemi;
+non terminal methodDeclNode     Methoddecl;
 non terminal argDeclsNode       Argdecls;
 non terminal argDeclNode        Argdecl;
 non terminal fieldDeclNode      Fielddecl;
@@ -73,7 +73,7 @@ non terminal exprNode           Expr;
 non terminal termNode           Term;
 non terminal factorNode         Factor;
 non terminal priNode            Pri;
-non terminal unaryNode          Unary;
+non terminal unaryOpNode        Unary;
 non terminal unitNode           Unit;
 non terminal nameNode           Name;
 

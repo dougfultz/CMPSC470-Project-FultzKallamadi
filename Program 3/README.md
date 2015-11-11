@@ -4,16 +4,24 @@ Doug Fultz
 
 Sujay Kallamadi
 
-## How to
-
-### Requirements
+## Requirements
 
 1. Sun Lab machine
 
-### Process CUP file
+## How To: CSX lite
+
+1. Process CUP file
 
 `# java -jar tools/java-cup-10l.jar lite.cup`
 
-### Process JFlex file
+2. Process JFlex file
 
 `# java -jar tools/JFlex.jar lite.jflex`
+
+3. Compile java files
+
+`# javac -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ *.java`
+
+4. Execute P3 program against test file
+
+`# java -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ P3 test.lite`

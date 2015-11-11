@@ -8,6 +8,12 @@ Sujay Kallamadi
 
 1. Sun Lab machine
 
+## How To: CSX
+
+1. Process CUP file
+
+   `# java -jar tools/java-cup-10l.jar csx.cup`
+
 ## How To: CSX lite
 
 1. Process CUP file

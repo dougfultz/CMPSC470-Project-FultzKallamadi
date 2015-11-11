@@ -12,16 +12,16 @@ Sujay Kallamadi
 
 1. Process CUP file
 
-`# java -jar tools/java-cup-10l.jar lite.cup`
+   `# java -jar tools/java-cup-10l.jar lite.cup`
 
 2. Process JFlex file
 
-`# java -jar tools/JFlex.jar lite.jflex`
+   `# java -jar tools/JFlex.jar lite.jflex`
 
 3. Compile java files
 
-`# javac -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ *.java`
+   `# javac -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ *.java`
 
 4. Execute P3 program against test file
 
-`# java -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ P3 test.lite`
+   `# java -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ P3 test.lite`

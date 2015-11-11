@@ -223,9 +223,9 @@ Type            ::= rw_INT:type
                 ;
 //Args  →  Expr , Args
 //      |  Expr
-Args            ::= Expr:e COMMA Args:a
+Args            ::= Expr:expr COMMA Args:args
                     {: RESULT= new argsNode(expr,args,expr.linenum,expr.colnum); :}
-                |   Expr:e
+                |   Expr:expr
                     {: RESULT= new argsNode(expr,expr.linenum,expr.colnum); :}
                 ;
 //Readlist  →  Name , Readlist

@@ -25,3 +25,7 @@ Sujay Kallamadi
 4. Execute P3 program against test file
 
    `# java -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ P3 test.lite`
+
+5. Clean up directory
+
+   `# rm ./*.class`

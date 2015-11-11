@@ -1,4 +1,4 @@
-/** csx CUP Specification
+﻿/** csx CUP Specification
  *  @author Doug Fultz
  *  @author Sujay Kallamadi
  */
@@ -223,9 +223,9 @@ Type            ::= rw_INT:type
                 ;
 //Args  →  Expr , Args
 //      |  Expr
-Args            ::= Expr:expr COMMA Args,args
+Args            ::= Expr:e COMMA Args:a
                     {: RESULT= new argsNode(expr,args,expr.linenum,expr.colnum); :}
-                |   Expr:expr
+                |   Expr:e
                     {: RESULT= new argsNode(expr,expr.linenum,expr.colnum); :}
                 ;
 //Readlist  →  Name , Readlist

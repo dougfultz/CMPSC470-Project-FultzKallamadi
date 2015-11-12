@@ -117,7 +117,7 @@ Methoddecls     ::= Methoddecl:method Methoddecls:methods
 //OptionalSemi  →  ;
 //              |  λ
 OptionalSemi    ::= SEMI:semi
-                    {: RESULT= new optionalSimiNode(semi.linenum, semi.colnum); :]
+                    {: RESULT= new optionalSimiNode(semi.linenum, semi.colnum); :}
                 |
                     {: RESULT= optionalSimiNode.NULL; :}
                 ;

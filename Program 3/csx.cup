@@ -98,28 +98,28 @@ Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
 Memberdecls     ::= Fielddecl:field Memberdecls:members
                     {: RESULT= new memberDeclsNode(field,members,field.linenum,field.colnum); :}
                 |   Methoddecls:methods
-                    {: RESULT= new memberDeclsNode(methods,methods.linenum,methods.colnum); :}
+                    {: RESULT= new methodDeclsNode(); :}
                 ;
 //Fielddecls →  Fielddecl Fielddecls
 //           |  λ
 Fielddecls      ::= Fielddecl:field Fielddecls:fields
                     {: RESULT= new fieldDeclsNode(field,fields,field.linenum,field.colnum); :}
                 |
-                    {: RESULT= fieldDeclsNode.NULL; :}
+                    {: RESULT= new nullFieldDeclsNode(); :}
                 ;
 //Methoddecls  →  Methoddecl Methoddecls
 //             |  λ
 Methoddecls     ::= Methoddecl:method Methoddecls:methods
-                    {: RESULT= new methodDecelsNode(method,methods,method.linenum,method.colnum); :}
+                    {: RESULT= new methodDeclsNode(method,methods,method.linenum,method.colnum); :}
                 |
-                    {: RESULT= memberDeclsNode.NULL; :}
+                    {: RESULT= new nullMethodDeclsNode(); :}
                 ;
 //OptionalSemi  →  ;
 //              |  λ
 OptionalSemi    ::= SEMI:semi
-                    {: RESULT= new optionalSimiNode(semi.linenum, semi.colnum); :}
+                    {:  :}
                 |
-                    {: RESULT= optionalSimiNode.NULL; :}
+                    {:  :}
                 ;
 //Methoddecl →  void id ( ) { Fielddecls Stmts } OptionalSemi
 //           |  void id ( Argdecls ) { Fielddecls Stmts } OptionalSemi

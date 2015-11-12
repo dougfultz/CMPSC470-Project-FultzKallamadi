@@ -214,12 +214,15 @@ Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
 //Type  →  int
 //      |  char
 //      |  bool
+//	|  float
 Type            ::= rw_INT:type
                     {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
                 |   rw_CHAR:type
                     {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
                 |   rw_BOOL:type
                     {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
+		|   rw_FLOAT:type
+		    {: RESULT= new typeNode(type,type.linenum,type.colnum); :}
                 ;
 //Args  →  Expr , Args
 //      |  Expr

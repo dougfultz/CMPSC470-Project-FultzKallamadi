@@ -33,7 +33,7 @@ terminal CSXToken               LBRACKET, RBRACKET;
 //Parenthesis
 terminal CSXToken               LPAREN, RPAREN;
 //Reserved Words
-terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ENDIF, rw_ELSE, rw_FALSE, rw_IF, rw_INT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE;
+terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ENDIF, rw_ELSE, rw_FALSE, rw_IF, rw_INT, rw_FLOAT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE;
 //Unused Reserved Words
 //terminal CSXToken               rw_FLOAT;
 //Miscellaneous Symbols

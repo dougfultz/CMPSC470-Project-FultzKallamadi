@@ -14,6 +14,14 @@ Sujay Kallamadi
 
    `# java -jar tools/java-cup-10l.jar csx.cup`
 
+2. Process JFlex file
+
+   `# java -jar tools/JFlex.jar csx.jflex`
+
+3. Compile java files
+
+   `# javac -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ *.java`
+
 ## How To: CSX lite
 
 1. Process CUP file

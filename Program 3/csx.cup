@@ -68,7 +68,7 @@ non terminal stmtNode           Stmt;
 non terminal typeNode           Type;
 non terminal argsNode           Args;
 non terminal readListNode       Readlist;
-non terminal printListNode      Printlist;
+non terminal stmtNode           Printlist;
 non terminal exprNode           Expr;
 non terminal exprNode           Term;
 non terminal exprNode           Factor;
@@ -241,9 +241,17 @@ Readlist        ::= Name:name COMMA Readlist:list
 //Printlist  →  Expr , Printlist
 //           |  Expr
 Printlist       ::= Expr:expr COMMA Printlist:list
-                    {: RESULT= new printNode(expr,list,expr.linenum,expr.colnum); :}
+                    {: RESULT= new printNode(
+                        expr,
+                        (printNode)list,
+                        expr.linenum,
+                        expr.colnum); :}
                 |   Expr:expr
-                    {: RESULT= expr; :}
+                    {: RESULT= new printNode(
+                        expr,
+                        printNode.NULL,
+                        expr.linenum,
+                        expr.colnum); :}
                 ;
 //Expr  →  Expr || Term
 //      |  Expr && Term

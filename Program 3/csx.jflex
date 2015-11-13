@@ -33,9 +33,9 @@ class CSXIntLitToken extends CSXToken {
 	}
 }
 
-class CSXFlostLitToken extends CSXToken {
+class CSXFloatLitToken extends CSXToken {
 	float floatValue;
-	CSXFlostLitToken (float val, Position p)
+	CSXFloatLitToken (float val, Position p)
 	{
 		super(p);
 		floatValue=val;

@@ -324,7 +324,7 @@ Unit            ::= Name:name
                 |   IDENTIFIER:id LPAREN Args:args RPAREN
                     {: RESULT= new callNode(id,args,id.linenum,id.colnum); :}
                 |   INTLIT:i
-                    {: RESULT= new intLitNode(i,i.linenum,i.colnum); :}
+                    {: RESULT= new intLitNode(i.intValue,i.linenum,i.colnum); :}
                 |   CHARLIT:c
                     {: RESULT= new charLitNode(c.charValue,c.linenum,c.colnum); :}
                 |   FLOATLIT:f

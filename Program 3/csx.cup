@@ -97,10 +97,8 @@ Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
 //             |  Methoddecls
 Memberdecls     ::= Fielddecl:field Memberdecls:members
                     //TODO{: RESULT= new memberDeclsNode(field,members,field.linenum,field.colnum); :}
-		    //{: RESULT= new memberDeclsNode(new fieldDeclsNode(field, members.fields, field.linenum, field.colnum), members.methods, field.linenum, field.colnum); :}
                 |   Methoddecls:methods
                     //TODO{: RESULT= new methodDeclsNode(); :}
-		    //{: RESULT= new memberDeclsNode(fieldDeclsNode.NULL, methods, methods.linenum, methods.colnum); :}
                 ;
 //Fielddecls →  Fielddecl Fielddecls
 //           |  λ
@@ -338,7 +336,8 @@ Unit            ::= Name:name
                 |   rw_FALSE:f
                     {: RESULT= new falseNode(f.linenum,f.colnum); :}
                 |   LPAREN:paren Expr:expr RPAREN
-                    {: RESULT= new exprNode(paren.linenum,paren.colnum); :}
+                    //From page 4 of CUP User's Manual
+                    {: RESULT= expr; :}
                 ;
 //name  →  id
 //      |  id [ Expr ]

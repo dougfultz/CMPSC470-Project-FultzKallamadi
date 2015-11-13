@@ -139,7 +139,7 @@ Methoddecl      ::= rw_VOID:type IDENTIFIER:id LPAREN RPAREN LBRACE Fielddecls:f
 Argdecls        ::= Argdecl:argdec COMMA Argdecls:argdecs
                     {: RESULT= new argDeclsNode(argdec,argdecs,argdec.linenum,argdec.colnum); :}
                 |   Argdecl:argdec
-                    {: RESULT= new argDeclsNode(argdec,null,argdec.linenum,argdec.colnum); :}
+                    {: RESULT= argdec; :}
                 ;
 //Argdecl  →  Type id
 //         |  Type id [ ]
@@ -166,7 +166,7 @@ Fielddecl       ::= Type:type IDENTIFIER:id SEMI
 Stmts           ::= Stmt:stmt Stmts:stmts
                     {: RESULT= new stmtsNode(stmt,stmts,stmt.linenum,stmt.colnum); :}
                 |   Stmt:stmt
-                    {: RESULT= new stmtsNode(stmt,null,stmt.linenum,stmt.colnum); :}
+                    {: RESULT= stmt; :}
                 ;
 //Stmt  →  if ( Expr ) Stmt
 //      |  if ( Expr ) Stmt else Stmt
@@ -222,28 +222,28 @@ Type            ::= rw_INT:type
                 |   rw_BOOL:type
                     {: RESULT= new boolTypeNode(type.linenum,type.colnum); :}
                 |   rw_FLOAT:type
-                    {: RESULT= new floatTypeNode(type.linenum,type.colnum); :}
+                    {: RESULT= type; :}
                 ;
 //Args  →  Expr , Args
 //      |  Expr
 Args            ::= Expr:expr COMMA Args:args
                     {: RESULT= new argDeclsNode(expr,args,expr.linenum,expr.colnum); :}
                 |   Expr:expr
-                    {: RESULT= new argDeclsNode(expr,null,expr.linenum,expr.colnum); :}
+                    {: RESULT=expr; :}
                 ;
 //Readlist  →  Name , Readlist
 //          |  Name
 Readlist        ::= Name:name COMMA Readlist:list
                     {: RESULT= new readNode(name,list,name.linenum,name.colnum); :}
                 |   Name:name
-                    {: RESULT= new readNode(name,null,name.linenum,name.colnum); :}
+                    {: RESULT= name; :}
                 ;
 //Printlist  →  Expr , Printlist
 //           |  Expr
 Printlist       ::= Expr:expr COMMA Printlist:list
                     {: RESULT= new printNode(expr,list,expr.linenum,expr.colnum); :}
                 |   Expr:expr
-                    {: RESULT= new printNode(expr,null,expr.linenum,expr.colnum); :}
+                    {: RESULT= expr; :}
                 ;
 //Expr  →  Expr || Term
 //      |  Expr && Term

@@ -542,6 +542,13 @@ class binaryOpNode extends exprNode {
 			case sym.MINUS:
 				System.out.print(" - ");
 				break;
+			case sym.SLASH:
+				System.out.print(" / ");
+				break;
+			case sym.TIMES:
+				System.out.print(" * ");
+				break;
+
 			default:
 				throw new Error("printOp: case not found");
 		}

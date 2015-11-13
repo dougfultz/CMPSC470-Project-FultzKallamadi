@@ -70,7 +70,7 @@ non terminal argsNode           Args;
 non terminal readListNode       Readlist;
 non terminal printListNode      Printlist;
 non terminal exprNode           Expr;
-non terminal termNode           Term;
+non terminal exprNode           Term;
 non terminal exprNode           Factor;
 non terminal exprNode           Pri;
 non terminal exprNode           Unary;
@@ -249,9 +249,9 @@ Printlist       ::= Expr:expr COMMA Printlist:list
 //      |  Expr && Term
 //      |  Term
 Expr            ::= Expr:expr COR:op Term:term
-                    {: RESULT= new binaryOpNode(expr,op,term,expr.linenum,expr.colnum); :}
+                    {: RESULT= new binaryOpNode(expr,sym.COR,term,expr.linenum,expr.colnum); :}
                 |   Expr:expr CAND:op Term:term
-                    {: RESULT= new binaryOpNode(expr,op,term,expr.linenum,expr.colnum); :}
+                    {: RESULT= new binaryOpNode(expr,sym.CAND,term,expr.linenum,expr.colnum); :}
                 |   Term:term
                     {: RESULT= term; :}
                 ;
@@ -263,17 +263,17 @@ Expr            ::= Expr:expr COR:op Term:term
 //      |  Factor != Factor
 //      |  Factor
 Term            ::= Factor:left LT:op Factor:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.LT,right,left.linenum,left.colnum); :}
                 |   Factor:left GT:op Factor:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.GT,right,left.linenum,left.colnum); :}
                 |   Factor:left LEQ:op Factor:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.LEQ,right,left.linenum,left.colnum); :}
                 |   Factor:left GEQ:op Factor:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.GEQ,right,left.linenum,left.colnum); :}
                 |   Factor:left EQ:op Factor:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.EQ,right,left.linenum,left.colnum); :}
                 |   Factor:left NOTEQ:op Factor:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.NOTEQ,right,left.linenum,left.colnum); :}
                 |   Factor:left
                     {: RESULT= left; :}
                 ;

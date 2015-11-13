@@ -97,8 +97,10 @@ Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
 //             |  Methoddecls
 Memberdecls     ::= Fielddecl:field Memberdecls:members
                     //TODO{: RESULT= new memberDeclsNode(field,members,field.linenum,field.colnum); :}
+		    //{: RESULT= new memberDeclsNode(new fieldDeclsNode(field, members.fields, field.linenum, field.colnum), members.methods, field.linenum, field.colnum); :}
                 |   Methoddecls:methods
                     //TODO{: RESULT= new methodDeclsNode(); :}
+		    //{: RESULT= new memberDeclsNode(fieldDeclsNode.NULL, methods, methods.linenum, methods.colnum); :}
                 ;
 //Fielddecls →  Fielddecl Fielddecls
 //           |  λ

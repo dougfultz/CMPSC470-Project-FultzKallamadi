@@ -52,8 +52,8 @@ class CSXIdentifierToken extends CSXToken {
 }
 
 class CSXCharLitToken extends CSXToken {
-	String charValue;
-	CSXCharLitToken(String val, Position p)
+	char charValue;
+	CSXCharLitToken(char val, Position p)
 	{
 		super(p);
 		charValue=val;

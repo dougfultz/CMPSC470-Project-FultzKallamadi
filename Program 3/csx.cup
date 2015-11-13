@@ -318,7 +318,7 @@ Unary           ::= NOT:op Unary:unary
 //      |  false
 //      |  ( Expr )
 Unit            ::= Name:name
-                    {: RESULT= new exprNode(name.linenum,name.colnum); :}
+                    {: RESULT= name; :}
                 |   IDENTIFIER:id LPAREN RPAREN
                     {: RESULT= new fctCallNode(
                         new identNode(id.identifierText,id.linenum,id.colnum),

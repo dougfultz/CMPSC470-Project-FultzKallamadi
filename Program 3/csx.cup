@@ -301,7 +301,7 @@ Pri             ::= Pri:left TIMES:op Unary:right
 //       |  ( Type ) Unary
 //       |  Unit
 Unary           ::= NOT:op Unary:unary
-                    {: RESULT= new unaryOpNode(op,unary,op.linenum,op.colnum); :}
+                    {: RESULT= new unaryOpNode(sym.NOT,unary,op.linenum,op.colnum); :}
                 |   LPAREN:paren Type:type RPAREN Unary:unary
                     {: RESULT= new castNode(type,unary,paren.linenum,paren.colnum); :}
                 |   Unit:unit

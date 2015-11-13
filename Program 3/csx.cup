@@ -74,7 +74,7 @@ non terminal termNode           Term;
 non terminal factorNode         Factor;
 non terminal priNode            Pri;
 non terminal unaryOpNode        Unary;
-non terminal unitNode           Unit;
+non terminal exprNode           Unit;
 non terminal nameNode           Name;
 
 /* Precedences/Associativity */
@@ -341,7 +341,15 @@ Unit            ::= Name:name
 //name  →  id
 //      |  id [ Expr ]
 Name            ::= IDENTIFIER:id
-                    {: RESULT= new nameNode(id,null,id.linenum,id.colnum); :}
+                    {: RESULT= new nameNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        exprNode.NULL,
+                        id.linenum,
+                        id.colnum); :}
                 |   IDENTIFIER:id LBRACKET Expr:expr RBRACKET
-                    {: RESULT= new nameNode(id,expr,id.linenum,id.colnum); :}
+                    {: RESULT= new nameNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        expr,
+                        id.linenum,
+                        id.colnum); :}
                 ;

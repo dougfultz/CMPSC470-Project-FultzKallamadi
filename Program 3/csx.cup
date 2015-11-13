@@ -330,7 +330,7 @@ Unit            ::= Name:name
                 |   FLOATLIT:f
                     {: RESULT= new floatLitNode(f,f.linenum,f.colnum); :}
                 |   STRLIT:str
-                    {: RESULT= new strLitNode(str,str.linenum,str.colnum); :}
+                    {: RESULT= new strLitNode(str.stringValue,str.linenum,str.colnum); :}
                 |   rw_TRUE:t
                     {: RESULT= new trueNode(t.linenum,t.colnum); :}
                 |   rw_FALSE:f

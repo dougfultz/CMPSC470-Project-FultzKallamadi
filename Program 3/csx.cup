@@ -71,7 +71,7 @@ non terminal readListNode       Readlist;
 non terminal printListNode      Printlist;
 non terminal exprNode           Expr;
 non terminal termNode           Term;
-non terminal factorNode         Factor;
+non terminal exprNode           Factor;
 non terminal exprNode           Pri;
 non terminal exprNode           Unary;
 non terminal exprNode           Unit;
@@ -281,9 +281,9 @@ Term            ::= Factor:left LT:op Factor:right
 //        |  Factor - Pri
 //        |  Pri
 Factor          ::= Factor:left PLUS:op Pri:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.PLUS,right,left.linenum,left.colnum); :}
                 |   Factor:left MINUS:op Pri:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.MINUS,right,left.linenum,left.colnum); :}
                 |   Pri:left
                     {: RESULT= left; :}
                 ;

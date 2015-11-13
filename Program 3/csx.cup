@@ -326,7 +326,7 @@ Unit            ::= Name:name
                 |   INTLIT:i
                     {: RESULT= new intLitNode(i,i.linenum,i.colnum); :}
                 |   CHARLIT:c
-                    {: RESULT= new charLitNode(c,c.linenum,c.colnum); :}
+                    {: RESULT= new charLitNode(c.charValue,c.linenum,c.colnum); :}
                 |   FLOATLIT:f
                     {: RESULT= new floatLitNode(f.floatValue,f.linenum,f.colnum); :}
                 |   STRLIT:str

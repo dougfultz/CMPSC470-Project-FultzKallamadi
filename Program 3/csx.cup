@@ -291,9 +291,9 @@ Factor          ::= Factor:left PLUS:op Pri:right
 //    |  Pri / Unary
 //    |  Unary
 Pri             ::= Pri:left TIMES:op Unary:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.TIMES,right,left.linenum,left.colnum); :}
                 |   Pri:left SLASH:op Unary:right
-                    {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
+                    {: RESULT= new binaryOpNode(left,sym.SLASH,right,left.linenum,left.colnum); :}
                 |   Unary:left
                     {: RESULT= left; :}
                 ;

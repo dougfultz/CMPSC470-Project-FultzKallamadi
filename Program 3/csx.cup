@@ -328,7 +328,7 @@ Unit            ::= Name:name
                 |   CHARLIT:c
                     {: RESULT= new charLitNode(c,c.linenum,c.colnum); :}
                 |   FLOATLIT:f
-                    {: RESULT= new floatLitNode(f,f.linenum,f.colnum); :}
+                    {: RESULT= new floatLitNode(f.floatValue,f.linenum,f.colnum); :}
                 |   STRLIT:str
                     {: RESULT= new strLitNode(str.stringValue,str.linenum,str.colnum); :}
                 |   rw_TRUE:t

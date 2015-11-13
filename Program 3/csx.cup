@@ -253,7 +253,7 @@ Expr            ::= Expr:expr COR:op Term:term
                 |   Expr:expr CAND:op Term:term
                     {: RESULT= new binaryOpNode(expr,op,term,expr.linenum,expr.colnum); :}
                 |   Term:term
-                    {: RESULT= new exprNode(term.linenum,term.colnum); :}
+                    {: RESULT= term; :}
                 ;
 //Term  →  Factor < Factor
 //      |  Factor > Factor
@@ -275,7 +275,7 @@ Term            ::= Factor:left LT:op Factor:right
                 |   Factor:left NOTEQ:op Factor:right
                     {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
                 |   Factor:left
-                    {: RESULT= new exprNode(left.linenum,left.colnum); :}
+                    {: RESULT= left; :}
                 ;
 //Factor  →  Factor + Pri
 //        |  Factor - Pri
@@ -285,7 +285,7 @@ Factor          ::= Factor:left PLUS:op Pri:right
                 |   Factor:left MINUS:op Pri:right
                     {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
                 |   Pri:left
-                    {: RESULT= new exprNode(left.linenum,left.colnum); :}
+                    {: RESULT= left; :}
                 ;
 //Pri →  Pri * Unary
 //    |  Pri / Unary
@@ -295,7 +295,7 @@ Pri             ::= Pri:left TIMES:op Unary:right
                 |   Pri:left SLASH:op Unary:right
                     {: RESULT= new binaryOpNode(left,op,right,left.linenum,left.colnum); :}
                 |   Unary:left
-                    {: RESULT= new exprNode(left.linenum,left.colnum); :}
+                    {: RESULT= left; :}
                 ;
 //Unary  →  ! Unary
 //       |  ( Type ) Unary
@@ -305,7 +305,7 @@ Unary           ::= NOT:op Unary:unary
                 |   LPAREN:paren Type:type RPAREN Unary:unary
                     {: RESULT= new castNode(type,unary,paren.linenum,paren.colnum); :}
                 |   Unit:unit
-                    {: RESULT= new exprNode(left.linenum,left.colnum); :}
+                    {: RESULT= unit; :}
                 ;
 //Unit  →  Name
 //      |  id ( )

@@ -126,13 +126,41 @@ OptionalSemi    ::= SEMI:semi
 //           |  Type id ( ) { Fielddecls Stmts } OptionalSemi
 //           |  Type id ( Argdecls ){ Fielddecls Stmts } OptionalSemi
 Methoddecl      ::= rw_VOID:type IDENTIFIER:id LPAREN RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
-                    {: RESULT= new methodDeclNode(id,null,null,fields,stmts,type.linenum,type.colnum); :}
+                    {: RESULT= new methodDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        argDeclsNode.NULL,
+                        new voidTypeNode(type.linenum,type.colnum),
+                        fields,
+                        stmts,
+                        type.linenum,
+                        type.colnum); :}
                 |   rw_VOID:type IDENTIFIER:id LPAREN Argdecls:args RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
-                    {: RESULT= new methodDeclNode(id,args,null,fields,stmts,type.linenum,type.colnum); :}
+                    {: RESULT= new methodDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        args,
+                        new voidTypeNode(type.linenum,type.colnum),
+                        fields,
+                        stmts,
+                        type.linenum,
+                        type.colnum); :}
                 |   Type:type IDENTIFIER:id LPAREN RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
-                    {: RESULT= new methodDeclNode(id,null,type,fields,stmts,type.linenum,type.colnum); :}
+                    {: RESULT= new methodDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        argDeclsNode.NULL,
+                        type,
+                        fields,
+                        stmts,
+                        type.linenum,
+                        type.colnum); :}
                 |   Type:type IDENTIFIER:id LPAREN Argdecls:args RPAREN LBRACE Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
-                    {: RESULT= new methodDeclNode(id,args,type,fields,stmts,type.linenum,type.colnum); :}
+                    {: RESULT= new methodDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        args,
+                        type,
+                        fields,
+                        stmts,
+                        type.linenum,
+                        type.colnum); :}
                 ;
 //Argdecls  →  Argdecl , Argdecls
 //          |  Argdecl

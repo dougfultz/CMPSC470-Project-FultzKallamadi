@@ -58,7 +58,7 @@ non terminal classNode          Program;
 non terminal memberDeclsNode    Memberdecls;
 non terminal fieldDeclsNode     Fielddecls;
 non terminal methodDeclsNode    Methoddecls;
-non terminal optionalSemiNode   OptionalSemi;
+non terminal stmtNode           OptionalSemi;
 non terminal methodDeclNode     Methoddecl;
 non terminal argDeclsNode       Argdecls;
 non terminal argDeclNode        Argdecl;
@@ -96,30 +96,38 @@ Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
 //Memberdecls  →  Fielddecl Memberdecls
 //             |  Methoddecls
 Memberdecls     ::= Fielddecl:field Memberdecls:members
-                    //TODO{: RESULT= new memberDeclsNode(field,members,field.linenum,field.colnum); :}
+                    {: RESULT= new memberDeclsNode(
+                        (declNode)field,
+                        methodDeclsNode.NULL,
+                        field.linenum,
+                        field.colnum); :}
                 |   Methoddecls:methods
-                    //TODO{: RESULT= new methodDeclsNode(); :}
+                    {: RESULT= new memberDeclsNode(
+                        fieldDeclsNode.NULL,
+                        methods,
+                        methods.linenum,
+                        methods.colnum); :}
                 ;
 //Fielddecls →  Fielddecl Fielddecls
 //           |  λ
 Fielddecls      ::= Fielddecl:field Fielddecls:fields
                     {: RESULT= new fieldDeclsNode(field,fields,field.linenum,field.colnum); :}
                 |
-                    {: RESULT= new nullFieldDeclsNode(); :}
+                    {: RESULT= fieldDeclsNode.NULL; :}
                 ;
 //Methoddecls  →  Methoddecl Methoddecls
 //             |  λ
 Methoddecls     ::= Methoddecl:method Methoddecls:methods
                     {: RESULT= new methodDeclsNode(method,methods,method.linenum,method.colnum); :}
                 |
-                    {: RESULT= new nullMethodDeclsNode(); :}
+                    {: RESULT= methodDeclsNode.NULL; :}
                 ;
 //OptionalSemi  →  ;
 //              |  λ
 OptionalSemi    ::= SEMI:semi
-                    {:  :}
+                    {: RESULT= stmtNode.NULL; :}
                 |
-                    {:  :}
+                    {: RESULT= stmtNode.NULL; :}
                 ;
 //Methoddecl →  void id ( ) { Fielddecls Stmts } OptionalSemi
 //           |  void id ( Argdecls ) { Fielddecls Stmts } OptionalSemi

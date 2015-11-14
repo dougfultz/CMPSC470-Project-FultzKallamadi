@@ -227,9 +227,17 @@ Type            ::= rw_INT:type
 //Args  →  Expr , Args
 //      |  Expr
 Args            ::= Expr:expr COMMA Args:args
-                    {: RESULT= new argDeclsNode(expr,args,expr.linenum,expr.colnum); :}
+                    {: RESULT= new argsNode(
+                        expr,
+                        args,
+                        expr.linenum,
+                        expr.colnum); :}
                 |   Expr:expr
-                    {: RESULT=expr; :}
+                    {: RESULT= new argsNode(
+                        expr,
+                        argsNode.NULL,
+                        expr.linenum,
+                        expr.colnum); :}
                 ;
 //Readlist  →  Name , Readlist
 //          |  Name

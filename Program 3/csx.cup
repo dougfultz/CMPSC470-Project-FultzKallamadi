@@ -144,9 +144,17 @@ Argdecls        ::= Argdecl:argdec COMMA Argdecls:argdecs
 //Argdecl  →  Type id
 //         |  Type id [ ]
 Argdecl         ::= Type:type IDENTIFIER:id
-                    {: RESULT= new valArgDeclNode(id,type,type.linenum,type.colnum); :}
+                    {: RESULT= new valArgDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        type,
+                        type.linenum,
+                        type.colnum); :}
                 |   Type:type IDENTIFIER:id LBRACKET RBRACKET
-                    {: RESULT= new arrayArgDeclNode(type,id,type.linenum,type.colnum); :}
+                    {: RESULT= new arrayArgDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        type,
+                        type.linenum,
+                        type.colnum); :}
                 ;
 //Fielddecl  →  Type id ;
 //           |  Type id = Expr ;

@@ -62,7 +62,7 @@ non terminal optionalSemiNode   OptionalSemi;
 non terminal methodDeclNode     Methoddecl;
 non terminal argDeclsNode       Argdecls;
 non terminal argDeclNode        Argdecl;
-non terminal fieldDeclNode      Fielddecl;
+non terminal declNode           Fielddecl;
 non terminal stmtsNode          Stmts;
 non terminal stmtNode           Stmt;
 non terminal typeNode           Type;
@@ -153,20 +153,39 @@ Argdecl         ::= Type:type IDENTIFIER:id
 //           |  Type id [ intlit ] ;
 //           |  const id = Expr ;
 Fielddecl       ::= Type:type IDENTIFIER:id SEMI
-                    {: RESULT= new varDeclNode(id,type,null,type.linenum,type.colnum); :}
+                    {: RESULT= new varDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        type,
+                        exprNode.NULL,
+                        type.linenum,
+                        type.colnum); :}
                 |   Type:type IDENTIFIER:id ASG Expr:expr SEMI
-                    {: RESULT= new varDeclNode(id,type,expr,type.linenum,type.colnum); :}
-                |   Type:type IDENTIFIER:id LBRACKET INTLIT:loc RBRACKET SEMI
-                    {: RESULT= new arrayDeclNode(id,type,loc,type.linenum,type.colnum); :}
+                    {: RESULT= new varDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        type,
+                        expr,
+                        type.linenum,
+                        type.colnum); :}
+                |   Type:type IDENTIFIER:id LBRACKET INTLIT:size RBRACKET SEMI
+                    {: RESULT= new arrayDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        type,
+                        new intLitNode(size.intValue,size.linenum,size.colnum),
+                        type.linenum,
+                        type.colnum); :}
                 |   rw_CONST:type IDENTIFIER:id ASG Expr:expr SEMI
-                    {: RESULT= new constDeclNode(id,expr,type.linenum,type.colnum); :}
+                    {: RESULT= new constDeclNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        expr,
+                        type.linenum,
+                        type.colnum); :}
                 ;
 //Stmts  →  Stmt Stmts
 //       |  Stmt
 Stmts           ::= Stmt:stmt Stmts:stmts
                     {: RESULT= new stmtsNode(stmt,stmts,stmt.linenum,stmt.colnum); :}
                 |   Stmt:stmt
-                    {: RESULT= stmt; :}
+                    {: RESULT= new stmtsNode(stmt,stmtsNode.NULL,stmt.linenum,stmt.colnum); :}
                 ;
 //Stmt  →  if ( Expr ) Stmt
 //      |  if ( Expr ) Stmt else Stmt
@@ -183,33 +202,57 @@ Stmts           ::= Stmt:stmt Stmts:stmts
 //      |  continue id ;
 //      |  { Fielddecls Stmts } OptionalSemi
 Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
-                    {: RESULT= new ifThenNode(expr,stmt,null,i.linenum,i.colnum); :}
+                    {: RESULT= new ifThenNode(expr,stmt,stmtNode.NULL,i.linenum,i.colnum); :}
                 |   rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmttrue rw_ELSE Stmt:stmtfalse rw_ENDIF
                     {: RESULT= new ifThenNode(expr,stmttrue,stmtfalse,i.linenum,i.colnum); :}
                 |   rw_WHILE:whil LPAREN Expr:expr RPAREN Stmt:stmt
-                    {: RESULT= new whileNode(null,expr,stmt,whil.linenum,whil.colnum); :}
+                    {: RESULT= new whileNode(
+                        exprNode.NULL,
+                        expr,
+                        stmt,
+                        whil.linenum,
+                        whil.colnum); :}
                 |   IDENTIFIER:id COLON rw_WHILE LPAREN Expr:expr RPAREN Stmt:stmt
-                    {: RESULT= new whileNode(id,expr,stmt,whil.linenum,whil.colnum); :}
+                    {: RESULT= new whileNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        expr,
+                        stmt,
+                        id.linenum,
+                        id.colnum); :}
                 |   Name:name ASG Expr:expr SEMI
                     {: RESULT= new asgNode(name,expr,name.linenum,name.colnum); :}
                 |   rw_READ:read LPAREN Readlist:list RPAREN SEMI
-                    {: RESULT= new stmtNode(read.linenum,read.colnum); :}
+                    {: RESULT= list; :}
                 |   rw_PRINT:print LPAREN Printlist:list RPAREN SEMI
-                    {: RESULT= new stmtNode(print.linenum,print.colnum); :}
+                    {: RESULT= list; :}
                 |   IDENTIFIER:id LPAREN RPAREN SEMI
-                    {: RESULT= new callNode(id,null,id.linenum,id.colnum); :}
+                    {: RESULT= new callNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        argsNode.NULL,
+                        id.linenum,
+                        id.colnum); :}
                 |   IDENTIFIER:id LPAREN Args:args RPAREN SEMI
-                    {: RESULT= new callNode(id,args,id.linenum,id.colnum); :}
+                    {: RESULT= new callNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        args,
+                        id.linenum,
+                        id.colnum); :}
                 |   rw_RETURN:ret SEMI
-                    {: RESULT= new returnNode(ret,null,ret.linenum,ret.colnum); :}
+                    {: RESULT= new returnNode(exprNode.NULL,ret.linenum,ret.colnum); :}
                 |   rw_RETURN:ret Expr:expr SEMI
-                    {: RESULT= new returnNode(ret,expr,ret.linenum,ret.colnum); :}
+                    {: RESULT= new returnNode(expr,ret.linenum,ret.colnum); :}
                 |   rw_BREAK:br IDENTIFIER:id SEMI
-                    {: RESULT= new breakNode(id,br.linenum,br.colnum); :}
+                    {: RESULT= new breakNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        br.linenum,
+                        br.colnum); :}
                 |   rw_CONTINUE:cont IDENTIFIER:id SEMI
-                    {: RESULT= new continueNode(id,cont.linenum,cont.colnum); :}
+                    {: RESULT= new continueNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        cont.linenum,
+                        cont.colnum); :}
                 |   LBRACE:brace Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
-                    {: RESULT= new stmtNode(brace.linenum,brace.colnum); :}
+                    {: RESULT= new blockNode(fields,stmts,brace.linenum,brace.colnum); :}
                 ;
 //Type  →  int
 //      |  char

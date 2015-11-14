@@ -139,7 +139,7 @@ Methoddecl      ::= rw_VOID:type IDENTIFIER:id LPAREN RPAREN LBRACE Fielddecls:f
 Argdecls        ::= Argdecl:argdec COMMA Argdecls:argdecs
                     {: RESULT= new argDeclsNode(argdec,argdecs,argdec.linenum,argdec.colnum); :}
                 |   Argdecl:argdec
-                    {: RESULT= argdec; :}
+                    {: RESULT= new argDeclsNode(argdec,argDeclsNode.NULL,argdec.linenum,argdec.colnum); :}
                 ;
 //Argdecl  →  Type id
 //         |  Type id [ ]

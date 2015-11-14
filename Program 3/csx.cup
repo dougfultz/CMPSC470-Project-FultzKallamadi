@@ -222,7 +222,7 @@ Type            ::= rw_INT:type
                 |   rw_BOOL:type
                     {: RESULT= new boolTypeNode(type.linenum,type.colnum); :}
                 |   rw_FLOAT:type
-                    {: RESULT= type; :}
+                    {: RESULT= new floatTypeNode(type.linenum,type.colnum); :}
                 ;
 //Args  →  Expr , Args
 //      |  Expr

@@ -449,7 +449,7 @@ Unit            ::= Name:name
                 |   INTLIT:i
                     {: RESULT= new intLitNode(i.intValue,i.linenum,i.colnum); :}
                 |   CHARLIT:c
-                    {: //TODO RESULT= new charLitNode(c.charValue,c.linenum,c.colnum); :}
+                    {: RESULT= new charLitNode(c.charValue,c.linenum,c.colnum); //TODO :}
                 |   FLOATLIT:f
                     {: RESULT= new floatLitNode(f.floatValue,f.linenum,f.colnum); :}
                 |   STRLIT:str

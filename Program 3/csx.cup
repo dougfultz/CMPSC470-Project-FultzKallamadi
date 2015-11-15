@@ -25,7 +25,7 @@ terminal CSXToken               CAND, COR, NOT;
 //Math
 terminal CSXToken               MINUS, PLUS, SLASH, TIMES;
 //Inrement/Decrement
-//terminal CSXToken               DEC, INC; //TODO
+terminal CSXToken               DEC, INC;
 //Braces
 terminal CSXToken               LBRACE, RBRACE;
 //Brackets

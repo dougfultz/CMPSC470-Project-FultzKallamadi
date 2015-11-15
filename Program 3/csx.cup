@@ -91,14 +91,18 @@ start with Program;
 
 //Program  →  class id { Memberdecls }
 Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
-                    {: RESULT= new classNode(id,members,cl.linenum,cl.colnum); :}
+                    {: RESULT= new classNode(
+                        new identNode(id.identifierText,id.linenum,id.colnum),
+                        members,
+                        cl.linenum,
+                        cl.colnum); :}
                 ;
 //Memberdecls  →  Fielddecl Memberdecls
 //             |  Methoddecls
 Memberdecls     ::= Fielddecl:field Memberdecls:members
                     {: RESULT= new memberDeclsNode( //TODO
-                        (declNode)field,
-                        methodDeclsNode.NULL,
+                        new fieldDeclsNode(field,fieldDeclsNode.NULL,field.linenum,field.colnum),
+                        members,
                         field.linenum,
                         field.colnum); :}
                 |   Methoddecls:methods

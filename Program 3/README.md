@@ -22,6 +22,14 @@ Sujay Kallamadi
 
    `# javac -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ *.java`
 
+4. Execute P3 program against test file
+
+   `# java -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ P3 test.csx`
+
+5. Clean up directory
+
+   `# rm ./*.class`
+
 ## How To: CSX lite
 
 1. Process CUP file

@@ -35,6 +35,6 @@ class P3 {
             System.exit(0);
         }
         System.out.println ("Here is its unparsing:");
-        ((csxLiteNode)root.value).Unparse(0);
+        ((classNode)root.value).Unparse(0);
     } // main
 } // class P3

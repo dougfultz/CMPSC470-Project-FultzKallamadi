@@ -467,16 +467,19 @@ Unit            ::= Name:name
                                         case 't':
                                             theChar= new Character('\t');
                                         default:
-                                            syntax_error(c);
+                                            System.err.println("Scanner error: "+c.charValue+" Not a valid charlit");
+                                            System.exit(1);
                                             break;
                                     }
                                 }else{
-                                    syntax_error(c);
+                                    System.err.println("Scanner error: "+c.charValue+" Not a valid charlit");
+                                    System.exit(1);
                                 }
                                 break;
                             default:
                                 //Error, scanner gave bad input
-                                syntax_error(c);
+                                System.err.println("Scanner error: "+c.charValue+" Not a valid charlit");
+                                System.exit(1);
                                 break;
                         }
                         RESULT= new charLitNode(theChar.charValue(),c.linenum,c.colnum); //TODO :}

@@ -449,7 +449,37 @@ Unit            ::= Name:name
                 |   INTLIT:i
                     {: RESULT= new intLitNode(i.intValue,i.linenum,i.colnum); :}
                 |   CHARLIT:c
-                    {: RESULT= new charLitNode(c.charValue,c.linenum,c.colnum); //TODO :}
+                    {: 
+                        Character theChar;
+                        switch (c.charValue.length()){
+                            case 1:
+                                //Directly convert to a char
+                                theChar=new Character(c.charAt(0));
+                                break;
+                            case 2:
+                                //Check if first character is a slash (\)
+                                if(c.charAt(0)=='\\'){
+                                    //Convert to a character
+                                    switch (c.charAt(1)){
+                                        case 'n':
+                                            theChar= new Character('\n');
+                                            break;
+                                        case 't':
+                                            theChar= new Character('\t');
+                                        default:
+                                            syntax_error(c);
+                                            break;
+                                    }
+                                }else{
+                                    syntax_error(c);
+                                }
+                                break;
+                            default:
+                                //Error, scanner gave bad input
+                                syntax_error(c);
+                                break;
+                        }
+                        RESULT= new charLitNode(theChar.charValue(),c.linenum,c.colnum); //TODO :}
                 |   FLOATLIT:f
                     {: RESULT= new floatLitNode(f.floatValue,f.linenum,f.colnum); :}
                 |   STRLIT:str

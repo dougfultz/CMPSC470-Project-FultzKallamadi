@@ -68,6 +68,14 @@ class classNode extends ASTNode {
 		className = id;
 		members = memb;
 	} // classNode
+	
+	void Unparse(int indent) {
+		System.out.print(linenum + ":" + "class ");
+		id.Unparse(0);
+		System.out.println(" {");
+		memb.Unparse(1);
+		System.out.print(linenum + ":" +"}");
+	} // Unparse()
 
 	private final identNode className;
 	private final memberDeclsNode members;

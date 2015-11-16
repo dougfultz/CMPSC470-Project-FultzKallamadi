@@ -454,13 +454,13 @@ Unit            ::= Name:name
                         switch (c.charValue.length()){
                             case 1:
                                 //Directly convert to a char
-                                theChar=new Character(c.charAt(0));
+                                theChar=new Character(c.charValue.charAt(0));
                                 break;
                             case 2:
                                 //Check if first character is a slash (\)
-                                if(c.charAt(0)=='\\'){
+                                if(c.charValue.charAt(0)=='\\'){
                                     //Convert to a character
-                                    switch (c.charAt(1)){
+                                    switch (c.charValue.charAt(1)){
                                         case 'n':
                                             theChar= new Character('\n');
                                             break;

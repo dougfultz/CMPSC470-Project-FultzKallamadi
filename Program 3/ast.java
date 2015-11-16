@@ -80,7 +80,8 @@ class memberDeclsNode extends ASTNode {
 		methods = m;
 	}
 	fieldDeclsNode fields;
-	private final methodDeclsNode methods;
+    //Make public
+	methodDeclsNode methods;
 } // class memberDeclsNode
 
 class fieldDeclsNode extends ASTNode {

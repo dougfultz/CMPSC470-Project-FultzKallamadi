@@ -450,7 +450,7 @@ Unit            ::= Name:name
                     {: RESULT= new intLitNode(i.intValue,i.linenum,i.colnum); :}
                 |   CHARLIT:c
                     {: 
-                        Character theChar;
+                        Character theChar= new Character('X');
                         switch (c.charValue.length()){
                             case 1:
                                 //Directly convert to a char

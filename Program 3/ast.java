@@ -74,7 +74,7 @@ class classNode extends ASTNode {
 		className.Unparse(0);
 		System.out.println(" {");
 		members.Unparse(1);
-		System.out.print(linenum + ":" +"}");
+		System.out.println(linenum + ":" +"}");
 	} // Unparse()
 
 	private final identNode className;

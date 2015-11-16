@@ -100,7 +100,7 @@ Program         ::= rw_CLASS:cl IDENTIFIER:id LBRACE Memberdecls:members RBRACE
 //Memberdecls  →  Fielddecl Memberdecls
 //             |  Methoddecls
 Memberdecls     ::= Fielddecl:field Memberdecls:members
-                    {: RESULT= new memberDeclsNode( //TODO
+                    {: RESULT= new memberDeclsNode(
                         new fieldDeclsNode(field,members.fields,field.linenum,field.colnum),
                         members.methods,
                         field.linenum,

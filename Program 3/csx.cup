@@ -257,7 +257,7 @@ Stmts           ::= Stmt:stmt Stmts:stmts
 //      |  Name ++
 //      |  -- Name
 //      |  Name --
-//      |  for ( init ; condition ; update ) body
+//      |  for ( Init ; Condition ; Update ) Body
 Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
                     {: RESULT= new ifThenNode(expr,stmt,stmtNode.NULL,i.linenum,i.colnum); :}
                 |   rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmttrue rw_ELSE Stmt:stmtfalse rw_ENDIF

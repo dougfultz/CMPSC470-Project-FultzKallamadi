@@ -151,11 +151,12 @@ class varDeclNode extends declNode {
 		System.out.print(" ");
 		varName.Unparse(1);
 	
-	if(!initValue.isNull()){
-		System.out.println(" = ");
-		initValue.Unparse(2);
+	
+		if(!initValue.isNull()){
+			System.out.println(" = ");
+			initValue.Unparse(2);
+		}
 	}
-
 	private final identNode varName;
 	private final typeNode varType;
 	private final exprNode initValue;
@@ -378,6 +379,7 @@ class arrayArgDeclNode extends argDeclNode {
 		argName.Unparse(0);
 		elementType.Unparse(1);
 		System.out.print("[]");
+	}
 
 	private final identNode argName;
 	private final typeNode elementType;

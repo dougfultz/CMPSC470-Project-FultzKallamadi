@@ -530,3 +530,5 @@ Name            ::= IDENTIFIER:id
                         id.linenum,
                         id.colnum); :}
                 ;
+//Init  →  id = Expr ;
+//Init            ::= IDENTIFIER:id

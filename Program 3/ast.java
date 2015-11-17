@@ -392,6 +392,11 @@ class valArgDeclNode extends argDeclNode {
 		argType = t;
 	}
 
+	void Unparse(int indent){
+		argName.Unparse(0);
+		argType.Unparse(1);	
+	}
+
 	private final identNode argName;
 	private final typeNode argType;
 } // class valArgDeclNode 

@@ -934,11 +934,8 @@ class charLitNode extends exprNode {
 	}
 
 	void Unparse(int indent){
-		System.out.print('\');
+		System.out.print('\\');
 		switch(charval) {
-			case '\':
-				System.out.print("\\\");
-				break;
 			case '\\':
 				System.out.print("\\\\");
 				break;
@@ -951,7 +948,7 @@ class charLitNode extends exprNode {
 			default:
 				System.out.print(charval);
 		}
-		System.out.print('\');
+		System.out.print('\\');
 	}
 
 	private final char charval;

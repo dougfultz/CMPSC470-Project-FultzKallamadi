@@ -530,5 +530,26 @@ Name            ::= IDENTIFIER:id
                         id.linenum,
                         id.colnum); :}
                 ;
-//Init  →  id = Expr ;
-//Init            ::= IDENTIFIER:id
+//Init  →  id = Expr
+Init            ::= Name:name ASG Expr:expr
+                    {: RESULT= new asgNode(name,expr,name.linenum,name.colnum); :}
+                ;
+//Condition →   Factor < Factor
+//          |   Factor > Factor
+//          |   Factor <= Factor
+//          |   Factor >= Factor
+//          |   Factor == Factor
+//          |   Factor != Factor
+Condition       ::= Factor:left LT:op Factor:right
+                    {: RESULT= new binaryOpNode(left,sym.LT,right,left.linenum,left.colnum); :}
+                |   Factor:left GT:op Factor:right
+                    {: RESULT= new binaryOpNode(left,sym.GT,right,left.linenum,left.colnum); :}
+                |   Factor:left LEQ:op Factor:right
+                    {: RESULT= new binaryOpNode(left,sym.LEQ,right,left.linenum,left.colnum); :}
+                |   Factor:left GEQ:op Factor:right
+                    {: RESULT= new binaryOpNode(left,sym.GEQ,right,left.linenum,left.colnum); :}
+                |   Factor:left EQ:op Factor:right
+                    {: RESULT= new binaryOpNode(left,sym.EQ,right,left.linenum,left.colnum); :}
+                |   Factor:left NOTEQ:op Factor:right
+                    {: RESULT= new binaryOpNode(left,sym.NOTEQ,right,left.linenum,left.colnum); :}
+                ;

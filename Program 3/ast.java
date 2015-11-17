@@ -675,3 +675,29 @@ class falseNode extends exprNode {
 		super(line, col);
 	}
 } // class falseNode 
+
+class incNode extends exprNode {
+    incNode(nameNode n, int line, int col) {
+        super(line, col);
+        target = n;
+    }
+    
+    void Unparse(int indent) {
+        //TODO
+    }
+    
+    private final nameNode target;
+}
+
+class decNode extends exprNode {
+    decNode(nameNode n, int line, int col) {
+        super(line, col);
+        target = n;
+    }
+    
+    void Unparse(int indent) {
+        //TODO
+    }
+    
+    private final nameNode target;
+}

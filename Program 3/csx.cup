@@ -432,6 +432,10 @@ Unary           ::= NOT:op Unary:unary
 //      |  true
 //      |  false
 //      |  ( Expr )
+//      |  ++ Name
+//      |  Name ++
+//      |  -- Name
+//      |  Name --
 Unit            ::= Name:name
                     {: RESULT= name; :}
                 |   IDENTIFIER:id LPAREN RPAREN
@@ -495,6 +499,14 @@ Unit            ::= Name:name
                 |   LPAREN:paren Expr:expr RPAREN
                     //From page 4 of CUP User's Manual
                     {: RESULT= expr; :}
+                |   INC:i Name:name
+                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
+                |   Name:name INC:i
+                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
+                |   DEC:d Name:name
+                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
+                |   Name:name DEC:d
+                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
                 ;
 //name  →  id
 //      |  id [ Expr ]

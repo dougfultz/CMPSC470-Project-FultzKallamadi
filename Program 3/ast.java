@@ -958,11 +958,18 @@ class trueNode extends exprNode {
 	trueNode(int line, int col) {
 		super(line, col);
 	}
+
+	void Unparse(int indent){
+		System.out.print("true");
+	}
 } // class trueNode 
 
 class falseNode extends exprNode {
 	falseNode(int line, int col) {
 		super(line, col);
+	}
+	void Unparse(int indent){
+		System.out.print("false");
 	}
 } // class falseNode 
 
@@ -973,8 +980,11 @@ class incNode extends stmtNode {
     }
     
     void Unparse(int indent) {
-        //TODO
+        System.out.print(linenum + ":\t");
+	genIndent(indent);
+	System.out.println(target + "++;");
     }
+
     
     private final nameNode target;
 } // class incNode
@@ -984,10 +994,13 @@ class decNode extends stmtNode {
         super(line, col);
         target = n;
     }
-    
+
     void Unparse(int indent) {
-        //TODO
+        System.out.print(linenum + ":\t");
+	genIndent(indent);
+	System.out.println(target + "--;");
     }
+    
     
     private final nameNode target;
 } // class decNode

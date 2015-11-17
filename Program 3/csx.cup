@@ -76,10 +76,10 @@ non terminal exprNode           Pri;
 non terminal exprNode           Unary;
 non terminal exprNode           Unit;
 non terminal nameNode           Name;
-non terminal stmtNode           init;
-non terminal exprNode           condition;
-non terminal stmtNode           update;
-non terminal stmtsNode          body;
+non terminal stmtNode           Init;
+non terminal exprNode           Condition;
+non terminal stmtNode           Update;
+non terminal stmtsNode          Body;
 
 /* Precedences/Associativity */
 precedence left         CAND, COR, NOT;
@@ -318,6 +318,8 @@ Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
                     {: RESULT= new decNode(name,d.linenum,d.colnum); :}
                 |   Name:name DEC:d
                     {: RESULT= new decNode(name,d.linenum,d.colnum); :}
+                |   rw_FOR:f LPAREN Init:i SEMI Condition:c SEMI Update RPAREN Body
+                    {: //TODO :}
                 ;
 //Type  →  int
 //      |  char

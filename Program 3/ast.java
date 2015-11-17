@@ -507,6 +507,26 @@ class readNode extends stmtNode {
 		 moreReads = rn;
 	}
 
+	void Unparse(int indent){
+		if(targetVar.linenum==-1){
+			System.out.print(linenum + ":\t");
+			genIndent(indent);	
+			System.out.print("read(");
+				if(!moreReads.isNull()){
+					moreReads.Unparse(0);
+				}
+			}
+			else {
+				targetVar.Unparse(1);
+				if(!moreReads.isNull()) {
+					System.out.print(", ");
+					moreReads.Unparse(1); 
+				}
+				else {
+					System.out.print(")\n");
+				}
+			}
+	}
 	static nullReadNode NULL = new nullReadNode();
 	private nameNode targetVar;
 	private readNode moreReads;

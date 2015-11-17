@@ -497,6 +497,19 @@ class whileNode extends stmtNode {
 	private final exprNode label;
 	private final exprNode condition;
 	private final stmtNode loopBody;
+
+	void Unparse(int indent){
+		System.out.print(linenum + "\t");
+		genIndent(indent);
+		if(!label.isNull()){
+			label.Unparse(0);
+		}
+		
+		System.out.print("while (");
+		condition.Unparse(1);
+		System.out.print(")\n");
+		loopBody.Unparse(2);
+	}
 } // class whileNode 
 
 class readNode extends stmtNode {
@@ -545,6 +558,32 @@ class printNode extends stmtNode {
 		outputValue = val;
 		morePrints = pn;
 	}
+
+	void Unparse(int indent){
+		if(outputValue.linenum == -1){
+			System.out.print(linenum + ":\t");
+			genIndent(indent);
+			System.out.print("print(");
+			if(!morePrints.isNull()){
+				morePrints.Unparse(0);
+			}
+			else {
+				System.out.print(");\n");
+			}
+		}
+		else{
+			outputValue.Unparse(1);
+			if(!morePrints.isNull()){
+				System.out.print(", ");
+				morePrints.Unparse(2);
+			}
+			else{
+				System.out.print(");\n");
+			}
+		}
+	}
+
+		
 	static nullPrintNode NULL = new nullPrintNode();
 
 	private exprNode outputValue;

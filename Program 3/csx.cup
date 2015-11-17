@@ -33,7 +33,7 @@ terminal CSXToken               LBRACKET, RBRACKET;
 //Parenthesis
 terminal CSXToken               LPAREN, RPAREN;
 //Reserved Words
-terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ENDIF, rw_ELSE, rw_FALSE, rw_IF, rw_INT, rw_FLOAT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE;
+terminal CSXToken               rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS, rw_CONST, rw_CONTINUE, rw_ENDIF, rw_ELSE, rw_FALSE, rw_IF, rw_INT, rw_FLOAT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE, rw_VOID, rw_WHILE, rw_FOR;
 //Unused Reserved Words
 //terminal CSXToken               rw_FLOAT;
 //Miscellaneous Symbols
@@ -76,6 +76,10 @@ non terminal exprNode           Pri;
 non terminal exprNode           Unary;
 non terminal exprNode           Unit;
 non terminal nameNode           Name;
+non terminal stmtNode           init;
+non terminal exprNode           condition;
+non terminal stmtNode           update;
+non terminal stmtsNode          body;
 
 /* Precedences/Associativity */
 precedence left         CAND, COR, NOT;
@@ -249,6 +253,11 @@ Stmts           ::= Stmt:stmt Stmts:stmts
 //      |  break id ;
 //      |  continue id ;
 //      |  { Fielddecls Stmts } OptionalSemi
+//      |  ++ Name
+//      |  Name ++
+//      |  -- Name
+//      |  Name --
+//      |  for ( init ; condition ; update ) body
 Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
                     {: RESULT= new ifThenNode(expr,stmt,stmtNode.NULL,i.linenum,i.colnum); :}
                 |   rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmttrue rw_ELSE Stmt:stmtfalse rw_ENDIF
@@ -301,6 +310,14 @@ Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
                         cont.colnum); :}
                 |   LBRACE:brace Fielddecls:fields Stmts:stmts RBRACE OptionalSemi
                     {: RESULT= new blockNode(fields,stmts,brace.linenum,brace.colnum); :}
+                |   INC:i Name:name
+                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
+                |   Name:name INC:i
+                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
+                |   DEC:d Name:name
+                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
+                |   Name:name DEC:d
+                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
                 ;
 //Type  →  int
 //      |  char
@@ -432,10 +449,6 @@ Unary           ::= NOT:op Unary:unary
 //      |  true
 //      |  false
 //      |  ( Expr )
-//      |  ++ Name
-//      |  Name ++
-//      |  -- Name
-//      |  Name --
 Unit            ::= Name:name
                     {: RESULT= name; :}
                 |   IDENTIFIER:id LPAREN RPAREN
@@ -499,14 +512,6 @@ Unit            ::= Name:name
                 |   LPAREN:paren Expr:expr RPAREN
                     //From page 4 of CUP User's Manual
                     {: RESULT= expr; :}
-                |   INC:i Name:name
-                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
-                |   Name:name INC:i
-                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
-                |   DEC:d Name:name
-                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
-                |   Name:name DEC:d
-                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
                 ;
 //name  →  id
 //      |  id [ Expr ]

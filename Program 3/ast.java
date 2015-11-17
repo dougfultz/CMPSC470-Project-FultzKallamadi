@@ -70,7 +70,7 @@ class classNode extends ASTNode {
 	} // classNode
 	
 	void Unparse(int indent) {
-		System.out.print(linenum + ":" + "class ");
+		System.out.println(linenum + ":" + "class ");
 		className.Unparse(0);
 		System.out.println(" {");
 		members.Unparse(1);
@@ -87,6 +87,11 @@ class memberDeclsNode extends ASTNode {
 		fields = f;
 		methods = m;
 	}
+
+	Unparse(int indent) {
+		fields.Unparse(0);
+		methods.Unparse(1);
+	}
 	fieldDeclsNode fields;
     //Make public
 	methodDeclsNode methods;
@@ -101,6 +106,11 @@ class fieldDeclsNode extends ASTNode {
 		thisField = d;
 		moreFields = f;
 	}
+
+	Unparse(int indent){
+		thisField.Unparse(0);
+		moreFields.Unparse(1);
+	}
 	static nullFieldDeclsNode NULL = new nullFieldDeclsNode();
 	private declNode thisField;
 	private fieldDeclsNode moreFields;
@@ -111,7 +121,9 @@ class nullFieldDeclsNode extends fieldDeclsNode {
 	boolean isNull() {
 		return true;
 	}
-	void Unparse(int indent) {}
+	void Unparse(int indent) {
+	
+	}
 } // class nullFieldDeclsNode
 
 // abstract superclass; only subclasses are actually created
@@ -132,6 +144,18 @@ class varDeclNode extends declNode {
 		initValue = e;
 	}
 
+	Unparse(int indent){ 
+		System.out.println(linenum + ":\t");
+		genIndent(indent);
+		varType.Unparse(0);
+		System.out.print(" ");
+		varName.Unparse(1);
+	
+	if(!initValue.isNull()){
+		System.out.println(" = ");
+		initValue.Unparse(2);
+	}
+
 	private final identNode varName;
 	private final typeNode varType;
 	private final exprNode initValue;
@@ -142,6 +166,18 @@ class constDeclNode extends declNode {
 		super(line, col);
 		constName = id;
 		constValue = e;
+	}
+
+	Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		System.out.print("const ");
+		constName.Unparse(0);
+		System.out.print(" = ");
+		constValue.Unparse(1);
+		System.out.print(";");
+
+	
 	}
 
 	private final identNode constName;
@@ -156,6 +192,16 @@ class arrayDeclNode extends declNode {
 		arraySize = lit;
 	}
 
+	Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		arrayName.Unparse(0);
+		elementType.Unparse(1);
+		System.out.print("[");
+		arraySize.Unparse(2);
+		System.out.println("]");
+	}
+	
 	private final identNode arrayName;
 	private final typeNode elementType;
 	private final intLitNode arraySize;
@@ -168,6 +214,10 @@ abstract class typeNode extends ASTNode {
 	}
 	typeNode(int l, int c) {
 		super(l, c);
+	}
+
+	Unparse(int indent){
+
 	}
 	static nullTypeNode NULL = new nullTypeNode();
 } // class typeNode
@@ -184,11 +234,19 @@ class intTypeNode extends typeNode {
 	intTypeNode(int line, int col) {
 		super(line, col);
 	}
+	
+	Unparse(int indent){
+		System.out.print("int ");
+	}
 } // class intTypeNode
 
 class floatTypeNode extends typeNode {
 	floatTypeNode(int line, int col) {
 		super(line, col);
+	}
+
+	Unparse(int indent){
+		System.out.print("float ");
 	}
 } // class floatTypeNode
 
@@ -196,17 +254,30 @@ class boolTypeNode extends typeNode {
 	boolTypeNode(int line, int col) {
 		super(line, col);
 	}
+
+	Unparse(int indent){
+		System.out.print("bool ");
+	}
 } // class boolTypeNode
 
 class charTypeNode extends typeNode {
 	charTypeNode(int line, int col) {
 		super(line, col);
 	}
+
+	Unparse(int indent){
+		System.out.print("char ");
+	}
+
 } // class charTypeNode
 
 class voidTypeNode extends typeNode {
 	voidTypeNode(int line, int col) {
 		super(line, col);
+	}
+
+	Unparse(int indent){
+		System.out.print("void");
 	}
 } // class voidTypeNode
 
@@ -220,6 +291,11 @@ class methodDeclsNode extends ASTNode {
 		thisDecl = m;
 	 moreDecls = ms;
 	}
+
+	Unparse(int indent){
+		thisDecl.Unparse(0);
+		moreDecls.Unparse(1);
+	}
 	static nullMethodDeclsNode NULL = new nullMethodDeclsNode();
 	private methodDeclNode thisDecl;
 	private methodDeclsNode moreDecls;
@@ -228,7 +304,10 @@ class methodDeclsNode extends ASTNode {
 class nullMethodDeclsNode extends methodDeclsNode {
 	nullMethodDeclsNode() {}
 	boolean   isNull() {return true;}
-	void Unparse(int indent) {}
+	
+	void Unparse(int indent) {
+	
+	}
 } // class nullMethodDeclsNode 
 
 class methodDeclNode extends ASTNode {
@@ -267,6 +346,15 @@ class argDeclsNode extends ASTNode {
 		thisDecl = arg;
 		moreDecls = args;
 	}
+
+	Unparse(int indent){
+		thisDecl.Unparse(0);
+		if(!moreDecls.isNull()){
+			System.out.print(", ");
+		}
+		moreDecls.Unparse(1);
+	}
+
 	static nullArgDeclsNode NULL = new nullArgDeclsNode();
 
 	private argDeclNode thisDecl;
@@ -285,6 +373,11 @@ class arrayArgDeclNode extends argDeclNode {
 		argName = id;
 		elementType = t;
 	}
+
+	Unparse(int indent){
+		argName.Unparse(0);
+		elementType.Unparse(1);
+		System.out.print("[]");
 
 	private final identNode argName;
 	private final typeNode elementType;
@@ -557,6 +650,34 @@ class binaryOpNode extends exprNode {
 			case sym.TIMES:
 				System.out.print(" * ");
 				break;
+
+			case sym.EQ:
+				System.out.print(" = ");
+				break;
+			case sym.NOTEQ:
+				System.out.print(" != ");
+				break;
+			case sym.GEQ:
+				System.out.print(" >= ");
+				break;
+			case sym.GT:
+				System.out.print(" > ");
+				break;
+			case sym.LEQ:
+				System.out.print(" <= ");
+				break;
+			case sym.LT:
+				System.out.print(" < " );
+				break;
+			case sym.CAND:
+				System.out.print(" && ");
+				break;
+			case sym.COR:
+				System.out.print(" || ");
+				break;
+			case sym.NOT:
+				System.out.print(" ! " );
+				break;				
 
 			default:
 				throw new Error("printOp: case not found");

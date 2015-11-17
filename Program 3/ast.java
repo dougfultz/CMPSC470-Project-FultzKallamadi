@@ -602,6 +602,17 @@ class callNode extends stmtNode {
 		methodName = id;
 		args = a;
 	}
+	
+	void Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		methodName.Unparse(0);
+		System.out.print("(");
+		args.Unparse(1);
+		System.out.print(");\n");
+	}
+
+	
 
 	private final identNode methodName;
 	private final argsNode args;
@@ -611,6 +622,17 @@ class returnNode extends stmtNode {
 	returnNode(exprNode e, int line, int col) {
 		super(line, col);
 		returnVal = e;
+	}
+
+	void Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		System.out.print("return");
+		if(!returnVal.isNull()){
+			System.out.print(" ");
+			returnVal.Unparse(0);
+		}
+		System.out.print(";");
 	}
 
 	private final exprNode returnVal;
@@ -623,6 +645,16 @@ class blockNode extends stmtNode {
 		stmts = s;
 	}
 
+	void Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		System.out.print("{");
+		decls.Unparse(0);
+		stmts.Unparse(1);
+		System.out.println("}");
+		
+	}
+
 	private final fieldDeclsNode decls;
 	private final stmtsNode stmts;
 } // class blockNode 
@@ -633,6 +665,15 @@ class breakNode extends stmtNode {
 		label = i;
 	}
 
+	void Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		System.out.print("break");
+		label.Unparse(0);
+		System.out.print(";");
+	}
+
+
 	private final identNode label;
 } // class breakNode 
 
@@ -642,6 +683,13 @@ class continueNode extends stmtNode {
 		label = i;
 	}
 
+	void Unparse(int indent){
+		System.out.print(linenum + ":\t");
+		genIndent(indent);
+		System.out.print("continue");
+		label.Unparse(0);
+		System.out.print(";");
+	}
 	private final identNode label;
 } // class continueNode 
 
@@ -651,6 +699,14 @@ class argsNode extends ASTNode {
 		super(line, col);
 		argVal = e;
 		moreArgs = a;
+	}
+
+	void Unparse(int indent){
+		argVal.Unparse(0);
+		if(!moreArgs.isNull()){
+			System.out.print(", ");
+			moreArgs.Unparse(1);
+		}
 	}
 
 	static nullArgsNode NULL = new nullArgsNode();
@@ -672,6 +728,9 @@ class strLitNode extends exprNode {
 		strval = stringval;
 	}
 
+	void Unparse(int indent){
+		System.out.print(strval);
+	}
 	private final String strval;
 } // class strLitNode 
 
@@ -770,6 +829,11 @@ class unaryOpNode extends exprNode {
 		operatorCode = op;
 	}
 
+	void Unparse(int indent){
+		System.out.print("!"); // Is there only 1 unary op that is NOT?
+		operand.Unparse(0);
+	}
+
 	private final exprNode operand;
 	private final int operatorCode; // Token code of the operator
 } // class unaryOpNode 
@@ -779,6 +843,13 @@ class castNode extends exprNode {
 		super(line, col);
 		operand = e;
 		resultType = t;
+	}
+	
+	void Unparse(int indent){
+		System.out.print("(");
+		resultType.Unparse(0);
+		System.out.print(")");
+		operand.Unparse(1);
 	}
 
 	private final exprNode operand;
@@ -790,6 +861,13 @@ class fctCallNode extends exprNode {
 		super(line, col);
 		methodName = id;
 		methodArgs = a;
+	}
+
+	void Unparse(int indent){
+		System.out.print("(");
+		methodName.Unparse(0);
+		System.out.print(")");
+		methodArgs.Unparse(1);
 	}
 
 	private final identNode methodName;
@@ -830,6 +908,13 @@ class intLitNode extends exprNode {
 		intval = val;
 	}
 
+	void Unparse(int indent){
+		if(intval >= 0){
+			System.out.print(intval);
+		}
+
+	}
+
 	private final int intval;
 } // class intLitNode
 
@@ -846,6 +931,27 @@ class charLitNode extends exprNode {
 	charLitNode(char val, int line, int col) {
 		super(line, col);
 		charval = val;
+	}
+
+	void Unparse(int indent){
+		System.out.print('\');
+		switch(charval) {
+			case '\':
+				System.out.print("\\\");
+				break;
+			case '\\':
+				System.out.print("\\\\");
+				break;
+			case '\t':
+				System.out.print("\\t");
+				break;
+			case '\n':
+				System.out.print("\\n");
+				break;
+			default:
+				System.out.print(charval);
+		}
+		System.out.print('\');
 	}
 
 	private final char charval;

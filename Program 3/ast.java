@@ -651,6 +651,34 @@ class binaryOpNode extends exprNode {
 				System.out.print(" * ");
 				break;
 
+			case sym.EQ:
+				System.out.print(" = ");
+				break;
+			case sym.NOTEQ:
+				System.out.print(" != ");
+				break;
+			case sym.GEQ:
+				System.out.print(" >= ");
+				break;
+			case sym.GT:
+				System.out.print(" > ");
+				break;
+			case sym.LEQ:
+				System.out.print(" <= ");
+				break;
+			case sym.LT:
+				System.out.print(" < " );
+				break;
+			case sym.CAND:
+				System.out.print(" && ");
+				break;
+			case sym.COR:
+				System.out.print(" || ");
+				break;
+			case sym.NOT:
+				System.out.print(" ! " );
+				break;				
+
 			default:
 				throw new Error("printOp: case not found");
 		}

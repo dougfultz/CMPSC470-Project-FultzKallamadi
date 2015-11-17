@@ -687,7 +687,7 @@ class incNode extends exprNode {
     }
     
     private final nameNode target;
-}
+} // class incNode
 
 class decNode extends exprNode {
     decNode(nameNode n, int line, int col) {
@@ -700,4 +700,19 @@ class decNode extends exprNode {
     }
     
     private final nameNode target;
-}
+} // class decNode
+
+class forNode extends stmtNode {
+    forNode(stmtNode i, exprNode c, stmtNode u, stmtsNode b, int line, int col) {
+        super(line, col);
+        init = i;
+        condition = c;
+        update = u;
+        loopBody = b;
+    }
+    
+    private final stmtNode init;
+    private final exprNode condition;
+    private final stmtNode update;
+    private final stmtsNode loopBody;
+} // class forNode

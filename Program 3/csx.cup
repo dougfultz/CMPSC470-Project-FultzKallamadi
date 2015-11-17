@@ -79,7 +79,6 @@ non terminal nameNode           Name;
 non terminal stmtNode           Init;
 non terminal exprNode           Condition;
 non terminal stmtNode           Update;
-non terminal stmtsNode          Body;
 
 /* Precedences/Associativity */
 precedence left         CAND, COR, NOT;
@@ -318,7 +317,7 @@ Stmt            ::= rw_IF:i LPAREN Expr:expr RPAREN Stmt:stmt rw_ENDIF
                     {: RESULT= new decNode(name,d.linenum,d.colnum); :}
                 |   Name:name DEC:d
                     {: RESULT= new decNode(name,d.linenum,d.colnum); :}
-                |   rw_FOR:f LPAREN Init:i SEMI Condition:c SEMI Update:u RPAREN Body:b
+                |   rw_FOR:f LPAREN Init:i SEMI Condition:c SEMI Update:u RPAREN Stmt:b
                     {: RESULT= new forNode(i, c, u, b, f.linenum, f.colnum); :}
                 ;
 //Type  →  int
@@ -552,4 +551,19 @@ Condition       ::= Factor:left LT:op Factor:right
                     {: RESULT= new binaryOpNode(left,sym.EQ,right,left.linenum,left.colnum); :}
                 |   Factor:left NOTEQ:op Factor:right
                     {: RESULT= new binaryOpNode(left,sym.NOTEQ,right,left.linenum,left.colnum); :}
+                ;
+//Update    →  ++ Name
+//          |  Name ++
+//          |  -- Name
+//          |  Init
+Update          ::= INC:i Name:name
+                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
+                |   Name:name INC:i
+                    {: RESULT= new incNode(name,i.linenum,i.colnum); :}
+                |   DEC:d Name:name
+                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
+                |   Name:name DEC:d
+                    {: RESULT= new decNode(name,d.linenum,d.colnum); :}
+                |   Init:i
+                    {: RESULT= i; :}
                 ;

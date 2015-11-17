@@ -826,7 +826,7 @@ class decNode extends stmtNode {
 } // class decNode
 
 class forNode extends stmtNode {
-    forNode(stmtNode i, exprNode c, stmtNode u, stmtsNode b, int line, int col) {
+    forNode(stmtNode i, exprNode c, stmtNode u, stmtNode b, int line, int col) {
         super(line, col);
         init = i;
         condition = c;
@@ -837,5 +837,5 @@ class forNode extends stmtNode {
     private final stmtNode init;
     private final exprNode condition;
     private final stmtNode update;
-    private final stmtsNode loopBody;
+    private final stmtNode loopBody;
 } // class forNode

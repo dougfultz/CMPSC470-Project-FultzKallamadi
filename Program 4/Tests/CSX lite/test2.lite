@@ -1,0 +1,26 @@
+{
+	int a;
+	bool dup;
+	bool b;
+	int aa;
+	int cc;
+	int dup;
+	a  = a+b;
+	a  = a-b;
+	a  = b+a;
+	a  = b-a;
+	a  = a+aa;
+	a  = a-b;
+	a  = a-aa;
+	bb = bbb;
+	if (cc )
+		if (b)
+			ccc=dd;
+	aa=1;
+	b=1;
+	print(a);
+	print(aaa);
+	print(b);
+	print(123);
+	print(a+aa-cc+1);
+}

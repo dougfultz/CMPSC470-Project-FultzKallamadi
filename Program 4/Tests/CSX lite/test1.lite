@@ -1,0 +1,13 @@
+{
+	int aa;  bool bb;
+	int aaa; bool bb;
+	aa  = aa+bb-cc-dd;
+	bb = 123;
+	if (1001+bb+cc-dd)
+		if (aaa)
+			ccc=dd;
+	aa=bb;
+	print(bb - 1) ;
+	print( bb);
+	print( 123456);
+}

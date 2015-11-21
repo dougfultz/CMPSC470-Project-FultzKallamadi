@@ -1,0 +1,8 @@
+{
+	aa  = aa+bb-cc-dd;
+	bb = bbb;
+	if ( id+bb+cc-dd )
+		if ( aaa )
+			ccc=dd;
+	aa = ccc ; 
+}

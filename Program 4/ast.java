@@ -82,7 +82,16 @@ class classNode extends ASTNode {
 		className = id;
 		members = m;
 	} // classNode
-	boolean isTypeCorrect() {return true;} // You need to refine this one
+    void checkTypes() {
+        className.checkTypes();
+        members.checkTypes();
+    } // checkTypes
+    boolean isTypeCorrect() {
+        //Pulled from csxLiteNode.isTypeCorrect()
+        st.openScope();
+        checkTypes();
+        return (typeErrors == 0);
+    }
 	private final identNode className;
 	private final memberDeclsNode members;
 } // class classNode

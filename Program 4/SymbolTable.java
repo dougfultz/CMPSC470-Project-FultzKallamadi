@@ -60,7 +60,7 @@ class SymbolTable {
         }
         
         //Insert key into HashMap
-        current.put(s.name(), ((TestSym)s).value());
+        current.put(s.name(), s);
     }
 
     public Symb localLookup(String s){
@@ -77,7 +77,7 @@ class SymbolTable {
         //Check for existing key
         //TODO - make case insensitive
         if(current.containsKey(s)){
-            return(new TestSym(s,Integer.parseInt(current.get(s).toString())));
+            return((SymbolInfo)current.get(s));
         }
         
         return null; // change this

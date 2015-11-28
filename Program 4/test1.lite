@@ -1,0 +1,17 @@
+{
+    int aa;
+    int bb;
+    int cc;
+    int dd;
+    int bbb;
+    int id;
+    bool aaa;
+    int ccc;
+    
+    aa  = aa+bb-cc-dd;
+    bb = bbb;
+    
+    if ( aaa )
+        ccc=dd;
+    aa = ccc ; 
+}

@@ -102,6 +102,10 @@ class memberDeclsNode extends ASTNode {
 		fields = f;
 		methods = m;
 	} // memberDeclsNode
+    void checkTypes() {
+        fields.checkTypes();
+        methods.checkTypes();
+    } // checkTypes
 	fieldDeclsNode fields;
 	private final methodDeclsNode methods;
 } // memberDeclsNode

@@ -188,14 +188,33 @@ class varDeclNode extends declNode {
 } // class varDeclNode
 
 class constDeclNode extends declNode {
-	constDeclNode(identNode id, exprNode e,
-			int line, int col) {
+	constDeclNode(identNode id, typeNode t, exprNode e, int line, int col) {
 		super(line,col);
 		constName = id;
+        constType = t;
 		constValue = e;
 	} // constDeclNode
+    
+    void checkTypes() {
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(constName.idname);
+        if (id == null) {
+            id = new SymbolInfo(constName.idname,
+                new Kinds(Kinds.Var),constType.type);
+            constName.type = constType.type;
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            constName.idinfo = id;
+        } // id != null
+    } // checkTypes
 
 	private final identNode constName;
+    private final typeNode constType;
 	private final exprNode constValue;
 }
 

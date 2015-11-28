@@ -231,6 +231,28 @@ class arrayDeclNode extends declNode {
 		arraySize = lit;
 	} // arrayDeclNode
 
+    void checkTypes() {
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(arrayName.idname);
+        if (id == null) {
+            id = new SymbolInfo(arrayName.idname,
+                new Kinds(Kinds.Var),elementType.type);
+            arrayName.type = elementType.type;
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            arrayName.idinfo = id;
+        } else {
+            System.out.println(error() + id.name() + " is already declared.");
+            typeErrors++;
+            arrayName.type = new Types(Types.Error);
+        } // id != null
+    } // checkTypes
+
 	private final identNode arrayName;
 	private final typeNode elementType;
 	private final intLitNode arraySize;

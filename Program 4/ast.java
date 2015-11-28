@@ -210,6 +210,10 @@ class constDeclNode extends declNode {
                 /* can't happen */
             }
             constName.idinfo = id;
+        } else {
+            System.out.println(error() + id.name() + " is already declared.");
+            typeErrors++;
+            constName.type = new Types(Types.Error);
         } // id != null
     } // checkTypes
 
@@ -220,8 +224,7 @@ class constDeclNode extends declNode {
 
 
 class arrayDeclNode extends declNode {
-	arrayDeclNode(identNode id, typeNode t, intLitNode lit,
-			int line, int col) {
+	arrayDeclNode(identNode id, typeNode t, intLitNode lit, int line, int col) {
 		super(line,col);
 		arrayName = id;
 		elementType = t;

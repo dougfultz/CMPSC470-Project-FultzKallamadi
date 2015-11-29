@@ -755,6 +755,10 @@ class continueNode extends stmtNode {
 		super(line,col);
 		label = i;
 	} // continueNode
+    
+    void checkTypes() {
+        label.checkTypes();
+    } // checkTypes
 
 	private final identNode label;
 } // class continueNode 

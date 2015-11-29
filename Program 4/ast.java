@@ -350,6 +350,36 @@ class methodDeclNode extends ASTNode {
 		decls = f;
 		stmts = s;
 	} // methodDeclNode
+    
+    void checkTypes() {
+        //add method declaration to scope
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(name.idname);
+        if (id == null) {
+            id = new SymbolInfo(name.idname,
+                new Kinds(Kinds.Var),returnType.type);
+            name.type = returnType.type;
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            name.idinfo = id;
+        } else {
+            System.out.println(error() + id.name() + " is already declared.");
+            typeErrors++;
+            name.type = new Types(Types.Error);
+        } // id != null
+        
+        //Open scope
+        st.openScope();
+        //Type check everything else
+        args.checkTypes();
+        decls.checkTypes();
+        stmts.checkTypes();
+    } // checkTypes
 
 	private final identNode name;
 	private final argDeclsNode args;

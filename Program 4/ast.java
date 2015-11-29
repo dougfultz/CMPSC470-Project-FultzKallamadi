@@ -695,6 +695,11 @@ class callNode extends stmtNode {
 		methodName = id;
 		args = a;
 	} // callNode
+    
+    void checkTypes() {
+        methodName.checkTypes();
+        args.checkTypes();
+    } // checkTypes
 
 	private final identNode methodName;
 	private final argsNode args;

@@ -849,6 +849,26 @@ class binaryOpNode extends exprNode {
 				return(" + ");
 			case sym.MINUS:
 				return(" - ");
+            case sym.SLASH:
+                return(" / ");
+            case sym.TIMES:
+                return(" * ");
+            case sym.EQ:
+                return(" == ");
+            case sym.NOTEQ:
+                return(" != ");
+            case sym.GEQ:
+                return(" >= ");
+            case sym.GT:
+                return(" > ");
+            case sym.LEQ:
+                return(" <= ");
+            case sym.LT:
+                return(" < " );
+            case sym.CAND:
+                return(" && ");
+            case sym.COR:
+                return(" || ");
 			default:
 				mustBe(false);
 				return "";

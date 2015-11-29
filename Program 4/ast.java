@@ -742,6 +742,10 @@ class breakNode extends stmtNode {
 		super(line,col);
 		label = i;
 	} // breakNode
+    
+    void checkTypes() {
+        label.checkTypes();
+    } // checkTypes
 
 	private final identNode label;
 } // class breakNode 

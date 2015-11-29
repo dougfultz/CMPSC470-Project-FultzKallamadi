@@ -638,6 +638,11 @@ class readNode extends stmtNode {
 		targetVar = n;
 		moreReads = rn;
 	} // readNode
+    
+    void checkTypes() {
+        targetVar.checkTypes();
+        moreReads.checkTypes();
+    } // checkTypes
 
 	static nullReadNode NULL = new nullReadNode();
 	private nameNode targetVar;

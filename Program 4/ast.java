@@ -597,6 +597,34 @@ class whileNode extends stmtNode {
 		condition = e;
 		loopBody = s;
 	} // whileNode
+    
+    void checkTypes() {
+        //Add label to scope
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(label.idname);
+        if (id == null) {
+            id = new SymbolInfo(label.idname,
+                new Kinds(Kinds.Var),Types.Void);
+            label.type = Types.Void;
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            label.idinfo = id;
+        } else {
+            System.out.println(error() + id.label() + " is already declared.");
+            typeErrors++;
+            label.type = new Types(Types.Error);
+        } // id != null
+        
+        //type check condition
+        condition.checkTypes();
+        //type check loop body
+        loopBody.checkTypes();
+    } // checkTypes
 
 	private final exprNode label;
 	private final exprNode condition;

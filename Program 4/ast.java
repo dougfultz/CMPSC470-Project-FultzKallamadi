@@ -601,11 +601,11 @@ class whileNode extends stmtNode {
     void checkTypes() {
         //Add label to scope
         SymbolInfo id;
-        id = (SymbolInfo) st.localLookup(label.idname);
+        id = (SymbolInfo) st.localLookup(((identNode)label).idname);
         if (id == null) {
-            id = new SymbolInfo(label.idname,
-                new Kinds(Kinds.Var),Types.Void);
-            label.type = Types.Void;
+            id = new SymbolInfo(((identNode)label).idname,
+                new Kinds(Kinds.Var),new Types(Types.Void));
+            label.type = new Types(Types.Void);
             try {
                 st.insert(id);
             } catch (DuplicateException d) {
@@ -613,9 +613,9 @@ class whileNode extends stmtNode {
             } catch (EmptySTException e) {
                 /* can't happen */
             }
-            label.idinfo = id;
+            ((identNode)label).idinfo = id;
         } else {
-            System.out.println(error() + id.label() + " is already declared.");
+            System.out.println(error() + id.name() + " is already declared.");
             typeErrors++;
             label.type = new Types(Types.Error);
         } // id != null

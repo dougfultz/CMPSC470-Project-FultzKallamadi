@@ -322,6 +322,12 @@ class methodDeclsNode extends ASTNode {
 		thisDecl = m;
 		moreDecls = ms;
 	} // methodDeclsNode
+    
+    void checkTypes() {
+        thisDecl.checkTypes();
+        moreDecls.checkTypes();
+    } // checkTypes
+    
 	static nullMethodDeclsNode NULL = new nullMethodDeclsNode();
 	private methodDeclNode thisDecl;
 	private methodDeclsNode moreDecls;

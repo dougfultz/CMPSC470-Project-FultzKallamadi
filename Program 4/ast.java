@@ -710,6 +710,10 @@ class returnNode extends stmtNode {
 		super(line,col);
 		returnVal = e;
 	} // returnNode
+    
+    void checkTypes() {
+        returnVal.checkTypes();
+    } // checkTypes
 
 	private final exprNode returnVal;
 } // class returnNode 

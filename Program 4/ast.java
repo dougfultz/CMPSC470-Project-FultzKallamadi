@@ -724,6 +724,14 @@ class blockNode extends stmtNode {
 		decls = f;
 		stmts = s;
 	} // blockNode
+    
+    void checkTypes() {
+        //Open scope
+        st.openScope();
+        //Type check everything else
+        decls.checkTypes();
+        stmts.checkTypes();
+    } // checkTypes
 
 	private final fieldDeclsNode decls;
 	private final stmtsNode stmts;

@@ -910,6 +910,11 @@ class fctCallNode extends exprNode {
 		methodName = id;
 		methodArgs = a;
 	} // fctCallNode
+    
+    void checkTypes() {
+        methodName.checkTypes();
+        methodArgs.checkTypes();
+    } // checkTypes
 
 	private final identNode methodName;
 	private final argsNode methodArgs;
@@ -996,6 +1001,10 @@ class charLitNode extends exprNode {
 		super(line, col);
 		charval = val;
 	} // charLitNode
+    
+    void checkTypes() {
+        // All charLits are automatically type-correct
+    } // checkTypes
 
 	private final char charval;
 } // class charLitNode  // class charLitNode 

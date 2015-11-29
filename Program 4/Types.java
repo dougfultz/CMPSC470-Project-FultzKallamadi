@@ -13,14 +13,14 @@ class Types{
 
  public String toString() {
 	switch(val){
-	  case 0: return "Character";
-	  case 1: return "Integer";
-	  case 2: return "Boolean";
-	  case 3: return "Void";
-	  case 4: return "Error";
-	  case 5: return "Unknown";
-	  case 6: return "Real";
- 	  case 7: return "String";
+	  case Character: return "Character";
+	  case Integer: return "Integer";
+	  case Boolean: return "Boolean";
+	  case Void: return "Void";
+	  case Error: return "Error";
+	  case Unknown: return "Unknown";
+	  case Real: return "Real";
+ 	  case String: return "String";
 	  default: throw new RuntimeException();
 	}
  }

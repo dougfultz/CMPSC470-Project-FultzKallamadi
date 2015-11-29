@@ -831,16 +831,7 @@ class binaryOpNode extends exprNode {
 	} // binaryOpNode
 
 	static void printOp(int op) {
-		switch (op) {
-			case sym.PLUS:
-				System.out.print(" + ");
-				break;
-			case sym.MINUS:
-				System.out.print(" - ");
-				break;
-			default:
-				mustBe(false);
-		} // switch(op)
+        System.out.print(toString(op));
 	} // printOp
 
 	static String toString(int op) {

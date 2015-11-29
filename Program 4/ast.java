@@ -425,6 +425,28 @@ class arrayArgDeclNode extends argDeclNode {
 		argName = id;
 		elementType = t;
 	} // arrayArgDeclNode
+    
+    void checkTypes() {
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(argName.idname);
+        if (id == null) {
+            id = new SymbolInfo(argName.idname,
+                new Kinds(Kinds.Var),elementType.type);
+            argName.type = elementType.type;
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            argName.idinfo = id;
+        } else {
+            System.out.println(error() + id.name() + " is already declared.");
+            typeErrors++;
+            argName.type = new Types(Types.Error);
+        } // id != null
+    } // checkTypes
 
 	private final identNode argName;
 	private final typeNode elementType;

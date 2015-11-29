@@ -784,8 +784,14 @@ class nullArgsNode extends argsNode {
 
 class strLitNode extends exprNode {
 	strLitNode(String stringval, int line, int col) {
-		// complete this constructor
+        // complete this constructor - DONE
+        super(line,col);
+        strval = stringval;
 	} // strLitNode
+    
+    void checkTypes() {
+        // All strLits are automatically type-correct
+    } // checkTypes
 
 	private String strval;
 } // class strLitNode 

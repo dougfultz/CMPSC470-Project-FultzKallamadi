@@ -402,6 +402,11 @@ class argDeclsNode extends ASTNode {
 		moreDecls = args;
 	} // argDeclsNode
 	static nullArgDeclsNode NULL = new nullArgDeclsNode();
+    
+    void checkTypes() {
+        thisDecl.checkTypes();
+        moreDecls.checkTypes();
+    } // checkTypes
 
 	private argDeclNode thisDecl;
 	private argDeclsNode moreDecls;

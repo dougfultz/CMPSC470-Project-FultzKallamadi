@@ -436,6 +436,28 @@ class valArgDeclNode extends argDeclNode {
 		argName = id;
 		argType = t;
 	} // valArgDeclNode
+    
+    void checkTypes() {
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(argName.idname);
+        if (id == null) {
+            id = new SymbolInfo(argName.idname,
+                new Kinds(Kinds.Var),argType.type);
+            argName.type = argType.type;
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            argName.idinfo = id;
+        } else {
+            System.out.println(error() + id.name() + " is already declared.");
+            typeErrors++;
+            argName.type = new Types(Types.Error);
+        } // id != null
+    } // checkTypes
 
 	private final identNode argName;
 	private final typeNode argType;

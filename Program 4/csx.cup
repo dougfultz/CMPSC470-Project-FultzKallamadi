@@ -1,0 +1,1005 @@
+/***
+ *
+ * This Is A Java CUP Specification For CSX.
+ *
+ ***/
+
+/* Preliminaries to set up and use the scanner.  */
+
+import java_cup.runtime.*;
+parser code {:
+	public void syntax_error(Symbol cur_token)
+	{
+
+		String tokenType = "";
+
+		switch (cur_token.sym) {
+			case sym.rw_BOOL: // match reserved word token: bool
+				tokenType = "bool"; break;
+			case sym.rw_BREAK: // match reserved word token: break
+				tokenType = "break"; break;
+			case sym.rw_CHAR: // match reserved word token: char
+				tokenType = "char"; break;
+			case sym.rw_CLASS: // match reserved word token: class
+				tokenType = "class"; break;
+			case sym.rw_CONST: // match reserved word token: const
+				tokenType = "const"; break;
+			case sym.rw_CONTINUE: // match reserved word token: continue
+				tokenType = "continue"; break;
+			case sym.rw_ELSE: // match reserved word token: else
+				tokenType = "else"; break;
+			case sym.rw_FALSE: // match reserved word token: false
+				tokenType = "false"; break;
+			case sym.rw_IF: // match reserved word token: if
+				tokenType = "if"; break;
+			case sym.rw_INT: // match reserved word token: int
+				tokenType = "int"; break;
+			case sym.rw_READ: // match reserved word token: read
+				tokenType = "read"; break;
+			case sym.rw_RETURN: // match reserved word token: return
+				tokenType = "return"; break;
+			case sym.rw_TRUE: // match reserved word token: true
+				tokenType = "true"; break;
+			case sym.rw_VOID: // match reserved word token: void
+				tokenType = "void"; break;
+			case sym.rw_PRINT: // match reserved word token: print
+				tokenType = "print"; break;
+			case sym.rw_WHILE: // match reserved word token: while
+				tokenType = "while"; break;
+
+			case sym.INTLIT: // match integer literal token
+				tokenType = "Integer literal (" +
+					((CSXIntLitToken) cur_token.value).intValue + ")";
+				break;
+
+			case sym.LPAREN: // match miscellaneous token: (
+				tokenType = "("; break;
+			case sym.RPAREN: // match miscellaneous token:
+				tokenType = ""; break;
+			case sym.LBRACKET: // match miscellaneous token: [
+				tokenType = "["; break;
+			case sym.RBRACKET: // match miscellaneous token: ]
+				tokenType = "]"; break;
+			case sym.ASG: // match miscellaneous token: =
+				tokenType = "="; break;
+			case sym.SEMI: // match miscellaneous token: ;
+				tokenType = ";"; break;
+			case sym.PLUS: // match miscellaneous token: +
+				tokenType = "+"; break;
+			case sym.MINUS: // match miscellaneous token: -
+				tokenType = "-"; break;
+			case sym.TIMES: // match miscellaneous token: *
+				tokenType = "*"; break;
+			case sym.SLASH: // match miscellaneous token: /
+				tokenType = "/"; break;
+			case sym.EQ: // match miscellaneous token: ==
+				tokenType = "=="; break;
+			case sym.NOTEQ: // match miscellaneous token: !=
+				tokenType = "!="; break;
+			case sym.CAND: // match miscellaneous token: &&
+				tokenType = "&&"; break;
+			case sym.COR: // match miscellaneous token: ||
+				tokenType = "||"; break;
+			case sym.LT: // match miscellaneous token: <
+				tokenType = "<"; break;
+			case sym.GT: // match miscellaneous token: >
+				tokenType = ">"; break;
+			case sym.LEQ: // match miscellaneous token: <=
+				tokenType = "<="; break;
+			case sym.GEQ: // match miscellaneous token: >=
+				tokenType = ">="; break;
+			case sym.COMMA: // match miscellaneous token: ,
+				tokenType = ","; break;
+			case sym.NOT: // match miscellaneous token: !
+				tokenType = "!"; break;
+			case sym.LBRACE: // match miscellaneous token: {
+				tokenType = "{"; break;
+			case sym.RBRACE: // match miscellaneous token: }
+				tokenType = "}"; break;
+			case sym.COLON: // match miscellaneous token: :
+				tokenType = ":"; break;
+			case sym.INC: // match miscellaneous token: ++
+				tokenType = "++"; break;
+			case sym.DEC: // match miscellaneous token: --
+				tokenType = "--"; break;
+
+			case sym.STRLIT: //match string literal token
+				tokenType = "String literal (\"" +
+					((CSXStringLitToken) cur_token.value).stringText + "\")";
+				break;
+
+			case sym.CHARLIT: // match character literal token
+				tokenType = "Character literal ('" +
+					((CSXCharLitToken) cur_token.value).charText + "')";
+				break;
+
+			case sym.IDENTIFIER: // match identifier token
+				tokenType = "Identifier (" + ((CSXIdentifierToken) cur_token.value).identifierText + ")"; break;
+
+			case sym.EOF:
+				tokenType = "EOF"; break;
+
+			default:
+				tokenType = "ERROR"; break;
+		}
+
+
+		report_error("CSX syntax error at line "+
+			String.valueOf(((CSXToken)cur_token.value).linenum) + " with token: " + tokenType,
+			null);
+	}
+:};
+init with {:              :};
+scan with {: return Scanner.next_token(); :};
+
+/* Terminals (tokens returned by the scanner). */
+terminal CSXIdentifierToken		IDENTIFIER;
+terminal CSXIntLitToken			INTLIT;
+terminal CSXCharLitToken		CHARLIT;
+terminal CSXStringLitToken		STRLIT;
+terminal CSXToken				ASG, CAND, COLON, COMMA, COR, DEC, EQ, GEQ;
+terminal CSXToken				GT, INC, LBRACE, LBRACKET, LEQ, LPAREN, LT, MINUS;
+terminal CSXToken				NOT, NOTEQ, PLUS, RBRACE, RBRACKET, RPAREN, SEMI;
+terminal CSXToken				SLASH, TIMES ,rw_BOOL, rw_BREAK, rw_CHAR, rw_CLASS;
+terminal CSXToken				rw_CONST, rw_CONTINUE, rw_ELSE, rw_FALSE, rw_IF;
+terminal CSXToken				rw_INT, rw_PRINT, rw_READ, rw_RETURN, rw_TRUE;
+terminal CSXToken				rw_VOID, rw_WHILE, rw_ENDIF, rw_FOR;
+
+/* Non terminals */
+non terminal classNode			prog;
+non terminal memberDeclsNode	memberdecls;
+non terminal fieldDeclsNode		fielddecls;
+non terminal methodDeclsNode	methoddecls;
+non terminal methodDeclNode		methoddecl;
+non terminal argDeclsNode		argdecls;
+non terminal argDeclNode		argdecl;
+non terminal declNode			fielddecl;
+non terminal stmtsNode			stmts;
+non terminal asgNode			forinit;
+non terminal exprNode			forcondition;
+non terminal asgNode			forupdate;
+non terminal stmtNode			stmt;
+non terminal exprNode			expr;
+non terminal nameNode			name;
+non terminal readNode			read;
+non terminal printNode			print;
+non terminal identNode			ident;
+non terminal exprNode			unit;
+non terminal argsNode			args;
+non terminal exprNode			unary;
+non terminal exprNode			term;
+non terminal exprNode			factor;
+non terminal exprNode			pri;
+non terminal typeNode			type;
+non terminal nullNode			optionalsemi;
+
+/* Precedences */
+precedence	nonassoc		CAND, COR;
+precedence	nonassoc		EQ, NOTEQ, LT, LEQ, GEQ, GT;
+precedence	left			PLUS, MINUS;
+precedence	left			TIMES, SLASH;
+precedence	right			NOT;
+
+start with prog;
+
+// Non terminal Program
+prog			::=
+					// Rule 1
+					rw_CLASS:c ident:id LBRACE memberdecls:m RBRACE:r
+					{:
+						RESULT = new classNode(id, m, c.linenum, c.colnum, r.linenum, r.colnum);
+					:}
+				;
+
+// Non terminal OptionalSemi
+optionalsemi	::=
+					// Rule 1
+					SEMI
+					{:
+						RESULT = new nullNode();
+					:}
+				|
+					// Rule 2
+					{:
+						RESULT = new nullNode();
+					:}
+				;
+
+// Non terminal Memberdecls
+memberdecls		::=
+					// Rule 1
+					fielddecl:f memberdecls:m
+					{:
+						fieldDeclsNode n = new fieldDeclsNode(f, m.fields, f.linenum, f.colnum);
+						m.fields = n;
+						RESULT = m;
+					:}
+				|
+					// Rule 2
+					methoddecls:m
+					{:
+						RESULT = new memberDeclsNode(fieldDeclsNode.NULL, m, m.linenum, m.colnum);
+					:}
+				;
+
+// Non terminal Fielddecls
+fielddecls		::=
+					// Rule 1
+					fielddecl:field fielddecls:fields
+					{:
+						RESULT = new fieldDeclsNode(field, fields, field.linenum, field.colnum);
+					:}
+				|
+					// Rule 2
+					{:
+						RESULT = nullFieldDeclsNode.NULL;
+					:}
+				;
+
+// Non terminal Methoddecls
+methoddecls		::=
+					// Rule 1
+					methoddecl:m1 methoddecls:m2
+					{:
+						RESULT = new methodDeclsNode(m1, m2, m1.linenum, m1.colnum);
+					:}
+				|
+					// Rule 2
+					{:
+						RESULT = methodDeclsNode.NULL;
+					:}
+				;
+
+// Non terminal Methoddecl
+methoddecl		::=
+					// Rule 1
+					rw_VOID:rw ident:id LPAREN RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
+					{:
+						RESULT = new methodDeclNode(id, argDeclsNode.NULL, new voidTypeNode(rw.linenum, rw.colnum), f, s, rw.linenum, rw.colnum, r.linenum, r.colnum);
+					:}
+				|
+					// Rule 2
+					rw_VOID:rw ident:id LPAREN argdecls:a RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
+					{:
+						RESULT = new methodDeclNode(id, a, new voidTypeNode(rw.linenum, rw.colnum), f, s, rw.linenum, rw.colnum, r.linenum, r.colnum);
+					:}
+				|
+					// Rule 3
+					type:t ident:id LPAREN RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
+					{:
+						RESULT = new methodDeclNode(id, argDeclsNode.NULL, t, f, s, t.linenum, t.colnum, r.linenum, r.colnum);
+					:}
+				|
+					// Rule 4
+					type:t ident:id LPAREN argdecls:a RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
+					{:
+						RESULT = new methodDeclNode(id, a, t, f, s, t.linenum, t.colnum, r.linenum, r.colnum);
+					:}
+				;
+
+// Non terminal Argdecls
+argdecls		::=
+					// Rule 1
+					argdecl:a1 COMMA argdecls:a2
+					{:
+						RESULT = new argDeclsNode(a1, a2, a1.linenum, a1.colnum);
+					:}
+				|
+					// Rule 2
+					argdecl:a
+					{:
+						RESULT = new argDeclsNode(a, argDeclsNode.NULL, a.linenum, a.colnum);
+					:}
+				;
+
+// Non terminal Argdecl
+argdecl			::=
+					// Rule 1
+					type:t ident:id
+					{:
+						RESULT = new valArgDeclNode(id, t, t.linenum, t.colnum);
+					:}
+				|
+					// Rule 2
+					type:t ident:id LBRACKET RBRACKET
+					{:
+						RESULT = new arrayArgDeclNode(id, t, t.linenum, t.colnum);
+					:}
+				;
+
+// Non terminal Fielddecl
+fielddecl		::=
+					// Rule 1
+					type:t ident:id SEMI
+					{:
+						RESULT = new varDeclNode(id, t, exprNode.NULL, t.linenum, t.colnum);
+					:}
+				|
+					// Rule 2
+					type:t ident:id ASG expr:e SEMI
+					{:
+						RESULT = new varDeclNode(id, t, e, t.linenum, t.colnum);
+					:}
+				|
+					// Rule 3
+					type:t ident:id LBRACKET INTLIT:i RBRACKET SEMI
+					{:
+						RESULT = new arrayDeclNode(id, t, new intLitNode(i.intValue, i.linenum, i.colnum), t.linenum, t.colnum);
+					:}
+				|
+					// Rule 4
+					rw_CONST:c ident:id ASG expr:e SEMI
+					{:
+						RESULT = new constDeclNode(id, e, c.linenum, c.colnum);
+					:}
+				;
+
+// Non terminal Stmts
+stmts			::=
+					// Rule 1
+					stmt:s1  stmts:s2
+					{:
+						RESULT = new stmtsNode(s1, s2, s1.linenum, s1.colnum);
+					:}
+				|
+					// Rule 2
+					stmt:s
+					{:
+						RESULT = new stmtsNode(s, stmtsNode.NULL, s.linenum, s.colnum);
+					:}
+				;
+
+forinit			::=
+					ident:id ASG expr:e
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									e,
+									id.linenum,
+									id.colnum
+								);
+					:}
+				;
+
+forcondition	::=
+					expr:e COR:o term:t
+					{:
+						RESULT = new binaryOpNode(e, sym.COR, t, o.linenum, o.colnum);
+					:}
+				|
+					expr:e CAND:o term:t
+					{:
+						RESULT = new binaryOpNode(e, sym.CAND, t, o.linenum, o.colnum);
+					:}
+				|
+					factor:f1 LT:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.LT, f2, o.linenum, o.colnum);
+					:}
+				|
+					factor:f1 GT:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.GT, f2, o.linenum, o.colnum);
+					:}
+				|
+					factor:f1 LEQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.LEQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					factor:f1 GEQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.GEQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					factor:f1 EQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.EQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					factor:f1 NOTEQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.NOTEQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					NOT:o unary:u
+					{:
+						RESULT = new unaryOpNode(sym.NOT, u, o.linenum, o.colnum);
+					:}
+				|
+					rw_TRUE:r
+					{:
+						RESULT = new trueNode(r.linenum, r.colnum);
+					:}
+				|
+					rw_FALSE:r
+					{:
+						RESULT = new falseNode(r.linenum, r.colnum);
+					:}
+				;
+
+forupdate		::=
+					ident:id ASG expr:e
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									e,
+									id.linenum,
+									id.colnum
+								);
+					:}
+				|
+					INC:i ident:id
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.PLUS,
+										new intLitNode(1, i.linenum, i.colnum),
+										i.linenum,
+										i.colnum
+									),
+									i.linenum,
+									i.colnum
+								);
+					:}
+				|
+					ident:id INC:i
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.PLUS,
+										new intLitNode(1, id.linenum, id.colnum),
+										id.linenum,
+										id.colnum
+									),
+									id.linenum,
+									id.colnum
+								);
+					:}
+				|
+					DEC:d ident:id
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.MINUS,
+										new intLitNode(1, d.linenum, d.colnum),
+										d.linenum,
+										d.colnum
+									),
+									d.linenum,
+									d.colnum
+								);
+					:}
+				|
+					ident:id DEC:d
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.MINUS,
+										new intLitNode(1, id.linenum, id.colnum),
+										id.linenum,
+										id.colnum
+									),
+									id.linenum,
+									id.colnum
+								);
+					:}
+				;
+
+// Non terminal Stmt
+stmt 			::=
+					// Rule 1
+					rw_IF:i LPAREN expr:e RPAREN stmts:s rw_ENDIF:endIf
+					{:
+						RESULT = new ifThenNode(e, s, stmtsNode.NULL, i.linenum, i.colnum, 0, 0, endIf.linenum, endIf.colnum);
+					:}
+
+				|
+					// Rule 2
+					rw_IF:i LPAREN expr:e RPAREN stmts:sIf rw_ELSE:elseWord stmts:sElse rw_ENDIF:endIf
+					{:
+						RESULT = new ifThenNode(e, sIf, sElse, i.linenum, i.colnum, elseWord.linenum, elseWord.colnum, endIf.linenum, endIf.colnum);
+					:}
+				|
+					// Rule 3
+					rw_WHILE:w LPAREN expr:e RPAREN stmt:s
+					{:
+						RESULT = new whileNode(exprNode.NULL, e, s, w.linenum, w.colnum);
+					:}
+				|
+					// Rule for
+					rw_FOR:f LPAREN forinit:i SEMI forcondition:c SEMI forupdate:u RPAREN stmt:s
+					{:
+						RESULT = new forNode(i, c, u, s, f.linenum, f.colnum);
+					:}
+				|
+					// Rule 4
+					ident:i COLON rw_WHILE:w LPAREN expr:e RPAREN stmt:s
+					{:
+						RESULT = new whileNode(i, e, s, i.linenum, i.colnum);
+					:}
+				|
+					// Rule 5
+					name:n ASG expr:e SEMI
+					{:
+						RESULT = new asgNode(n, e, n.linenum, n.colnum);
+					:}
+				|
+					// Rule 6
+					rw_READ:readWord LPAREN read:r RPAREN SEMI
+					{:
+						r.linenum = readWord.linenum;
+						r.colnum = readWord.colnum;
+						RESULT = r;
+					:}
+				|
+					// Rule 7
+					rw_PRINT:printWord LPAREN print:p RPAREN SEMI
+					{:
+						p.linenum = printWord.linenum;
+						p.colnum = printWord.colnum;
+						RESULT = p;
+					:}
+				|
+					// Rule 8
+					ident:i LPAREN RPAREN SEMI
+					{:
+						RESULT = new callNode(i, argsNode.NULL, i.linenum, i.colnum);
+					:}
+				|
+					// Rule 9
+					ident:i LPAREN args:a RPAREN SEMI
+					{:
+						RESULT = new callNode(i, a, i.linenum, i.colnum);
+					:}
+				|
+					// Rule 10
+					rw_RETURN:returnWord SEMI
+					{:
+						RESULT = new returnNode(exprNode.NULL, returnWord.linenum, returnWord.colnum);
+					:}
+				|
+					// Rule 11
+					rw_RETURN:returnWord expr:e SEMI
+					{:
+						RESULT = new returnNode(e, returnWord.linenum, returnWord.colnum);
+					:}
+				|
+					// Rule 12
+					rw_BREAK:breakWord ident:i SEMI
+					{:
+						RESULT = new breakNode(i, breakWord.linenum, breakWord.colnum);
+					:}
+				|
+					// Rule 13
+					rw_CONTINUE:continueWord ident:i SEMI
+					{:
+						RESULT = new continueNode(i, continueWord.linenum, continueWord.colnum);
+					:}
+				|
+					// Rule 14
+					LBRACE:l fielddecls:f stmts:s RBRACE:r optionalsemi
+					{:
+						RESULT = new blockNode(f, s, l.linenum, l.colnum, r.linenum, r.colnum);
+					:}
+				|
+					// Rule ++id;
+					INC:i ident:id SEMI
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.PLUS,
+										new intLitNode(1, i.linenum, i.colnum),
+										i.linenum,
+										i.colnum
+									),
+									i.linenum,
+									i.colnum
+								);
+					:}
+				|
+					// Rule id++
+					ident:id INC:i SEMI
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.PLUS,
+										new intLitNode(1, id.linenum, id.colnum),
+										id.linenum,
+										id.colnum
+									),
+									id.linenum,
+									id.colnum
+								);
+					:}
+				|
+					// Rule --id
+					DEC:d ident:id SEMI
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.MINUS,
+										new intLitNode(1, d.linenum, d.colnum),
+										d.linenum,
+										d.colnum
+									),
+									d.linenum,
+									d.colnum
+								);
+					:}
+				|
+					// Rule id--
+					ident:id DEC:d SEMI
+					{:
+						RESULT = new asgNode(
+									new nameNode(
+										id,
+										exprNode.NULL,
+										id.linenum,
+										id.colnum
+									),
+									new binaryOpNode(
+										id,
+										sym.MINUS,
+										new intLitNode(1, id.linenum, id.colnum),
+										id.linenum,
+										id.colnum
+									),
+									id.linenum,
+									id.colnum
+								);
+					:}
+				;
+
+// Non terminal Readlist
+read 			::=
+					// Rule 1
+					name:n COMMA read:r
+					{:
+						RESULT = new readNode(n, r, n.linenum, n.colnum);
+					:}
+
+				|
+					// Rule 2
+					name:n
+					{:
+						RESULT = new readNode(n, readNode.NULL, n.linenum, n.colnum);
+					:}
+				;
+
+// Non terminal Printlist
+print 			::=
+					// Rule 1
+					expr:e COMMA print:p
+					{:
+						RESULT = new printNode(e, p, e.linenum, e.colnum);
+					:}
+				|
+					// Rule 2
+					expr:e
+					{:
+						RESULT = new printNode(e, printNode.NULL, e.linenum, e.colnum);
+					:}
+				;
+
+// Non terminal Type
+type			::=
+					// Rule 1
+					rw_INT:r
+					{:
+						RESULT = new intTypeNode(r.linenum, r.colnum);
+					:}
+				|
+					// Rule 2
+					rw_CHAR:r
+					{:
+						RESULT = new charTypeNode(r.linenum, r.colnum);
+					:}
+				|
+					// Rule 3
+					rw_BOOL:r
+					{:
+						RESULT = new boolTypeNode(r.linenum, r.colnum);
+					:}
+				;
+
+// Non terminal Args
+args			::=
+					// Rule 1
+					expr:e COMMA:c args:a
+					{:
+						RESULT = new argsNode(e, a, e.linenum, e.colnum);
+					:}
+				|
+					// Rule 2
+					expr:e
+					{:
+						RESULT =  new argsNode(e, argsNode.NULL, e.linenum, e.colnum);
+					:}
+				;
+
+// Non terminal Expr
+expr			::=
+					// Rule 1
+					expr:e COR:o term:t
+					{:
+						RESULT = new binaryOpNode(e, sym.COR, t, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 2
+					expr:e CAND:o term:t
+					{:
+						RESULT = new binaryOpNode(e, sym.CAND, t, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 3
+					term:t
+					{:
+						RESULT = t;
+					:}
+				;
+
+// Non terminal Term
+term			::=
+					// Rule 1
+					factor:f1 LT:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.LT, f2, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 2
+					factor:f1 GT:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.GT, f2, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 3
+					factor:f1 LEQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.LEQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 4
+					factor:f1 GEQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.GEQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 5
+					factor:f1 EQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.EQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 6
+					factor:f1 NOTEQ:o factor:f2
+					{:
+						RESULT = new binaryOpNode(f1, sym.NOTEQ, f2, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 7
+					factor:f
+					{:
+						RESULT = f;
+					:}
+				;
+
+// Non terminal Factor
+factor			::=
+					// Rule 1
+					factor:f PLUS:o pri:p
+					{:
+						RESULT = new binaryOpNode(f, sym.PLUS, p, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 2
+					factor:f MINUS:o pri:p
+					{:
+						RESULT = new binaryOpNode(f, sym.MINUS, p, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 3
+					pri:p
+					{:
+						RESULT = p;
+					:}
+				;
+
+// Non terminal Pri
+pri				::=
+					// Rule 1
+					pri:p TIMES:o unary:u
+					{:
+						RESULT = new binaryOpNode(p, sym.TIMES, u, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 2
+					pri:p SLASH:o unary:u
+					{:
+						RESULT = new binaryOpNode(p, sym.SLASH, u, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 3
+					unary:u
+					{:
+						RESULT = u;
+					:}
+				;
+
+// Non terminal Unary
+unary			::=
+					// Rule 1
+					NOT:o unary:u
+					{:
+						RESULT = new unaryOpNode(sym.NOT, u, o.linenum, o.colnum);
+					:}
+				|
+					// Rule 2
+					LPAREN:l type:t RPAREN unary:u
+					{:
+						RESULT = new castNode(t, u, l.linenum, l.colnum);
+					:}
+				|
+					// Rule 3
+					unit:u
+					{:
+						RESULT = u;
+					:}
+				;
+
+// Non terminal Unit
+unit			::=
+					// Rule 1
+					name:n
+					{:
+						RESULT = n;
+					:}
+				|
+					// Rule 2
+					ident:i LPAREN RPAREN
+					{:
+						RESULT = new fctCallNode(i, argsNode.NULL, i.linenum, i.colnum);
+					:}
+				|
+					// Rule 3
+					ident:i LPAREN args:a RPAREN
+					{:
+						RESULT = new fctCallNode(i, a, i.linenum, i.colnum);
+					:}
+				|
+					// Rule 4
+					INTLIT:i
+					{:
+						RESULT = new intLitNode(i.intValue, i.linenum, i.colnum);
+					:}
+				|
+					// Rule 5
+					CHARLIT:c
+					{:
+						RESULT = new charLitNode(c.charValue, c.linenum, c.colnum);
+					:}
+				|
+					// Rule 6
+					STRLIT:s
+					{:
+						RESULT = new strLitNode(s.stringText, s.linenum, s.colnum);
+					:}
+				|
+					// Rule 7
+					rw_TRUE:r
+					{:
+						RESULT = new trueNode(r.linenum, r.colnum);
+					:}
+				|
+					// Rule 8
+					rw_FALSE:r
+					{:
+						RESULT = new falseNode(r.linenum, r.colnum);
+					:}
+				|
+					// Rule 9
+					LPAREN:p expr:e RPAREN
+					{:
+						RESULT = e;
+					:}
+				;
+
+// Non terminal Name
+name			::=
+					// Rule 1
+					IDENTIFIER:i
+					{:
+						RESULT = new nameNode(
+									new identNode(
+										i.identifierText,
+										i.linenum,
+										i.colnum
+									),
+									exprNode.NULL,
+									i.linenum,
+									i.colnum
+								);
+					:}
+				|
+					// Rule 2
+					IDENTIFIER:i LBRACKET expr:e RBRACKET
+					{:
+						RESULT = new nameNode(
+									new identNode(
+										i.identifierText,
+										i.linenum,
+										i.colnum
+									),
+									e,
+									i.linenum,
+									i.colnum
+								);
+					:}
+				;
+
+// Terminal identifier token
+ident			::=
+					IDENTIFIER:i
+					{:
+						RESULT = new identNode(i.identifierText, i.linenum, i.colnum);
+					:}
+				;

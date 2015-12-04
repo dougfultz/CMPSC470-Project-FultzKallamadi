@@ -401,6 +401,13 @@ class methodDeclNode extends ASTNode {
         args.checkTypes();
         decls.checkTypes();
         stmts.checkTypes();
+        //Close scope
+        try{
+            st.closeScope();
+        }catch(EmptySTException e){
+            System.err.println("Empty scope");
+            System.exit(-1);
+        }
     } // checkTypes
 
 	private final identNode name;
@@ -802,6 +809,13 @@ class blockNode extends stmtNode {
         //Type check everything else
         decls.checkTypes();
         stmts.checkTypes();
+        //Close scope
+        try{
+            st.closeScope();
+        }catch(EmptySTException e){
+            System.err.println("Empty scope");
+            System.exit(-1);
+        }
     } // checkTypes
 
 	private final fieldDeclsNode decls;

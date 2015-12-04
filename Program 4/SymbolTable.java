@@ -96,7 +96,7 @@ class SymbolTable {
             //Check for existing key
             //TODO - make case insensitive
             if(current.containsKey(s)){
-                return(new TestSym(s,Integer.parseInt(current.get(s).toString())));
+                return((SymbolInfo)current.get(s));
             }
         }
         

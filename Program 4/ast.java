@@ -1132,7 +1132,7 @@ class identNode extends exprNode {
 	void checkTypes() {
 		SymbolInfo id;
 		mustBe(kind.val == Kinds.Var); //In CSX-lite all IDs should be vars! 
-		id = (SymbolInfo) st.localLookup(idname);
+		id = (SymbolInfo) st.globalLookup(idname);
 		if (id == null) {
 			System.out.println(error() + idname + " is not declared.");
 			typeErrors++;

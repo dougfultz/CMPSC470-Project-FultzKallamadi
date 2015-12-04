@@ -8,19 +8,20 @@ class test {            //prog - Rule 1
     const d = 0;    //fielddecl - Rule 4
 
     //memberdecls - Rule 2
+    //methoddecls - Rule 1
     void fa() {         //methoddecl - Rule 1
-        int a;
-        return;
-    }
-    void fb(int a) {    //methoddecl - Rule 2, argdecls - Rule 2
+        int a;          //stmts - Rule 1
+        return;         //stmts - Rule 2
+    };                  //optionalsemi - Rule 1
+    void fb(int a) {    //methoddecl - Rule 2, argdecls - Rule 2, argdecl - Rule 1
         int b;
         return;
-    }
+    }                   //optionalsemi - Rule 2
     int fc() {          //methoddecl - Rule 3
         int a;
         return;
     }
-    int fd(int a, int b) {  //methoddecl - Rule 4
+    int fd(int a, int b[]) {  //methoddecl - Rule 4, argdecls - Rule 1, argdecl - Rule 2
         int c;
         return 0;
     }

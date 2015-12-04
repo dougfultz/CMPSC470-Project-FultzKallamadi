@@ -546,7 +546,7 @@ stmt 			::=
 					// Rule 3
 					rw_WHILE:w LPAREN expr:e RPAREN stmt:s
 					{:
-						RESULT = new whileNode(exprNode.NULL, e, s, w.linenum, w.colnum);
+						RESULT = new whileNode(identNode.NULL, e, s, w.linenum, w.colnum);
 					:}
 				|
 					// Rule for

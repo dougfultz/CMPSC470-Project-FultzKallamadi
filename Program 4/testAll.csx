@@ -25,4 +25,11 @@ class test {            //prog - Rule 1
         int c;
         return 0;
     }
+    int fe() {
+        int a;
+        if ( true )   //stmt - Rule 1
+            a = 0;      //stmt - Rule 5
+        endif
+        return 0;
+    }
 }

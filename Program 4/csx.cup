@@ -622,7 +622,7 @@ stmt 			::=
 					// Rule 14
 					LBRACE:l fielddecls:f stmts:s RBRACE:r optionalsemi
 					{:
-						RESULT = new blockNode(f, s, l.linenum, l.colnum, r.linenum, r.colnum);
+						RESULT = new blockNode(f, s, l.linenum, l.colnum);
 					:}
 				|
 					// Rule ++id;

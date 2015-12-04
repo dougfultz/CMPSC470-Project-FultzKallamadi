@@ -255,25 +255,25 @@ methoddecl		::=
 					// Rule 1
 					rw_VOID:rw ident:id LPAREN RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
 					{:
-						RESULT = new methodDeclNode(id, argDeclsNode.NULL, new voidTypeNode(rw.linenum, rw.colnum), f, s, rw.linenum, rw.colnum, r.linenum, r.colnum);
+						RESULT = new methodDeclNode(id, argDeclsNode.NULL, new voidTypeNode(rw.linenum, rw.colnum), f, s, rw.linenum, rw.colnum);
 					:}
 				|
 					// Rule 2
 					rw_VOID:rw ident:id LPAREN argdecls:a RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
 					{:
-						RESULT = new methodDeclNode(id, a, new voidTypeNode(rw.linenum, rw.colnum), f, s, rw.linenum, rw.colnum, r.linenum, r.colnum);
+						RESULT = new methodDeclNode(id, a, new voidTypeNode(rw.linenum, rw.colnum), f, s, rw.linenum, rw.colnum);
 					:}
 				|
 					// Rule 3
 					type:t ident:id LPAREN RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
 					{:
-						RESULT = new methodDeclNode(id, argDeclsNode.NULL, t, f, s, t.linenum, t.colnum, r.linenum, r.colnum);
+						RESULT = new methodDeclNode(id, argDeclsNode.NULL, t, f, s, t.linenum, t.colnum);
 					:}
 				|
 					// Rule 4
 					type:t ident:id LPAREN argdecls:a RPAREN LBRACE fielddecls:f stmts:s RBRACE:r optionalsemi
 					{:
-						RESULT = new methodDeclNode(id, a, t, f, s, t.linenum, t.colnum, r.linenum, r.colnum);
+						RESULT = new methodDeclNode(id, a, t, f, s, t.linenum, t.colnum);
 					:}
 				;
 

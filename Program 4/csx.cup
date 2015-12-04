@@ -531,16 +531,16 @@ forupdate		::=
 // Non terminal Stmt
 stmt 			::=
 					// Rule 1
-					rw_IF:i LPAREN expr:e RPAREN stmts:s rw_ENDIF:endIf
+					rw_IF:i LPAREN expr:e RPAREN stmt:s rw_ENDIF:endIf
 					{:
-						RESULT = new ifThenNode(e, s, stmtsNode.NULL, i.linenum, i.colnum, 0, 0, endIf.linenum, endIf.colnum);
+						RESULT = new ifThenNode(e, s, stmtNode.NULL, i.linenum, i.colnum);
 					:}
 
 				|
 					// Rule 2
-					rw_IF:i LPAREN expr:e RPAREN stmts:sIf rw_ELSE:elseWord stmts:sElse rw_ENDIF:endIf
+					rw_IF:i LPAREN expr:e RPAREN stmt:sIf rw_ELSE:elseWord stmt:sElse rw_ENDIF:endIf
 					{:
-						RESULT = new ifThenNode(e, sIf, sElse, i.linenum, i.colnum, elseWord.linenum, elseWord.colnum, endIf.linenum, endIf.colnum);
+						RESULT = new ifThenNode(e, sIf, sElse, i.linenum, i.colnum);
 					:}
 				|
 					// Rule 3

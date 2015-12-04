@@ -83,6 +83,28 @@ class classNode extends ASTNode {
 		members = m;
 	} // classNode
     void checkTypes() {
+        //Add className to scope
+        SymbolInfo id;
+        id = (SymbolInfo) st.localLookup(className.idname);
+        if (id == null) {
+            id = new SymbolInfo(className.idname,
+                new Kinds(Kinds.Other),new Types(Types.Unknown));
+            className.type = new Types(Types.Unknown);
+            try {
+                st.insert(id);
+            } catch (DuplicateException d) {
+                /* can't happen */
+            } catch (EmptySTException e) {
+                /* can't happen */
+            }
+            className.idinfo = id;
+        } else {
+            System.out.println(error() + id.name() + " is already declared.");
+            typeErrors++;
+            className.type = new Types(Types.Error);
+        } // id != null
+        
+        //check types
         className.checkTypes();
         members.checkTypes();
     } // checkTypes

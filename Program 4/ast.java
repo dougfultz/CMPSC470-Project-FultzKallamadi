@@ -1108,6 +1108,37 @@ class castNode extends exprNode {
 		operand = e;
 		resultType = t;
 	} // castNode
+    
+    void checkTypes() {
+        //Type check children
+        operand.checkTypes();
+        resultType.checkTypes();
+        
+        //Check if operand is a valid type for casting
+        switch(operand.type.val){
+            case Types.Integer:
+            case Types.Character:
+            case Types.Boolean:
+                //Check if result type is valid
+                switch(resultType.type.val){
+                    case Types.Integer:
+                    case Types.Character:
+                    case Types.Real:
+                    case Types.Boolean:
+                        break;
+                    default:
+                        //Show an error
+                        typeMustBe(0,1,error() + resultType.type.toString() + ": Valid types for casting are: int, char, float, or bool");
+                } //switch(resultType.type.val)
+                break;
+            default:
+                //Show an error
+                typeMustBe(0,1,error() + operand.type.toString() + ": Valid types of operand are: int, char, or bool");
+        } //switch(operand.type.val)
+        
+        //Set type to result type
+        type = resultType.type;
+    } // checkTypes
 
 	private final exprNode operand;
 	private final typeNode resultType;

@@ -898,7 +898,7 @@ unary			::=
 					// Rule 1
 					NOT:o unary:u
 					{:
-						RESULT = new unaryOpNode(sym.NOT, u, o.linenum, o.colnum);
+						RESULT = new unaryOpNode(sym.NOT, u, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 2

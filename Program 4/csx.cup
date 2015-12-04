@@ -330,7 +330,7 @@ fielddecl		::=
 					// Rule 4
 					rw_CONST:c ident:id ASG expr:e SEMI
 					{:
-						RESULT = new constDeclNode(id, e, c.linenum, c.colnum);
+						RESULT = new constDeclNode(id, typeNode.NULL, e, c.linenum, c.colnum);
 					:}
 				;
 

@@ -273,6 +273,11 @@ class arrayDeclNode extends declNode {
             typeErrors++;
             arrayName.type = new Types(Types.Error);
         } // id != null
+        
+        //Size of array must be greater than zero
+        if(arraySize.getVal()<=0){
+            typeMustBe(0,1,error() + arraySize.getVal() + ": size of array must be greater than zero");
+        }
     } // checkTypes
 
 	private final identNode arrayName;
@@ -1212,6 +1217,10 @@ class intLitNode extends exprNode {
 	void checkTypes() {
 		// All intLits are automatically type-correct
 	} // checkTypes
+    
+    int getVal(){
+        return(intval);
+    }
 
 	private final int intval;
 } // class intLitNode 

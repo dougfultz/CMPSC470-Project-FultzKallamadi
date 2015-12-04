@@ -187,7 +187,7 @@ prog			::=
 					// Rule 1
 					rw_CLASS:c ident:id LBRACE memberdecls:m RBRACE:r
 					{:
-						RESULT = new classNode(id, m, c.linenum, c.colnum, r.linenum, r.colnum);
+						RESULT = new classNode(id, m, c.linenum, c.colnum);
 					:}
 				;
 

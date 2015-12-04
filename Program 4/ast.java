@@ -897,17 +897,72 @@ class binaryOpNode extends exprNode {
 	} // Unparse
 
 	void checkTypes() {
-		mustBe(operatorCode== sym.PLUS
-		||operatorCode==sym.MINUS);//Only two bin ops in CSX-lite
-		leftOperand.checkTypes();
-		rightOperand.checkTypes();
-		type = new Types(Types.Integer);
-		typeMustBe(leftOperand.type.val, Types.Integer,
-			error() + "Left operand of" + toString(operatorCode) 
-					+ "must be an int.");
-		typeMustBe(rightOperand.type.val, Types.Integer,
-			error() + "Right operand of" + toString(operatorCode) 
-					+ "must be an int.");
+        //Check types of operands
+        leftOperand.checkTypes();
+        rightOperand.checkTypes();
+        
+        //Do something based on operator
+        switch(operatorCode){
+            case sym.PLUS:
+                mustBe(false); //TODO
+                break;
+            case sym.MINUS:
+                mustBe(false); //TODO
+                break;
+            case sym.SLASH:
+                mustBe(false); //TODO
+                break;
+            case sym.TIMES:
+                mustBe(false); //TODO
+                break;
+            case sym.EQ:
+            case sym.NOTEQ:
+            case sym.GEQ:
+            case sym.GT:
+            case sym.LEQ:
+            case sym.LT:
+                //Check if types of operands match
+                typeMustBe(leftOperand.type.val, rightOperand.type.val,
+                    error() + leftOperand.type.toString() + toString(operatorCode) + rightOperand.type.toString()
+                            + "\nLeft operand and right operand must be of same type");
+                //Check if types of operands are valid for comparison
+                switch(leftOperand.type.val){
+                    case Types.Integer:
+                    case Types.Real:
+                    case Types.Character:
+                    case Types.Boolean:
+                        break;
+                    default:
+                        //Show an error
+                        typeMustBe(0,1,error() + "Valid types are: int, float, char, or bool");
+                } //switch(leftOperand.type.val)
+                //Set Type
+                type=new Types(Types.Boolean);
+                break;
+            case sym.CAND:
+            case sym.COR:
+                //Check if types of operands match
+                typeMustBe(leftOperand.type.val, rightOperand.type.val,
+                    error() + leftOperand.type.toString() + toString(operatorCode) + rightOperand.type.toString()
+                            + "\nLeft operand and right operand must be of same type");
+                //Check if types of operands are valid for comparison
+                switch(leftOperand.type.val){
+                    case Types.Boolean:
+                        break;
+                    default:
+                        //Show an error
+                        typeMustBe(0,1,error() + "Valid type is: bool");
+                } //switch(leftOperand.type.val)
+                //Set Type
+                type=new Types(Types.Boolean);
+                break;
+            default:
+                mustBe(false);
+        } // switch(op)
+        
+        //Binary Ops are always a value
+        kind=new Kinds(Kinds.Value);
+        
 	} // checkTypes
 
 	private final exprNode leftOperand;

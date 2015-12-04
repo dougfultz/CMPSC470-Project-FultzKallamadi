@@ -1046,6 +1046,7 @@ class trueNode extends exprNode {
 	trueNode(int line, int col) {
 		super(line, col);
         type=new Types(Types.Boolean);
+        kind=new Kinds(Kinds.Value);
 	} // trueNode
 } // class trueNode  // class trueNode 
 
@@ -1053,6 +1054,7 @@ class falseNode extends exprNode {
 	falseNode(int line, int col) {
 		super(line, col);
         type=new Types(Types.Boolean);
+        kind=new Kinds(Kinds.Value);
 	} // falseNode
 } // class falseNode
 

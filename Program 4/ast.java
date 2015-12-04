@@ -379,7 +379,7 @@ class methodDeclNode extends ASTNode {
         id = (SymbolInfo) st.localLookup(name.idname);
         if (id == null) {
             id = new SymbolInfo(name.idname,
-                new Kinds(Kinds.Var),returnType.type);
+                new Kinds(Kinds.Method),returnType.type);
             name.type = returnType.type;
             try {
                 st.insert(id);

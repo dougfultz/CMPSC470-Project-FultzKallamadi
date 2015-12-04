@@ -662,6 +662,15 @@ class readNode extends stmtNode {
 	} // readNode
     
     void checkTypes() {
+        //Check kind of current variable
+        switch(targetVar.kind.val){
+            case Kinds.Value:
+                break;
+            default:
+                //Show an error
+                typeMustBe(0,1,error() + "Valid kinds for read are: value");
+        } //switch(targetVar.kind.val)
+        
         //Check type of current variable
         switch(targetVar.type.val){
             case Types.Integer:
@@ -705,6 +714,16 @@ class printNode extends stmtNode {
 	} // Unparse
 
 	void checkTypes() {
+        //Check kind of current variable
+        switch(outputValue.kind.val){
+            case Kinds.Value:
+            case Kinds.Array:
+                break;
+            default:
+                //Show an error
+                typeMustBe(0,1,error() + "Valid kinds for print are: value or array");
+        } //switch(outputValue.kind.val)
+        
         //Check type of current variable
         switch(outputValue.type.val){
             case Types.Integer:

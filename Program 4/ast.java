@@ -662,6 +662,9 @@ class readNode extends stmtNode {
 	} // readNode
     
     void checkTypes() {
+        //Have current node type check itself
+        targetVar.checkTypes();
+        
         //Check kind of current variable
         switch(targetVar.kind.val){
             case Kinds.Value:
@@ -715,6 +718,9 @@ class printNode extends stmtNode {
 	} // Unparse
 
 	void checkTypes() {
+        //Have current node type check itself
+        outputValue.checkTypes();
+        
         //Check kind of current variable
         switch(outputValue.kind.val){
             case Kinds.Value:

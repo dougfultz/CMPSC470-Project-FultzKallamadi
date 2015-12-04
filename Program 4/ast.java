@@ -665,10 +665,11 @@ class readNode extends stmtNode {
         //Check kind of current variable
         switch(targetVar.kind.val){
             case Kinds.Value:
+            case Kinds.Var:
                 break;
             default:
                 //Show an error
-                typeMustBe(0,1,error() + "Valid kinds for read are: value");
+                typeMustBe(0,1,error() + targetVar.kind.toString() + ": Valid kinds for read are: value & var");
         } //switch(targetVar.kind.val)
         
         //Check type of current variable
@@ -678,7 +679,7 @@ class readNode extends stmtNode {
                 break;
             default:
                 //Show an error
-                typeMustBe(0,1,error() + "Valid types for read are: int or char");
+                typeMustBe(0,1,error() + targetVar.type.toString() + ": Valid types for read are: int or char");
         } // switch(targetVar.type.val)
         
         //Check remaining nodes

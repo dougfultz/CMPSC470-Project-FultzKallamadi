@@ -369,47 +369,47 @@ forinit			::=
 forcondition	::=
 					expr:e COR:o term:t
 					{:
-						RESULT = new binaryOpNode(e, sym.COR, t, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(e, sym.COR, t, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					expr:e CAND:o term:t
 					{:
-						RESULT = new binaryOpNode(e, sym.CAND, t, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(e, sym.CAND, t, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					factor:f1 LT:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.LT, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.LT, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					factor:f1 GT:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.GT, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.GT, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					factor:f1 LEQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.LEQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.LEQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					factor:f1 GEQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.GEQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.GEQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					factor:f1 EQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.EQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.EQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					factor:f1 NOTEQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.NOTEQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.NOTEQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					NOT:o unary:u
 					{:
-						RESULT = new unaryOpNode(sym.NOT, u, o.linenum, o.colnum);
+						RESULT = new unaryOpNode(sym.NOT, u, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					rw_TRUE:r
@@ -453,7 +453,8 @@ forupdate		::=
 										sym.PLUS,
 										new intLitNode(1, i.linenum, i.colnum),
 										i.linenum,
-										i.colnum
+										i.colnum,
+                                        new Types(Types.Integer)
 									),
 									i.linenum,
 									i.colnum
@@ -474,7 +475,8 @@ forupdate		::=
 										sym.PLUS,
 										new intLitNode(1, id.linenum, id.colnum),
 										id.linenum,
-										id.colnum
+										id.colnum,
+                                        new Types(Types.Integer)
 									),
 									id.linenum,
 									id.colnum
@@ -495,7 +497,8 @@ forupdate		::=
 										sym.MINUS,
 										new intLitNode(1, d.linenum, d.colnum),
 										d.linenum,
-										d.colnum
+										d.colnum,
+                                        new Types(Types.Integer)
 									),
 									d.linenum,
 									d.colnum
@@ -516,7 +519,8 @@ forupdate		::=
 										sym.MINUS,
 										new intLitNode(1, id.linenum, id.colnum),
 										id.linenum,
-										id.colnum
+										id.colnum,
+                                        new Types(Types.Integer)
 									),
 									id.linenum,
 									id.colnum
@@ -636,7 +640,8 @@ stmt 			::=
 										sym.PLUS,
 										new intLitNode(1, i.linenum, i.colnum),
 										i.linenum,
-										i.colnum
+										i.colnum,
+                                        new Types(Types.Integer)
 									),
 									i.linenum,
 									i.colnum
@@ -658,7 +663,8 @@ stmt 			::=
 										sym.PLUS,
 										new intLitNode(1, id.linenum, id.colnum),
 										id.linenum,
-										id.colnum
+										id.colnum,
+                                        new Types(Types.Integer)
 									),
 									id.linenum,
 									id.colnum
@@ -680,7 +686,8 @@ stmt 			::=
 										sym.MINUS,
 										new intLitNode(1, d.linenum, d.colnum),
 										d.linenum,
-										d.colnum
+										d.colnum,
+                                        new Types(Types.Integer)
 									),
 									d.linenum,
 									d.colnum
@@ -702,7 +709,8 @@ stmt 			::=
 										sym.MINUS,
 										new intLitNode(1, id.linenum, id.colnum),
 										id.linenum,
-										id.colnum
+										id.colnum,
+                                        new Types(Types.Integer)
 									),
 									id.linenum,
 									id.colnum
@@ -782,13 +790,13 @@ expr			::=
 					// Rule 1
 					expr:e COR:o term:t
 					{:
-						RESULT = new binaryOpNode(e, sym.COR, t, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(e, sym.COR, t, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 2
 					expr:e CAND:o term:t
 					{:
-						RESULT = new binaryOpNode(e, sym.CAND, t, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(e, sym.CAND, t, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 3
@@ -803,37 +811,37 @@ term			::=
 					// Rule 1
 					factor:f1 LT:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.LT, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.LT, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 2
 					factor:f1 GT:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.GT, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.GT, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 3
 					factor:f1 LEQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.LEQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.LEQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 4
 					factor:f1 GEQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.GEQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.GEQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 5
 					factor:f1 EQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.EQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.EQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 6
 					factor:f1 NOTEQ:o factor:f2
 					{:
-						RESULT = new binaryOpNode(f1, sym.NOTEQ, f2, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f1, sym.NOTEQ, f2, o.linenum, o.colnum, new Types(Types.Boolean));
 					:}
 				|
 					// Rule 7
@@ -848,13 +856,13 @@ factor			::=
 					// Rule 1
 					factor:f PLUS:o pri:p
 					{:
-						RESULT = new binaryOpNode(f, sym.PLUS, p, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f, sym.PLUS, p, o.linenum, o.colnum, new Types(Types.Unknown));
 					:}
 				|
 					// Rule 2
 					factor:f MINUS:o pri:p
 					{:
-						RESULT = new binaryOpNode(f, sym.MINUS, p, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(f, sym.MINUS, p, o.linenum, o.colnum, new Types(Types.Unknown));
 					:}
 				|
 					// Rule 3
@@ -869,13 +877,13 @@ pri				::=
 					// Rule 1
 					pri:p TIMES:o unary:u
 					{:
-						RESULT = new binaryOpNode(p, sym.TIMES, u, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(p, sym.TIMES, u, o.linenum, o.colnum, new Types(Types.Unknown));
 					:}
 				|
 					// Rule 2
 					pri:p SLASH:o unary:u
 					{:
-						RESULT = new binaryOpNode(p, sym.SLASH, u, o.linenum, o.colnum);
+						RESULT = new binaryOpNode(p, sym.SLASH, u, o.linenum, o.colnum, new Types(Types.Unknown));
 					:}
 				|
 					// Rule 3

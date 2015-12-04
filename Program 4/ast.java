@@ -1045,12 +1045,14 @@ class charLitNode extends exprNode {
 class trueNode extends exprNode {
 	trueNode(int line, int col) {
 		super(line, col);
+        type=new Types(Types.Boolean);
 	} // trueNode
 } // class trueNode  // class trueNode 
 
 class falseNode extends exprNode {
 	falseNode(int line, int col) {
 		super(line, col);
+        type=new Types(Types.Boolean);
 	} // falseNode
 } // class falseNode
 

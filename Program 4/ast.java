@@ -1031,3 +1031,18 @@ class falseNode extends exprNode {
 		super(line, col);
 	} // falseNode
 } // class falseNode
+
+class forNode extends stmtNode {
+    forNode(stmtNode i, exprNode c, stmtNode u, stmtNode b, int line, int col) {
+        super(line, col);
+        init = i;
+        condition = c;
+        update = u;
+        loopBody = b;
+    }
+    
+    private final stmtNode init;
+    private final exprNode condition;
+    private final stmtNode update;
+    private final stmtNode loopBody;
+} // class forNode

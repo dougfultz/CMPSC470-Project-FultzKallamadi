@@ -904,16 +904,41 @@ class binaryOpNode extends exprNode {
         //Do something based on operator
         switch(operatorCode){
             case sym.PLUS:
-                mustBe(false); //TODO
-                break;
             case sym.MINUS:
-                mustBe(false); //TODO
-                break;
             case sym.SLASH:
-                mustBe(false); //TODO
-                break;
             case sym.TIMES:
-                mustBe(false); //TODO
+                //Check if left operand type is valid for this operator
+                switch(leftOperand.type.val){
+                    case Types.Integer:
+                    case Types.Character:
+                        //check the right operand type
+                        switch(rightOperand.type.val){
+                            case Types.Integer:
+                            case Types.Character:
+                                break;
+                            default:
+                                //Show an error
+                                typeMustBe(0,1,error() + "Valid types of right operand are: int or char");
+                        } //switch(rightOperand.type.val)
+                        //Set Type to the left operand type
+                        type=leftOperand.type;
+                        break;
+                    case Types.Real:
+                        //check the right operand type
+                        switch(rightOperand.type.val){
+                            case Types.Real:
+                                break;
+                            default:
+                                //Show an error
+                                typeMustBe(0,1,error() + "Valid type of right operand is: float");
+                        } //switch(rightOperand.type.val)
+                        //Set Type to the left operand type
+                        type=leftOperand.type;
+                        break;
+                    default:
+                        //Show an error
+                        typeMustBe(0,1,error() + "Valid types of left operand are: int, float, or char");
+                } //switch(leftOperand.type.val)
                 break;
             case sym.EQ:
             case sym.NOTEQ:
@@ -924,7 +949,7 @@ class binaryOpNode extends exprNode {
                 //Check if types of operands match
                 typeMustBe(leftOperand.type.val, rightOperand.type.val,
                     error() + leftOperand.type.toString() + toString(operatorCode) + rightOperand.type.toString()
-                            + "\nLeft operand and right operand must be of same type");
+                            + ": Left operand and right operand must be of same type");
                 //Check if types of operands are valid for comparison
                 switch(leftOperand.type.val){
                     case Types.Integer:

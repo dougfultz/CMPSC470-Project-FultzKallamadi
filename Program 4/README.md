@@ -22,7 +22,13 @@ Sujay Kallamadi
 
    `# javac -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ *.java`
 
-4. TODO
+4. Execute P4 program against test file
+
+   `# java -cp tools/java-cup-10l.jar:tools/JFlex.jar:./ P4 test.csx`
+
+5. Clean up directory
+
+   `# rm ./*.class`
 
 ## How To: CSX lite
 

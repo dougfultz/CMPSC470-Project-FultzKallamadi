@@ -895,7 +895,7 @@ class binaryOpNode extends exprNode {
 
 class unaryOpNode extends exprNode {
 	unaryOpNode(int op, exprNode e, int line, int col, Types resultType) {
-		super(line,col,new Kinds(Kinds.Value));
+		super(line,col, resultType, new Kinds(Kinds.Value));
 		operand = e;
 		operatorCode = op;
 	} // unaryOpNode

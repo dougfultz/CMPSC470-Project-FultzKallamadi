@@ -983,7 +983,7 @@ class binaryOpNode extends exprNode {
                 break;
             default:
                 mustBe(false);
-        } // switch(op)
+        } // switch(operatorCode)
         
         //Binary Ops are always a value
         kind=new Kinds(Kinds.Value);
@@ -1001,6 +1001,39 @@ class unaryOpNode extends exprNode {
 		operand = e;
 		operatorCode = op;
 	} // unaryOpNode
+    
+    static void printOp(int op) {
+        System.out.print(toString(op));
+    } // printOp
+    
+    static String toString(int op) {
+        switch (op) {
+            case sym.NOT:
+                return(" ! ");
+            default:
+                mustBe(false);
+                return "";
+        } // switch(op)
+    } // toString
+    
+    void checkTypes() {
+        //Check the type of the operand
+        operand.checkTypes();
+        
+        //Do something based on operator
+        switch(operatorCode){
+            case sym.NOT:
+                typeMustBe(operand.type.val,Types.Boolean,error() + ": operand must be a bool");
+                //Set Type
+                type=new Types(Types.Boolean);
+                break;
+            default:
+                mustBe(false);
+        } // switch(operatorCode)
+        
+        //Unary Ops are always a value
+        kind=new Kinds(Kinds.Value);
+    } // checkTypes
 
 	private exprNode operand;
 	private int operatorCode; // Token code of the operator

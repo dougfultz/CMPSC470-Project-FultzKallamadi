@@ -718,11 +718,12 @@ class printNode extends stmtNode {
         //Check kind of current variable
         switch(outputValue.kind.val){
             case Kinds.Value:
+            case Kinds.Var:
             case Kinds.Array:
                 break;
             default:
                 //Show an error
-                typeMustBe(0,1,error() + "Valid kinds for print are: value or array");
+                typeMustBe(0,1,error() + outputValue.kind.toString() + ": Valid kinds for print are: value, var, or array");
         } //switch(outputValue.kind.val)
         
         //Check type of current variable
@@ -735,7 +736,7 @@ class printNode extends stmtNode {
                 break;
             default:
                 //Show an error
-                typeMustBe(0,1,error() + "Valid types for print are: int, bool, float, char, or string");
+                typeMustBe(0,1,error() + outputValue.type.toString() + ": Valid types for print are: int, bool, float, char, or string");
         } //switch(outputValue.type.val)
         
         //Check remaining nodes

@@ -662,7 +662,17 @@ class readNode extends stmtNode {
 	} // readNode
     
     void checkTypes() {
-        targetVar.checkTypes();
+        //Check type of current variable
+        switch(targetVar.type.val){
+            case Types.Integer:
+            case Types.Character:
+                break;
+            default:
+                //Show an error
+                typeMustBe(0,1,error() + "Valid types for read are: int or char");
+        } // switch(targetVar.type.val)
+        
+        //Check remaining nodes
         moreReads.checkTypes();
     } // checkTypes
 
@@ -695,9 +705,21 @@ class printNode extends stmtNode {
 	} // Unparse
 
 	void checkTypes() {
-		outputValue.checkTypes();
-		typeMustBe(outputValue.type.val, Types.Integer,
-			error() + "Only int values may be printed.");
+        //Check type of current variable
+        switch(outputValue.type.val){
+            case Types.Integer:
+            case Types.Boolean:
+            case Types.Real:
+            case Types.Character:
+            case Types.String:
+                break;
+            default:
+                //Show an error
+                typeMustBe(0,1,error() + "Valid types for print are: int, bool, float, char, or string");
+        } //switch(outputValue.type.val)
+        
+        //Check remaining nodes
+        morePrints.checkTypes();
 	} // checkTypes
 
 	private exprNode outputValue;

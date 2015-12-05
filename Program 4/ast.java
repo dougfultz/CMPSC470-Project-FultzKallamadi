@@ -19,6 +19,8 @@ abstract class ASTNode {
 		return (testKind == Kinds.Var) || (testKind == Kinds.Value) || (testKind == Kinds.ScalarParm)
 	}
 
+	boolean 
+
 	static void genIndent(int indent) {
 		for (int i = 1; i<=indent; i++) {
 			System.out.print("\t");
@@ -42,17 +44,7 @@ abstract class ASTNode {
 			typeErrors++;
 		}
 
-	} // typeMustBeEqual
-
-	static void typesComparison( int type1, int type2, String errorMsg) {
-		if ((type1 == Types.Errors) && (type2 == Types.Errors))
-			return;
-		if ((type1 == Types.Errors) || (type2 == Types.Errors))
-			return;
-
-		System.out.println(errorMsg);
-		typeErrors++;
-	} //typesComparison
+	}
 
 	String error() {
 		return "Error (line " + linenum + "): ";

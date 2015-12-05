@@ -28,6 +28,11 @@ class test {            //prog - Rule 1
     int fe() {
         int a;
         int i;
+        int array[5];
+        
+        int tint=1;                 //type - Rule 1, unit - Rule 4
+        char tchar='a';             //type - Rule 2, unit - Rule 5
+        bool tbool;                 //type - Rule 3
         
         //stmt - Rule 1
         if ( true )
@@ -60,16 +65,21 @@ class test {            //prog - Rule 1
             endif
         
         //stmt - Rule 6
-        read ( a );
+        read ( a );                 //read - Rule 2
+        read ( a, b );              //read - Rule 1
         
         //stmt - Rule 7
-        print ( a );
+        print ( a );                //print - Rule 2
+        print ( a, b );             //print - Rule 1
         
         //stmt - Rule 8
+        //unit - Rule 2
         fa();
         
         //stmt - Rule 9
-        fb(2);
+        //unit - Rule 3
+        fb(2);                      //args - Rule 2
+        fd(2,array);                //args - Rule 1
         
         //stmt - Rule ++id
         ++a;
@@ -82,6 +92,82 @@ class test {            //prog - Rule 1
         
         //stmt -Rule id--
         a--;
+        
+        //expr - Rule 1
+        //unit - Rule 7
+        //unit - Rule 8
+        //unit - Rule 9
+        if(true || (false||false))
+            a++;
+        endif
+        
+        //expr - Rule 2
+        if(false && false)
+            a--;
+        endif
+        
+        //expr - Rule 3
+        //term - Rule 1
+        if(1<2)
+            a++;
+        endif
+        
+        //term - Rule 2
+        if(1>2)
+            a++;
+        endif
+        
+        //term - Rule 3
+        if(1<=2)
+            a++;
+        endif
+        
+        //term - Rule 4
+        if(1>=2)
+            a++;
+        endif
+        
+        //term - Rule 5
+        if(1==2)
+            a++;
+        endif
+        
+        //term - Rule 6
+        if(1!=2)
+            a++;
+        endif
+        
+        //term - Rule 7
+        //factor - Rule 1
+        a=1+1;
+        
+        //factor - Rule 2
+        a=1-1;
+        
+        //factor - Rule 3
+        //pri - Rule 1
+        a=1*1;
+        
+        //pri - Rule 2
+        a=1/1;
+        
+        //pri - Rule 3
+        //unary - Rule 1
+        if(!tbool)
+            a++;
+        endif
+        
+        //unary - Rule 2
+        print((char)tint);
+        
+        //unary - Rule 3
+        //unit - Rule 1
+        //name - Rule 1
+        //ident - Rule 1
+        a++;
+        
+        //name - Rule 2
+        array[0]=4;
         
         return 0;
     }

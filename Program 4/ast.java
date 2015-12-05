@@ -703,11 +703,8 @@ class readNode extends stmtNode {
 		super(line,col);
 		targetVar = n;
 		moreReads = rn;
-
-
 	} // readNode
     
-
     void checkTypes() {
         //Have current node type check itself
         targetVar.checkTypes();
@@ -785,6 +782,7 @@ class printNode extends stmtNode {
             case Types.Boolean:
             case Types.Real:
             case Types.Character:
+            case Types.String:
                 break;
             default:
                 //Show an error

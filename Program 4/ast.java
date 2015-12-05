@@ -3,7 +3,6 @@ abstract class ASTNode {
 
 	int linenum;
 	int colnum;
-	boolean mainMethodDeclared = false;
 
 	static int typeErrors = 0; // Total number of type errors found 
 
@@ -124,6 +123,12 @@ class memberDeclsNode extends ASTNode {
 		super(line,col);
 		fields = f;
 		methods = m;
+		boolean mainMethodDeclared = false;
+
+
+		if (mainMethodDeclared == false) {
+			System.out.println("ERROR: main method is not declared");
+	}
 	} // memberDeclsNode
     void checkTypes() {
         fields.checkTypes();
@@ -132,9 +137,6 @@ class memberDeclsNode extends ASTNode {
 	fieldDeclsNode fields;
 	private final methodDeclsNode methods;
 
-	if (mainMethodDeclared == false) {
-		System.out.println("ERROR: main method is not declared");
-	}
 } // memberDeclsNode
 
 class fieldDeclsNode extends ASTNode {

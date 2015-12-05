@@ -6,6 +6,21 @@ abstract class ASTNode {
 
 	static int typeErrors = 0; // Total number of type errors found 
 
+	boolean isTypeCorrect(csxLiteNode n) {
+		return (typeErrors == 0);
+	}
+
+	boolean isTypeCorrect(classNode n){
+		return(typeErrors == 0);
+	}
+
+	// Var, Value, ScalarParm
+	boolean isScalar(int testKind){
+		return (testKind == Kinds.Var) || (testKind == Kinds.Value) || (testKind == Kinds.ScalarParm)
+	}
+
+	boolean 
+
 	static void genIndent(int indent) {
 		for (int i = 1; i<=indent; i++) {
 			System.out.print("\t");
@@ -22,6 +37,15 @@ abstract class ASTNode {
 			typeErrors++;
 		}
 	} // typeMustBe
+
+	static void typeMustBeEqual(int testType, int type1, int type2, String ) {
+		if ((type1 != Types.Error) && ( type2 != Types.Error) && (type1 != type2)) {
+			System.out.println(errorMsg);
+			typeErrors++;
+		}
+
+	}
+
 	String error() {
 		return "Error (line " + linenum + "): ";
 	} // error
@@ -1130,6 +1154,7 @@ class castNode extends exprNode {
                     case Types.Character:
                     case Types.Real:
                     case Types.Boolean:
+                    case Types.String:
                         break;
                     default:
                         //Show an error
